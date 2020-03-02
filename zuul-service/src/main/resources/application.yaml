@@ -1,0 +1,33 @@
+
+server.port: 8762
+
+spring:
+  application.name: zuul-service
+
+eureka:
+  instance.preferIpAddress: true
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://discovery-service:8761/eureka
+
+zuul:
+  prefix: /
+  routes:
+    order-service:
+      path: /order-service/**
+      serviceId: order-service
+    address-service:
+      path: /address-service/**
+      serviceId: address-service
+    payment-service:
+      path: /payment-service/**
+      serviceId: payment-service
+    restoraunt-service:
+      path: /restoraunt-service/**
+      serviceId: restoraunt-service
+    courier-service:
+      path: /courier-service/**
+      serviceId: courier-service
+
