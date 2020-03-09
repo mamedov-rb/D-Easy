@@ -1,7 +1,7 @@
 package com.rmamedov.deasy.orderservice.controller;
 
-import com.rmamedov.deasy.orderservice.controller.model.OrderCreateRequest;
-import com.rmamedov.deasy.orderservice.controller.model.OrderInfoResponse;
+import com.rmamedov.deasy.orderservice.model.controller.OrderCreateRequest;
+import com.rmamedov.deasy.orderservice.model.controller.OrderInfoResponse;
 import com.rmamedov.deasy.orderservice.converter.OrderCreateRequestToOrderConverter;
 import com.rmamedov.deasy.orderservice.converter.OrderToOrderInfoResponseConverter;
 import com.rmamedov.deasy.orderservice.service.OrderService;

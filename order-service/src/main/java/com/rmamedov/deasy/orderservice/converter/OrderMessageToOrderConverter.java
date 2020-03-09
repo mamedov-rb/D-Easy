@@ -1,12 +1,12 @@
 package com.rmamedov.deasy.orderservice.converter;
 
-import com.rmamedov.deasy.orderservice.model.controller.OrderInfoResponse;
+import com.rmamedov.deasy.orderservice.model.kafka.OrderMessage;
 import com.rmamedov.deasy.orderservice.model.repository.Order;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
-public interface OrderToOrderInfoResponseConverter {
+public interface OrderMessageToOrderConverter {
 
-    OrderInfoResponse convert(Order order);
+    Order convert(OrderMessage order);
 
 }

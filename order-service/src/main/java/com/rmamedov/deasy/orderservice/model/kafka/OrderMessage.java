@@ -1,13 +1,11 @@
-package com.rmamedov.deasy.orderservice.controller.model;
+package com.rmamedov.deasy.orderservice.model.kafka;
 
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Data
-public class OrderInfoResponse {
-
-    private String id;
+public class OrderMessage {
 
     private String name;
 

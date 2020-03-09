@@ -1,4 +1,4 @@
-package com.rmamedov.deasy.orderservice.controller.model;
+package com.rmamedov.deasy.orderservice.model.controller;
 
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;
