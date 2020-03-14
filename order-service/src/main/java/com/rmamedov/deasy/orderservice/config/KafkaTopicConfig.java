@@ -12,14 +12,6 @@ import org.springframework.kafka.config.TopicBuilder;
 @RequiredArgsConstructor
 public class KafkaTopicConfig {
 
-//    @Value(value = "${spring.kafka.consumer.bootstrap-servers}")
-//    private String bootstrapAddress;
-
-//    @Bean
-//    public KafkaAdmin kafkaAdmin() {
-//        return new KafkaAdmin(Map.of(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress));
-//    }
-
     @Bean
     public NewTopic uncheckedOrdersTopic(@Qualifier("inProgressOrdersTopicProp") final TopicConfigurationProperties properties) {
         return TopicBuilder.name(properties.getName())

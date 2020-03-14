@@ -10,7 +10,7 @@ services:
       MONGO_INITDB_ROOT_USERNAME: order-user
       MONGO_INITDB_ROOT_PASSWORD: order-password
     volumes:
-      - ~/projects/docker-mongo/data:/data/db
+      - ~/projects/d-easy/db:/data/db
       - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
     ports:
       - "27017:27017"
@@ -54,7 +54,7 @@ services:
       - cloud-service-net
 
   zuul-service:
-    build: ./zuul-service
+    build: getway-service
     restart: always
     image: zuul-service-image
     container_name: zuul-service-container

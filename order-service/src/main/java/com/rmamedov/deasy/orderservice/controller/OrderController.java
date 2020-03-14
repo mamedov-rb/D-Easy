@@ -1,7 +1,7 @@
 package com.rmamedov.deasy.orderservice.controller;
 
-import com.rmamedov.deasy.orderservice.model.controller.OrderCreateRequest;
-import com.rmamedov.deasy.orderservice.model.controller.OrderInfoResponse;
+import com.rmamedov.deasy.model.controller.OrderCreateRequest;
+import com.rmamedov.deasy.model.controller.OrderInfoResponse;
 import com.rmamedov.deasy.orderservice.converter.OrderCreateRequestToOrderConverter;
 import com.rmamedov.deasy.orderservice.converter.OrderToOrderInfoResponseConverter;
 import com.rmamedov.deasy.orderservice.service.OrderService;
@@ -28,7 +28,11 @@ public class OrderController {
 
     private final OrderToOrderInfoResponseConverter responseConverter;
 
-    @PostMapping(path = "/create", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(
+            path = "/create",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.TEXT_EVENT_STREAM_VALUE
+    )
     public Mono<OrderInfoResponse> create(@RequestBody @Validated final OrderCreateRequest createRequest) {
         return orderService
                 .create(requestToOrderConverter.convert(createRequest))

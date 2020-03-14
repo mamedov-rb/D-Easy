@@ -1,6 +1,6 @@
 package com.rmamedov.deasy.orderservice.repository;
 
-import com.rmamedov.deasy.orderservice.model.repository.Order;
+import com.rmamedov.deasy.model.repository.Order;
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 import org.springframework.stereotype.Repository;
 
