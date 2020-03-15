@@ -1,4 +1,4 @@
-package com.rmamedov.deasy.orderservice.config.properties;
+package com.rmamedov.deasy.kafkastarter.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

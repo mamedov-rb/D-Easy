@@ -2,8 +2,8 @@ package com.rmamedov.deasy.orderservice.controller;
 
 import com.rmamedov.deasy.model.controller.OrderCreateRequest;
 import com.rmamedov.deasy.model.controller.OrderInfoResponse;
-import com.rmamedov.deasy.orderservice.converter.OrderCreateRequestToOrderConverter;
-import com.rmamedov.deasy.orderservice.converter.OrderToOrderInfoResponseConverter;
+import com.rmamedov.deasy.model.converter.OrderCreateRequestToOrderConverter;
+import com.rmamedov.deasy.model.converter.OrderToOrderInfoResponseConverter;
 import com.rmamedov.deasy.orderservice.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;

@@ -1,4 +1,4 @@
-package com.rmamedov.deasy.orderservice.exceptions;
+package com.rmamedov.deasy.model.exceptions;
 
 public class OrderNotFoundException extends RuntimeException {
 

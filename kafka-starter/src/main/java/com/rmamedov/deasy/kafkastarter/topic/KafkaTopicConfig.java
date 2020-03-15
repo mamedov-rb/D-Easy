@@ -1,6 +1,5 @@
-package com.rmamedov.deasy.orderservice.config;
+package com.rmamedov.deasy.kafkastarter.topic;
 
-import com.rmamedov.deasy.orderservice.config.properties.TopicConfigurationProperties;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.beans.factory.annotation.Qualifier;

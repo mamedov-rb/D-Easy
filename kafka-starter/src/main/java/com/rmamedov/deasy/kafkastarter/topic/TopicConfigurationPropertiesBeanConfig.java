@@ -1,6 +1,5 @@
-package com.rmamedov.deasy.orderservice.config;
+package com.rmamedov.deasy.kafkastarter.topic;
 
-import com.rmamedov.deasy.orderservice.config.properties.TopicConfigurationProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

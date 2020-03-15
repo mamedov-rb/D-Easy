@@ -1,4 +1,4 @@
-package com.rmamedov.deasy.orderservice.config.properties;
+package com.rmamedov.deasy.kafkastarter.topic;
 
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;
