@@ -1,6 +1,6 @@
 package com.rmamedov.deasy.orderservice.service;
 
-import com.rmamedov.deasy.kafkastarter.sender.DEasyKafkaSender;
+import com.rmamedov.deasy.kafkastarter.sender.ApplicationKafkaSender;
 import com.rmamedov.deasy.model.converter.OrderToOrderMessageConverter;
 import com.rmamedov.deasy.model.exceptions.OrderNotFoundException;
 import com.rmamedov.deasy.model.repository.Order;
@@ -17,23 +17,23 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
 
-    private final DEasyKafkaSender dEasyKafkaSender;
+    private final ApplicationKafkaSender applicationKafkaSender;
 
     private final OrderToOrderMessageConverter orderToOrderMessageConverter;
 
     public OrderService(OrderRepository orderRepository,
-                        @Qualifier("inProgressOrdersSender") DEasyKafkaSender dEasyKafkaSender,
+                        @Qualifier("inProgressOrdersSender") ApplicationKafkaSender applicationKafkaSender,
                         OrderToOrderMessageConverter orderToOrderMessageConverter) {
 
         this.orderRepository = orderRepository;
-        this.dEasyKafkaSender = dEasyKafkaSender;
+        this.applicationKafkaSender = applicationKafkaSender;
         this.orderToOrderMessageConverter = orderToOrderMessageConverter;
     }
 
     public Mono<Order> create(final Order order) {
         return orderRepository.save(order)
                 .flatMap(saved -> {
-                    dEasyKafkaSender.send(orderToOrderMessageConverter.convert(saved));
+                    applicationKafkaSender.send(orderToOrderMessageConverter.convert(saved));
                     return Mono.just(saved);
                 });
     }

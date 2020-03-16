@@ -7,10 +7,19 @@ spring:
 kafka:
   receiver:
     bootstrap-servers: localhost:9092
-    group-id: group_id
+    group-id: in-progress-orders-group
     auto-offset-reset: earliest
   sender:
     bootstrap-servers: ${kafka.receiver.bootstrap-servers}
+  topics:
+    in-progress-orders-topic:
+      name: in-progress-orders-topic
+      partitions: 1
+      replicas: 1
+    checked-addresses-topic:
+      name: checked-addresses-topic
+      partitions: 1
+      replicas: 1
 
 #eureka:
 #  instance.preferIpAddress: true

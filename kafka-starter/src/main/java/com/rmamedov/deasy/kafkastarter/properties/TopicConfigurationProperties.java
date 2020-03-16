@@ -1,4 +1,4 @@
-package com.rmamedov.deasy.kafkastarter.topic;
+package com.rmamedov.deasy.kafkastarter.properties;
 
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;

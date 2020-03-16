@@ -1,5 +1,6 @@
-package com.rmamedov.deasy.kafkastarter.topic;
+package com.rmamedov.deasy.orderservice.topic;
 
+import com.rmamedov.deasy.kafkastarter.properties.TopicConfigurationProperties;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -9,7 +10,7 @@ import org.springframework.kafka.config.TopicBuilder;
 
 @Configuration
 @RequiredArgsConstructor
-public class KafkaTopicConfig {
+public class KafkaTopicCreationConfig {
 
     @Bean
     public NewTopic uncheckedOrdersTopic(@Qualifier("inProgressOrdersTopicProp") final TopicConfigurationProperties properties) {

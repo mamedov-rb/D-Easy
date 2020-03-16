@@ -12,7 +12,7 @@ spring:
 kafka:
   receiver:
     bootstrap-servers: localhost:9092
-    group-id: group_id
+    group-id: checked-addresses-group
     auto-offset-reset: earliest
   sender:
     bootstrap-servers: ${kafka.receiver.bootstrap-servers}
