@@ -30,12 +30,10 @@ public class OrderService {
         this.orderToOrderMessageConverter = orderToOrderMessageConverter;
     }
 
-    public Mono<Order> create(final Order order) {
+    public Mono<Void> create(final Order order) {
         return orderRepository.save(order)
-                .flatMap(saved -> {
-                    applicationKafkaSender.send(orderToOrderMessageConverter.convert(saved));
-                    return Mono.just(saved);
-                });
+                .map(orderToOrderMessageConverter::convert)
+                .flatMap(applicationKafkaSender::send);
     }
 
     public Mono<Order> findById(final String id) {

@@ -17,18 +17,4 @@ public class KafkaSenderConfig {
         return new ApplicationKafkaSender(topicProperties, senderProperties);
     }
 
-//    @Bean
-//    public DEasyKafkaSender checkedMenuSender(@Qualifier("checkedMenuOrdersTopicProp") final TopicConfigurationProperties topicProperties,
-//                                                   final KafkaSenderConfigurationProperties senderProperties) {
-//
-//        return new DEasyKafkaSender(topicProperties, senderProperties);
-//    }
-//
-//    @Bean
-//    public DEasyKafkaSender checkedCouriersSender(@Qualifier("checkedCouriersTopicProp") final TopicConfigurationProperties topicProperties,
-//                                                   final KafkaSenderConfigurationProperties senderProperties) {
-//
-//        return new DEasyKafkaSender(topicProperties, senderProperties);
-//    }
-
 }

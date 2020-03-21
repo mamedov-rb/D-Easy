@@ -1,31 +1,19 @@
-//package com.rmamedov.addressservice.service;
-//
-//import com.rmamedov.deasy.kafkastarter.sender.ApplicationKafkaSender;
-//import com.rmamedov.deasy.model.converter.OrderToOrderMessageConverter;
-//import com.rmamedov.deasy.model.repository.Order;
-//import lombok.extern.slf4j.Slf4j;
-//import org.springframework.beans.factory.annotation.Qualifier;
-//import org.springframework.stereotype.Service;
-//
-//@Slf4j
-//@Service
-//public class AddressService {
-//
-//    private final OrderToOrderMessageConverter orderToOrderMessageConverter;
-//
-//    private final ApplicationKafkaSender applicationKafkaSender;
-//
-//    public AddressService(OrderToOrderMessageConverter orderToOrderMessageConverter,
-//                          @Qualifier("checkedAddressSender") ApplicationKafkaSender applicationKafkaSender) {
-//
-//        this.orderToOrderMessageConverter = orderToOrderMessageConverter;
-//        this.applicationKafkaSender = applicationKafkaSender;
-//    }
-//
-//    public void checkAddress(final Order order) {
-//
-//
-//
-//    }
-//
-//}
+package com.rmamedov.addressservice.service;
+
+import com.rmamedov.deasy.model.kafka.OrderMessage;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
+
+@Slf4j
+@Service
+@RequiredArgsConstructor
+public class AddressService {
+
+    public Mono<OrderMessage> check(final OrderMessage orderMessage) {
+        log.info("Address was checked with result: SUCCESS");
+        return Mono.just(orderMessage); // TODO 2020-03-19 rustammamedov: Do real check;
+    }
+
+}

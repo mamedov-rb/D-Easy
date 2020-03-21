@@ -1,4 +1,4 @@
-package com.rmamedov.deasy.orderservice.topic;
+package com.rmamedov.deasy.orderservice.config.topic;
 
 import com.rmamedov.deasy.kafkastarter.properties.TopicConfigurationProperties;
 import lombok.RequiredArgsConstructor;
@@ -10,10 +10,10 @@ import org.springframework.kafka.config.TopicBuilder;
 
 @Configuration
 @RequiredArgsConstructor
-public class KafkaTopicCreationConfig {
+public class KafkaTopicCreateConfig {
 
     @Bean
-    public NewTopic uncheckedOrdersTopic(@Qualifier("inProgressOrdersTopicProp") final TopicConfigurationProperties properties) {
+    public NewTopic inProgressOrdersConfigTopic(@Qualifier("inProgressOrdersTopicProp") final TopicConfigurationProperties properties) {
         return TopicBuilder.name(properties.getName())
                 .partitions(properties.getPartitions())
                 .replicas(properties.getReplicas())

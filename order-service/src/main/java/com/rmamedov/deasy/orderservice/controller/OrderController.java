@@ -3,7 +3,7 @@ package com.rmamedov.deasy.orderservice.controller;
 import com.rmamedov.deasy.model.controller.OrderCreateRequest;
 import com.rmamedov.deasy.model.controller.OrderInfoResponse;
 import com.rmamedov.deasy.model.converter.OrderCreateRequestToOrderConverter;
-import com.rmamedov.deasy.model.converter.OrderToOrderInfoResponseConverter;
+import com.rmamedov.deasy.model.converter.OrderToOrderInfoConverter;
 import com.rmamedov.deasy.orderservice.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -24,33 +24,31 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    private final OrderCreateRequestToOrderConverter requestToOrderConverter;
+    private final OrderToOrderInfoConverter orderToOrderInfoConverter;
 
-    private final OrderToOrderInfoResponseConverter responseConverter;
+    private final OrderCreateRequestToOrderConverter requestToOrderConverter;
 
     @PostMapping(
             path = "/create",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.TEXT_EVENT_STREAM_VALUE
     )
-    public Mono<OrderInfoResponse> create(@RequestBody @Validated final OrderCreateRequest createRequest) {
-        return orderService
-                .create(requestToOrderConverter.convert(createRequest))
-                .map(responseConverter::convert);
+    public Mono<Void> create(@RequestBody @Validated final OrderCreateRequest createRequest) {
+        return orderService.create(requestToOrderConverter.convert(createRequest));
     }
 
     @GetMapping(path = "/id/{id}")
     public Mono<OrderInfoResponse> all(@PathVariable final String id) {
         return orderService
                 .findById(id)
-                .map(responseConverter::convert);
+                .map(orderToOrderInfoConverter::convert);
     }
 
     @GetMapping(path = "/all", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<OrderInfoResponse> all() {
         return orderService
                 .findAll()
-                .map(responseConverter::convert);
+                .map(orderToOrderInfoConverter::convert);
     }
 
 }
