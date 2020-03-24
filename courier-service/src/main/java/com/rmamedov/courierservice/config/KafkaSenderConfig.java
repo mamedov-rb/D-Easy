@@ -1,4 +1,4 @@
-package com.rmamedov.restorauntservice.config;
+package com.rmamedov.courierservice.config;
 
 import com.rmamedov.deasy.kafkastarter.properties.KafkaSenderConfigurationProperties;
 import com.rmamedov.deasy.kafkastarter.properties.TopicConfigurationProperties;
@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 public class KafkaSenderConfig {
 
     @Bean
-    public ApplicationKafkaSender checkedMenuOrdersSender(@Qualifier("checkedMenuOrdersTopicProp") final TopicConfigurationProperties topicProperties,
+    public ApplicationKafkaSender checkedCouriersSender(@Qualifier("checkedCouriersTopicProp") final TopicConfigurationProperties topicProperties,
                                                        final KafkaSenderConfigurationProperties senderProperties) {
 
         return new ApplicationKafkaSender(topicProperties, senderProperties);

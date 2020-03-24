@@ -14,7 +14,7 @@ import reactor.core.publisher.Mono;
 
 @Slf4j
 @Service
-public class AddressServiceKafkaReceiver {
+public class RestorauntServiceKafkaReceiver {
 
     private final RestorauntService restorauntService;
 
@@ -24,10 +24,10 @@ public class AddressServiceKafkaReceiver {
 
     private final TopicConfigurationProperties inProgressOrdersTopicProps;
 
-    public AddressServiceKafkaReceiver(RestorauntService restorauntService,
-                                       ApplicationKafkaSender applicationKafkaSender,
-                                       KafkaReceiverConfigurationProperties receiverProperties,
-                                       @Qualifier("inProgressOrdersTopicProp") TopicConfigurationProperties inProgressOrdersTopicProps) {
+    public RestorauntServiceKafkaReceiver(RestorauntService restorauntService,
+                                          ApplicationKafkaSender applicationKafkaSender,
+                                          KafkaReceiverConfigurationProperties receiverProperties,
+                                          @Qualifier("inProgressOrdersTopicProp") TopicConfigurationProperties inProgressOrdersTopicProps) {
 
         this.restorauntService = restorauntService;
         this.applicationKafkaSender = applicationKafkaSender;

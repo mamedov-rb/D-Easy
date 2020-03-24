@@ -1,0 +1,30 @@
+
+server.port: 8080
+
+spring:
+  application.name: courier-service
+
+kafka:
+  receiver:
+    bootstrap-servers: localhost:9092
+    group-id: in-progress-orders-group
+    auto-offset-reset: earliest
+  sender:
+    bootstrap-servers: ${kafka.receiver.bootstrap-servers}
+  topics:
+    in-progress-orders-topic:
+      name: in-progress-orders-topic
+      partitions: 1
+      replicas: 1
+    checked-couriers-topic:
+      name: checked-couriers-topic
+      partitions: 1
+      replicas: 1
+
+#eureka:
+#  instance.preferIpAddress: true
+#  client:
+#    registerWithEureka: true
+#    fetchRegistry: true
+#    serviceUrl:
+#      defaultZone: http://discovery-service:8761/eureka
