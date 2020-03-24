@@ -19,7 +19,7 @@ public class OrderServiceKafkaReceiver {
 
     public static final Set<CheckStatus> FULLY_CHECKED_SET = Set.of(
             CheckStatus.ADDRESSES_CHECKED,
-            CheckStatus.RESTORAUNT_CHECKED,
+            CheckStatus.ORDER_MENU_CHECKED,
             CheckStatus.COURIER_CHECKED
     );
 

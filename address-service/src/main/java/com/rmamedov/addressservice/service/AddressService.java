@@ -1,8 +1,8 @@
 package com.rmamedov.addressservice.service;
 
 import com.rmamedov.deasy.model.kafka.Address;
-import com.rmamedov.deasy.model.kafka.OrderMessage;
 import com.rmamedov.deasy.model.kafka.CheckStatus;
+import com.rmamedov.deasy.model.kafka.OrderMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,27 +20,23 @@ public class AddressService {
     private void check(final OrderMessage orderMessage) {
         final Address consumerAddress = orderMessage.getConsumerAddress();
         final Address restorauntAddress = orderMessage.getRestorauntAddress();
-        final String success = "success";
-        final String unreachable = "unreachable";
-        final String checkDetails = "Address is reachable, it might took 20min to deliver order.";
-        if (checkCoordinates()) {
-            updateCheckStatus(orderMessage, success, checkDetails);
+        final String successDescription = "Address is reachable, it might took 20min to deliver order.";
+        final String failedDescription = "Address is reachable, it might took 20min to deliver order.";
+        if (isReachable()) {
+            updateCheckStatus(orderMessage, successDescription);
         } else {
-            updateCheckStatus(orderMessage, unreachable, checkDetails);
+            updateCheckStatus(orderMessage, failedDescription);
         }
     }
 
-    private void updateCheckStatus(final OrderMessage orderMessage,
-                                   final String description,
-                                   final String checkDetails) {
-
+    private void updateCheckStatus(final OrderMessage orderMessage, final String description) {
         final CheckStatus checkStatus = CheckStatus.ADDRESSES_CHECKED;
         orderMessage.getCheckStatuses().add(checkStatus);
-        orderMessage.getCheckDetails().put(checkStatus.name(), checkDetails);
+        orderMessage.getCheckDetails().put(checkStatus.name(), description);
         log.info("Addresses checked with result: '{}'.", description);
     }
 
-    private boolean checkCoordinates() {
+    private boolean isReachable() {
         return true; // TODO 2020-03-22 rustammamedov: Do real check using google library;
     }
 
