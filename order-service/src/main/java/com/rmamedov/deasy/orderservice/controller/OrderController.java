@@ -2,8 +2,8 @@ package com.rmamedov.deasy.orderservice.controller;
 
 import com.rmamedov.deasy.model.controller.OrderCreateRequest;
 import com.rmamedov.deasy.model.controller.OrderInfoResponse;
-import com.rmamedov.deasy.model.converter.OrderCreateRequestToOrderConverter;
-import com.rmamedov.deasy.model.converter.OrderToOrderInfoConverter;
+import com.rmamedov.deasy.orderservice.converter.OrderCreateRequestToOrderConverter;
+import com.rmamedov.deasy.orderservice.converter.OrderToOrderInfoConverter;
 import com.rmamedov.deasy.orderservice.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -31,10 +31,11 @@ public class OrderController {
     @PostMapping(
             path = "/create",
             consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.TEXT_EVENT_STREAM_VALUE
+            produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public Mono<Void> create(@RequestBody @Validated final OrderCreateRequest createRequest) {
-        return orderService.create(requestToOrderConverter.convert(createRequest));
+    public Mono<String> create(@RequestBody @Validated final Mono<OrderCreateRequest> createRequest) {
+        return createRequest.map(requestToOrderConverter::convert)
+                .flatMap(orderService::processNewOrder);
     }
 
     @GetMapping(path = "/id/{id}")

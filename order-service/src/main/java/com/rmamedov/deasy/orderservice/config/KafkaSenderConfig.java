@@ -17,4 +17,11 @@ public class KafkaSenderConfig {
         return new ApplicationKafkaSender(topicProperties, senderProperties);
     }
 
+//    @Bean
+//    public ApplicationKafkaSender checkOrdersSuccessSender(@Qualifier("checkOrderSuccessTopicProp") final TopicConfigurationProperties topicProperties,
+//                                                         final KafkaSenderConfigurationProperties senderProperties) {
+//
+//        return new ApplicationKafkaSender(topicProperties, senderProperties);
+//    }
+
 }

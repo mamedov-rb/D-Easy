@@ -1,4 +1,4 @@
-package com.rmamedov.deasy.model.converter;
+package com.rmamedov.deasy.converter;
 
 import com.rmamedov.deasy.model.kafka.OrderMessage;
 import com.rmamedov.deasy.model.repository.Order;

@@ -4,6 +4,9 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 @Data
@@ -29,6 +32,8 @@ public class OrderMessage {
 
     private Set<OrderPosition> orderPositions;
 
-    private DeliveryStatus deliveryStatus = DeliveryStatus.NEW;
+    private Set<CheckStatus> checkStatuses = new HashSet<>();
+
+    private Map<String, String> checkDetails = new HashMap<>();
 
 }

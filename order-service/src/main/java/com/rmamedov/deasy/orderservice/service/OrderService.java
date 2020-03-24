@@ -1,7 +1,7 @@
 package com.rmamedov.deasy.orderservice.service;
 
 import com.rmamedov.deasy.kafkastarter.sender.ApplicationKafkaSender;
-import com.rmamedov.deasy.model.converter.OrderToOrderMessageConverter;
+import com.rmamedov.deasy.converter.OrderToOrderMessageConverter;
 import com.rmamedov.deasy.model.exceptions.OrderNotFoundException;
 import com.rmamedov.deasy.model.repository.Order;
 import com.rmamedov.deasy.orderservice.repository.OrderRepository;
@@ -30,10 +30,17 @@ public class OrderService {
         this.orderToOrderMessageConverter = orderToOrderMessageConverter;
     }
 
-    public Mono<Void> create(final Order order) {
-        return orderRepository.save(order)
+    public Mono<String> processNewOrder(final Order order) {
+        return this.save(order)
                 .map(orderToOrderMessageConverter::convert)
-                .flatMap(applicationKafkaSender::send);
+                .flatMap(orderMessage -> {
+                    applicationKafkaSender.send(orderMessage);
+                    return Mono.just(order.getId());
+                });
+    }
+
+    public Mono<Order> save(final Order order) {
+        return orderRepository.save(order);
     }
 
     public Mono<Order> findById(final String id) {

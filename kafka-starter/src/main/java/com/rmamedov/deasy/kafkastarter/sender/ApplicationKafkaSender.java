@@ -10,7 +10,6 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 import reactor.kafka.sender.KafkaSender;
 import reactor.kafka.sender.SenderOptions;
 import reactor.kafka.sender.SenderRecord;
@@ -25,16 +24,17 @@ public class ApplicationKafkaSender {
 
     private final KafkaSenderConfigurationProperties senderConfig;
 
-    public Mono<Void> send(final OrderMessage orderMessage) {
+    public void send(final OrderMessage orderMessage) {
         final var senderRecord = SenderRecord.create(
                 new ProducerRecord<>(topicConfig.getName(), orderMessage.getId(), orderMessage),
                 orderMessage.getId()
         );
-        return kafkaSender()
+        kafkaSender()
                 .send(Flux.just(senderRecord))
-                .then()
                 .doOnError(err -> log.error("Exception has occurred: ", err))
-                .doOnSuccess(result -> log.info("Sent -> topic: '{}', message: '{}'", topicConfig.getName(), orderMessage));
+                .doOnNext(result -> log.info("Sent -> topic: '{}', message: '{}', correlationId: '{}'",
+                        topicConfig.getName(), orderMessage, result.correlationMetadata()))
+                .subscribe();
     }
 
     private KafkaSender<String, OrderMessage> kafkaSender() {

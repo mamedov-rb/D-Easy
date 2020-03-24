@@ -22,7 +22,7 @@ public class ApplicationKafkaReceiver {
 
     private final TopicConfigurationProperties topicConfigurationProperties;
 
-    public Flux<ReceiverRecord<String, OrderMessage>> listen() {
+    public Flux<ReceiverRecord<String, OrderMessage>> receive() {
         final var subscription = receiverOptions().subscription(List.of(topicConfigurationProperties.getName()));
         return KafkaReceiver.create(subscription)
                 .receive()

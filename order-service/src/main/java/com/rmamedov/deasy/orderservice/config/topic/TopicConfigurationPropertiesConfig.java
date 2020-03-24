@@ -32,4 +32,10 @@ public class TopicConfigurationPropertiesConfig {
         return new TopicConfigurationProperties();
     }
 
+//    @Bean
+//    @ConfigurationProperties(prefix = "kafka.topics.check-order-success-topic")
+//    public TopicConfigurationProperties checkOrderSuccessTopicProp() {
+//        return new TopicConfigurationProperties();
+//    }
+
 }

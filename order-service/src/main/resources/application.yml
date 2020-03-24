@@ -12,8 +12,7 @@ spring:
 kafka:
   receiver:
     bootstrap-servers: localhost:9092
-    group-id: checked-addresses-group
-    auto-offset-reset: earliest
+    group-id: checked-order-group
   sender:
     bootstrap-servers: ${kafka.receiver.bootstrap-servers}
   topics:
@@ -31,6 +30,10 @@ kafka:
       replicas: 1
     checked-menu-orders-topic:
       name: checked-menu-orders-topic
+      partitions: 1
+      replicas: 1
+    checke-order-success-topic:
+      name: checke-order-success-topic
       partitions: 1
       replicas: 1
 
