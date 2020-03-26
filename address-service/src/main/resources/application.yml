@@ -7,13 +7,13 @@ spring:
 kafka:
   receiver:
     bootstrap-servers: localhost:9092
-    group-id: in-progress-orders-group
+    group-id: new-orders-address-service-group
     auto-offset-reset: earliest
   sender:
     bootstrap-servers: ${kafka.receiver.bootstrap-servers}
   topics:
-    in-progress-orders-topic:
-      name: in-progress-orders-topic
+    new-orders-topic:
+      name: new-orders-topic
       partitions: 1
       replicas: 1
     checked-addresses-topic:

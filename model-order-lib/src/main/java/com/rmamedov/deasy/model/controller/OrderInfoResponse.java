@@ -7,11 +7,13 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 @Data
 public class OrderInfoResponse {
+
+    private String id;
 
     private String name;
 
@@ -31,6 +33,8 @@ public class OrderInfoResponse {
 
     private Set<OrderPosition> orderPositions;
 
-    private Set<CheckStatus> checkStatuses = new HashSet<>();
+    private Set<CheckStatus> checkStatuses;
+
+    private Map<String, String> checkDetails;
 
 }

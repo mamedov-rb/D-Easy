@@ -5,6 +5,7 @@ import com.rmamedov.deasy.model.controller.OrderInfoResponse;
 import com.rmamedov.deasy.orderservice.converter.OrderCreateRequestToOrderConverter;
 import com.rmamedov.deasy.orderservice.converter.OrderToOrderInfoConverter;
 import com.rmamedov.deasy.orderservice.service.OrderService;
+import com.rmamedov.deasy.orderservice.service.ProcessOrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
@@ -24,6 +25,8 @@ public class OrderController {
 
     private final OrderService orderService;
 
+    private final ProcessOrderService processOrderService;
+
     private final OrderToOrderInfoConverter orderToOrderInfoConverter;
 
     private final OrderCreateRequestToOrderConverter requestToOrderConverter;
@@ -35,7 +38,7 @@ public class OrderController {
     )
     public Mono<String> create(@RequestBody @Validated final Mono<OrderCreateRequest> createRequest) {
         return createRequest.map(requestToOrderConverter::convert)
-                .flatMap(orderService::processNewOrder);
+                .flatMap(processOrderService::newOrder);
     }
 
     @GetMapping(path = "/id/{id}")

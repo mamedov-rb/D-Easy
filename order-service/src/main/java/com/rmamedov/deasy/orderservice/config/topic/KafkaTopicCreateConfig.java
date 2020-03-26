@@ -13,7 +13,7 @@ import org.springframework.kafka.config.TopicBuilder;
 public class KafkaTopicCreateConfig {
 
     @Bean
-    public NewTopic inProgressOrdersConfigTopic(@Qualifier("inProgressOrdersTopicProp") final TopicConfigurationProperties properties) {
+    public NewTopic newOrdersConfigTopic(@Qualifier("newOrdersTopicProp") final TopicConfigurationProperties properties) {
         return TopicBuilder.name(properties.getName())
                 .partitions(properties.getPartitions())
                 .replicas(properties.getReplicas())
@@ -47,14 +47,5 @@ public class KafkaTopicCreateConfig {
                 .compact()
                 .build();
     }
-
-//    @Bean
-//    public NewTopic checkOrderSuccessConfigTopic(@Qualifier("checkOrderSuccessTopicProp") final TopicConfigurationProperties properties) {
-//        return TopicBuilder.name(properties.getName())
-//                .partitions(properties.getPartitions())
-//                .replicas(properties.getReplicas())
-//                .compact()
-//                .build();
-//    }
 
 }

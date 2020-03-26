@@ -4,8 +4,6 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -32,8 +30,8 @@ public class OrderMessage {
 
     private Set<OrderPosition> orderPositions;
 
-    private Set<CheckStatus> checkStatuses = new HashSet<>();
+    private Set<CheckStatus> checkStatuses;
 
-    private Map<String, String> checkDetails = new HashMap<>();
+    private Map<String, String> checkDetails;
 
 }

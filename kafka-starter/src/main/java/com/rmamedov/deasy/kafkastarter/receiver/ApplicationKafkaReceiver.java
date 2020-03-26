@@ -1,7 +1,6 @@
 package com.rmamedov.deasy.kafkastarter.receiver;
 
 import com.rmamedov.deasy.kafkastarter.properties.KafkaReceiverConfigurationProperties;
-import com.rmamedov.deasy.kafkastarter.properties.TopicConfigurationProperties;
 import com.rmamedov.deasy.model.kafka.OrderMessage;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -20,10 +19,10 @@ public class ApplicationKafkaReceiver {
 
     private final KafkaReceiverConfigurationProperties receiverProperties;
 
-    private final TopicConfigurationProperties topicConfigurationProperties;
+    private final List<String> topics;
 
     public Flux<ReceiverRecord<String, OrderMessage>> receive() {
-        final var subscription = receiverOptions().subscription(List.of(topicConfigurationProperties.getName()));
+        final var subscription = receiverOptions().subscription(topics);
         return KafkaReceiver.create(subscription)
                 .receive()
                 .log();

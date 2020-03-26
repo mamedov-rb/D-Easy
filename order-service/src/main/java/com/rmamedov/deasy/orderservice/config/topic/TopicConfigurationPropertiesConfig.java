@@ -9,8 +9,8 @@ import org.springframework.context.annotation.Configuration;
 public class TopicConfigurationPropertiesConfig {
 
     @Bean
-    @ConfigurationProperties(prefix = "kafka.topics.in-progress-orders-topic")
-    public TopicConfigurationProperties inProgressOrdersTopicProp() {
+    @ConfigurationProperties(prefix = "kafka.topics.new-orders-topic")
+    public TopicConfigurationProperties newOrdersTopicProp() {
         return new TopicConfigurationProperties();
     }
 
@@ -31,11 +31,5 @@ public class TopicConfigurationPropertiesConfig {
     public TopicConfigurationProperties checkedMenuOrdersTopicProp() {
         return new TopicConfigurationProperties();
     }
-
-//    @Bean
-//    @ConfigurationProperties(prefix = "kafka.topics.check-order-success-topic")
-//    public TopicConfigurationProperties checkOrderSuccessTopicProp() {
-//        return new TopicConfigurationProperties();
-//    }
 
 }
