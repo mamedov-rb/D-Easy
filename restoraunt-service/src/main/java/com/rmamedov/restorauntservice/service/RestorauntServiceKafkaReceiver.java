@@ -12,6 +12,8 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+
 @Slf4j
 @Service
 public class RestorauntServiceKafkaReceiver {
@@ -22,22 +24,24 @@ public class RestorauntServiceKafkaReceiver {
 
     private final KafkaReceiverConfigurationProperties receiverProperties;
 
-    private final TopicConfigurationProperties inProgressOrdersTopicProps;
+    private final TopicConfigurationProperties newOrdersTopicProps;
 
     public RestorauntServiceKafkaReceiver(RestorauntService restorauntService,
                                           ApplicationKafkaSender applicationKafkaSender,
                                           KafkaReceiverConfigurationProperties receiverProperties,
-                                          @Qualifier("inProgressOrdersTopicProp") TopicConfigurationProperties inProgressOrdersTopicProps) {
+                                          @Qualifier("newOrdersTopicProp") TopicConfigurationProperties newOrdersTopicProps) {
 
         this.restorauntService = restorauntService;
         this.applicationKafkaSender = applicationKafkaSender;
         this.receiverProperties = receiverProperties;
-        this.inProgressOrdersTopicProps = inProgressOrdersTopicProps;
+        this.newOrdersTopicProps = newOrdersTopicProps;
     }
 
     @EventListener(ApplicationStartedEvent.class)
     public void listen() {
-        final var applicationKafkaReceiver = new ApplicationKafkaReceiver(receiverProperties, inProgressOrdersTopicProps);
+        final var applicationKafkaReceiver =
+                new ApplicationKafkaReceiver(receiverProperties, List.of(newOrdersTopicProps.getName()));
+
         applicationKafkaReceiver.receive()
                 .flatMap(receiverRecord -> {
                     final Mono<OrderMessage> orderMessage = Mono.just(receiverRecord.value());

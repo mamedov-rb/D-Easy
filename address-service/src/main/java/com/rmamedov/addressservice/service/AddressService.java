@@ -29,11 +29,11 @@ public class AddressService {
         }
     }
 
-    private void updateCheckStatus(final OrderMessage orderMessage, final String description) {
+    private void updateCheckStatus(final OrderMessage orderMessage, final String checkDetails) {
         final CheckStatus checkStatus = CheckStatus.ADDRESSES_CHECKED;
         orderMessage.getCheckStatuses().add(checkStatus);
-        orderMessage.getCheckDetails().put(checkStatus.name(), description);
-        log.info("Addresses checked with result: '{}'.", description);
+        orderMessage.getCheckDetails().put(checkStatus.name(), checkDetails);
+        log.info("Addresses checked with result: '{}'.", checkDetails);
     }
 
     private boolean isReachable() {

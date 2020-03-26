@@ -3,21 +3,21 @@ server.port: 8000
 
 spring:
   application.name: order-service
-  data.mongodb:
+  data.mongodb: #.uri: mongodb://order-user:order-password@localhost:27001,localhost:27002,localhost:27003/order-db
       host: localhost:27017
-      database: order-db
-      username: order-user
-      password: order-password
+      database: order_db
+      username: order_user
+      password: 123qwe
 
 kafka:
   receiver:
     bootstrap-servers: localhost:9092
-    group-id: checked-order-group
+    group-id: checked-orders-order-service-group
   sender:
     bootstrap-servers: ${kafka.receiver.bootstrap-servers}
   topics:
-    in-progress-orders-topic:
-      name: in-progress-orders-topic
+    new-orders-topic:
+      name: new-orders-topic
       partitions: 1
       replicas: 1
     checked-addresses-topic:

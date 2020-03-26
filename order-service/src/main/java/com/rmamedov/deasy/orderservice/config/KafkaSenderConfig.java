@@ -11,17 +11,10 @@ import org.springframework.context.annotation.Configuration;
 public class KafkaSenderConfig {
 
     @Bean
-    public ApplicationKafkaSender inProgressOrdersSender(@Qualifier("inProgressOrdersTopicProp") final TopicConfigurationProperties topicProperties,
+    public ApplicationKafkaSender newOrdersSender(@Qualifier("newOrdersTopicProp") final TopicConfigurationProperties topicProperties,
                                                          final KafkaSenderConfigurationProperties senderProperties) {
 
         return new ApplicationKafkaSender(topicProperties, senderProperties);
     }
-
-//    @Bean
-//    public ApplicationKafkaSender checkOrdersSuccessSender(@Qualifier("checkOrderSuccessTopicProp") final TopicConfigurationProperties topicProperties,
-//                                                         final KafkaSenderConfigurationProperties senderProperties) {
-//
-//        return new ApplicationKafkaSender(topicProperties, senderProperties);
-//    }
 
 }

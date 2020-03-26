@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @Data
 @Document(collection = "order_check_details")
-public class OrderCheckStatus {
+public class OrderCheckStatusResult {
 
     @Id
     private String id = UUID.randomUUID().toString();

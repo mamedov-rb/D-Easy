@@ -1,13 +1,13 @@
 package com.rmamedov.deasy.orderservice.converter;
 
-import com.rmamedov.deasy.orderservice.model.controller.OrderCheckStatusResponse;
-import com.rmamedov.deasy.orderservice.model.repository.OrderCheckStatus;
+import com.rmamedov.deasy.orderservice.model.controller.OrderCheckStatusResultResponse;
+import com.rmamedov.deasy.orderservice.model.repository.OrderCheckStatusResult;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface OrderCheckStatusToOrderCheckStatusResponseConverter {
 
-    OrderCheckStatusResponse convert(OrderCheckStatus source);
+    OrderCheckStatusResultResponse convert(OrderCheckStatusResult source);
 
 }
 
