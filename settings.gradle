@@ -1,0 +1,12 @@
+rootProject.name = 'd-easy'
+include(
+        ":order-service",
+        ":address-service",
+        ":restoraunt-service",
+        ":courier-service",
+        ":payment-service",
+        ":discovery-service",
+        ":getway-service",
+        ":model-order-lib",
+        ":kafka-starter"
+)

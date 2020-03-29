@@ -1,0 +1,30 @@
+
+server.port: 8020
+
+spring:
+  application.name: address-service
+
+kafka:
+  receiver:
+    bootstrap-servers: localhost:9092
+    group-id: new-orders-address-service-group
+    auto-offset-reset: earliest
+  sender:
+    bootstrap-servers: ${kafka.receiver.bootstrap-servers}
+  topics:
+    new-orders-topic:
+      name: new-orders-topic
+      partitions: 1
+      replicas: 1
+    checked-addresses-topic:
+      name: checked-addresses-topic
+      partitions: 1
+      replicas: 1
+
+#eureka:
+#  instance.preferIpAddress: true
+#  client:
+#    registerWithEureka: true
+#    fetchRegistry: true
+#    serviceUrl:
+#      defaultZone: http://discovery-service:8761/eureka

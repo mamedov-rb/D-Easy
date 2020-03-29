@@ -1,0 +1,30 @@
+
+server.port: 8040
+
+spring:
+  application.name: restoraunt-service
+
+kafka:
+  receiver:
+    bootstrap-servers: localhost:9092
+    group-id: new-orders-restoraunt-service-group
+    auto-offset-reset: earliest
+  sender:
+    bootstrap-servers: ${kafka.receiver.bootstrap-servers}
+  topics:
+    new-orders-topic:
+      name: new-orders-topic
+      partitions: 1
+      replicas: 1
+    checked-menu-orders-topic:
+      name: checked-menu-orders-topic
+      partitions: 1
+      replicas: 1
+
+#eureka:
+#  instance.preferIpAddress: true
+#  client:
+#    registerWithEureka: true
+#    fetchRegistry: true
+#    serviceUrl:
+#      defaultZone: http://discovery-service:8761/eureka

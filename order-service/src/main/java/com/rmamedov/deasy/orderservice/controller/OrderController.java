@@ -1,10 +1,11 @@
 package com.rmamedov.deasy.orderservice.controller;
 
-import com.rmamedov.deasy.orderservice.controller.model.OrderCreateRequest;
-import com.rmamedov.deasy.orderservice.controller.model.OrderInfoResponse;
+import com.rmamedov.deasy.model.controller.OrderCreateRequest;
+import com.rmamedov.deasy.model.controller.OrderInfoResponse;
 import com.rmamedov.deasy.orderservice.converter.OrderCreateRequestToOrderConverter;
-import com.rmamedov.deasy.orderservice.converter.OrderToOrderInfoResponseConverter;
+import com.rmamedov.deasy.orderservice.converter.OrderToOrderInfoConverter;
 import com.rmamedov.deasy.orderservice.service.OrderService;
+import com.rmamedov.deasy.orderservice.service.ProcessOrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
@@ -24,29 +25,34 @@ public class OrderController {
 
     private final OrderService orderService;
 
+    private final ProcessOrderService processOrderService;
+
+    private final OrderToOrderInfoConverter orderToOrderInfoConverter;
+
     private final OrderCreateRequestToOrderConverter requestToOrderConverter;
 
-    private final OrderToOrderInfoResponseConverter responseConverter;
-
-    @PostMapping(path = "/create", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<OrderInfoResponse> create(@RequestBody @Validated final OrderCreateRequest createRequest) {
-        return orderService
-                .create(requestToOrderConverter.convert(createRequest))
-                .map(responseConverter::convert);
+    @PostMapping(
+            path = "/create",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public Mono<String> create(@RequestBody @Validated final Mono<OrderCreateRequest> createRequest) {
+        return createRequest.map(requestToOrderConverter::convert)
+                .flatMap(processOrderService::newOrder);
     }
 
     @GetMapping(path = "/id/{id}")
     public Mono<OrderInfoResponse> all(@PathVariable final String id) {
         return orderService
                 .findById(id)
-                .map(responseConverter::convert);
+                .map(orderToOrderInfoConverter::convert);
     }
 
     @GetMapping(path = "/all", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<OrderInfoResponse> all() {
         return orderService
                 .findAll()
-                .map(responseConverter::convert);
+                .map(orderToOrderInfoConverter::convert);
     }
 
 }
