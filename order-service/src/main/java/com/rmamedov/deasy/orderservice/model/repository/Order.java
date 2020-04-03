@@ -1,4 +1,4 @@
-package com.rmamedov.deasy.model.repository;
+package com.rmamedov.deasy.orderservice.model.repository;
 
 import com.rmamedov.deasy.model.kafka.Address;
 import com.rmamedov.deasy.model.kafka.CheckStatus;

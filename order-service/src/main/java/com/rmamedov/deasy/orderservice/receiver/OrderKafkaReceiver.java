@@ -1,6 +1,6 @@
 package com.rmamedov.deasy.orderservice.receiver;
 
-import com.rmamedov.deasy.converter.OrderMessageToOrderConverter;
+import com.rmamedov.deasy.orderservice.converter.OrderMessageToOrderConverter;
 import com.rmamedov.deasy.kafkastarter.properties.KafkaReceiverConfigurationProperties;
 import com.rmamedov.deasy.kafkastarter.properties.TopicConfigurationProperties;
 import com.rmamedov.deasy.kafkastarter.receiver.ApplicationKafkaReceiver;
