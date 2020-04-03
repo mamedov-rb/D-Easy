@@ -18,11 +18,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 })
 public class MongoRepositoryConfig {
 
-//    @Bean
-//    TransactionalOperator transactionalOperator(ReactiveTransactionManager transactionManager) {
-//        return TransactionalOperator.create(transactionManager);
-//    }
-
     @Bean
     ReactiveTransactionManager transactionManager(final ReactiveMongoDatabaseFactory databaseFactory) {
         return new ReactiveMongoTransactionManager(databaseFactory);

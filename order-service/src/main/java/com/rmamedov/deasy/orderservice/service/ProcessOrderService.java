@@ -49,13 +49,12 @@ public class ProcessOrderService {
     public Mono<OrderCheckStatusResult> updateExistingOrder(final Order order) {
         return Mono.just(order)
                 .flatMap(incomingOrder -> orderService.findById(incomingOrder.getId())
-                        .map(savedOrder -> {
+                        .doOnNext(savedOrder -> {
                             savedOrder.getCheckStatuses().addAll(incomingOrder.getCheckStatuses());
                             savedOrder.getCheckDetails().putAll(incomingOrder.getCheckDetails());
                             if (savedOrder.getCheckStatuses().containsAll(FULLY_CHECKED_SET)) {
                                 savedOrder.setCheckStatuses(Set.of(CheckStatus.FULLY_CHECKED));
                             }
-                            return savedOrder;
                         })
                         .flatMap(orderService::save)
                         .map(orderToOrderCheckStatusConverter::convert)

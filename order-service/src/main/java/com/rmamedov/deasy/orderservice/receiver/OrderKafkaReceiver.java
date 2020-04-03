@@ -4,6 +4,7 @@ import com.rmamedov.deasy.converter.OrderMessageToOrderConverter;
 import com.rmamedov.deasy.kafkastarter.properties.KafkaReceiverConfigurationProperties;
 import com.rmamedov.deasy.kafkastarter.properties.TopicConfigurationProperties;
 import com.rmamedov.deasy.kafkastarter.receiver.ApplicationKafkaReceiver;
+import com.rmamedov.deasy.orderservice.config.MongoConfigurationProperties;
 import com.rmamedov.deasy.orderservice.service.ProcessOrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +16,8 @@ import reactor.core.scheduler.Schedulers;
 import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static java.time.Duration.ofMillis;
 
 @Slf4j
 @Component
@@ -28,6 +31,8 @@ public class OrderKafkaReceiver {
     private final OrderMessageToOrderConverter orderMessageToOrderConverter;
 
     private final KafkaReceiverConfigurationProperties receiverProperties;
+
+    private final MongoConfigurationProperties mongoProperties;
 
     private final List<TopicConfigurationProperties> topicConfigurationList;
 
@@ -45,7 +50,12 @@ public class OrderKafkaReceiver {
         kafkaReceiver.receive()
                 .flatMap(receiverRecord -> {
                     final var order = orderMessageToOrderConverter.convert(receiverRecord.value());
-                    return processOrderService.updateExistingOrder(order);
+                    return processOrderService.updateExistingOrder(order)
+                            .retryBackoff(
+                                    mongoProperties.getNumRetries(),
+                                    ofMillis(mongoProperties.getFirstBackoff()),
+                                    ofMillis(mongoProperties.getMaxBackoff())
+                            );
                 })
                 .doOnError(ex -> log.error("Exception has occurred: ", ex))
                 .subscribeOn(Schedulers.single())

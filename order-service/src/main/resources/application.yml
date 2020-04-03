@@ -5,10 +5,9 @@ spring:
   application.name: order-service
   data.mongodb:
     uri: mongodb://d_easy_user:123qwe@localhost:27017/d_easy_db?replicaSet=rs0
-#    host: localhost:27017
-#    database: d_easy_db
-#    username: d_easy_user
-#    password: 123qwe
+    num-retries: 5
+    first-backoff: 10
+    max-backoff: 1000
 
 kafka:
   receiver:
