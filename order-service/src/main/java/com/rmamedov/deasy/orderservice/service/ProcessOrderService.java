@@ -1,11 +1,11 @@
 package com.rmamedov.deasy.orderservice.service;
 
-import com.rmamedov.deasy.orderservice.converter.OrderToOrderMessageConverter;
 import com.rmamedov.deasy.kafkastarter.sender.ApplicationKafkaSender;
 import com.rmamedov.deasy.model.kafka.CheckStatus;
-import com.rmamedov.deasy.orderservice.model.repository.Order;
 import com.rmamedov.deasy.orderservice.converter.OrderToOrderCheckStatusConverter;
-import com.rmamedov.deasy.orderservice.model.repository.OrderCheckStatusResult;
+import com.rmamedov.deasy.orderservice.converter.OrderToOrderMessageConverter;
+import com.rmamedov.deasy.orderservice.model.controller.OrderStatusInfo;
+import com.rmamedov.deasy.orderservice.model.repository.Order;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -31,8 +31,6 @@ public class ProcessOrderService {
 
     private final OrderToOrderMessageConverter orderToOrderMessageConverter;
 
-    private final OrderCheckStatusResultService orderCheckStatusResultService;
-
     private final OrderToOrderCheckStatusConverter orderToOrderCheckStatusConverter;
 
     @Transactional
@@ -46,7 +44,7 @@ public class ProcessOrderService {
     }
 
     @Transactional
-    public Mono<OrderCheckStatusResult> updateExistingOrder(final Order order) {
+    public Mono<OrderStatusInfo> updateExistingOrder(final Order order) {
         return Mono.just(order)
                 .flatMap(incomingOrder -> orderService.findById(incomingOrder.getId())
                         .doOnNext(savedOrder -> {
@@ -58,7 +56,6 @@ public class ProcessOrderService {
                         })
                         .flatMap(orderService::save)
                         .map(orderToOrderCheckStatusConverter::convert)
-                        .flatMap(orderCheckStatusResultService::save)
                 );
     }
 

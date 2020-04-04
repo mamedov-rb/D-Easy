@@ -12,7 +12,7 @@ public class KafkaSenderConfig {
 
     @Bean
     public ApplicationKafkaSender newOrdersSender(@Qualifier("newOrdersTopicProp") final TopicConfigurationProperties topicProperties,
-                                                         final KafkaSenderConfigurationProperties senderProperties) {
+                                                  final KafkaSenderConfigurationProperties senderProperties) {
 
         return new ApplicationKafkaSender(topicProperties, senderProperties);
     }

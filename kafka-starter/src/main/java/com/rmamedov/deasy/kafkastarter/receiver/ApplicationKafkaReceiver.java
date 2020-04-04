@@ -32,6 +32,8 @@ public class ApplicationKafkaReceiver {
         final var receiverProps = new HashMap<String, Object>();
         receiverProps.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, receiverProperties.getBootstrapServers());
         receiverProps.put(ConsumerConfig.GROUP_ID_CONFIG, receiverProperties.getGroupId());
+        receiverProps.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+        receiverProps.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false");
         receiverProps.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         receiverProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
         receiverProps.put(JsonDeserializer.TRUSTED_PACKAGES, "*");

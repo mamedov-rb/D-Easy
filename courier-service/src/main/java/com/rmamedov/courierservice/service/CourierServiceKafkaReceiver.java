@@ -4,7 +4,6 @@ import com.rmamedov.deasy.kafkastarter.properties.KafkaReceiverConfigurationProp
 import com.rmamedov.deasy.kafkastarter.properties.TopicConfigurationProperties;
 import com.rmamedov.deasy.kafkastarter.receiver.ApplicationKafkaReceiver;
 import com.rmamedov.deasy.kafkastarter.sender.ApplicationKafkaSender;
-import com.rmamedov.deasy.model.kafka.OrderMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
@@ -43,11 +42,11 @@ public class CourierServiceKafkaReceiver {
                 new ApplicationKafkaReceiver(receiverProperties, List.of(newOrdersTopicProps.getName()));
 
         applicationKafkaReceiver.receive()
-                .flatMap(receiverRecord -> {
-                    final Mono<OrderMessage> orderMessage = Mono.just(receiverRecord.value());
-                    return courierService.check(orderMessage);
-                })
-                .doOnNext(applicationKafkaSender::send)
+                .flatMap(receiverRecord -> courierService.check(Mono.just(receiverRecord.value()))
+                        .doOnNext(orderMessage -> {
+                            applicationKafkaSender.send(orderMessage);
+                            receiverRecord.receiverOffset().acknowledge();
+                        }))
                 .subscribe();
     }
 

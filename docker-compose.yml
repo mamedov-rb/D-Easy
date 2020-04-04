@@ -16,7 +16,7 @@ services:
       - "27017:27017"
     networks:
       - db
-        
+
   zookeeper-server:
     image: "bitnami/zookeeper:latest"
     container_name: zookeeper-container
@@ -26,7 +26,7 @@ services:
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
     networks:
-      - cloud-kafka-net  
+      - cloud-kafka-net
 
   kafka-server:
     image: "bitnami/kafka:latest"
@@ -41,8 +41,8 @@ services:
     depends_on:
       - zookeeper-server
     networks:
-      - cloud-kafka-net  
-      
+      - cloud-kafka-net
+
   discovery-service:
     build: ./discovery-service
     restart: always
@@ -59,12 +59,12 @@ services:
     image: zuul-service-image
     container_name: zuul-service-container
     ports:
-      - "8762:8762"        
+      - "8762:8762"
     depends_on:
       - discovery-service
     entrypoint: ["/bin/sh"]
     command: ["-c", "/app/wait-for.sh discovery-service:8761 && java -jar -Dspring.profiles.active=development /app/zuul-service.jar"]
-    networks: 
+    networks:
       - cloud-service-net
 
   order-service:
@@ -73,13 +73,13 @@ services:
     image: order-service-image
     container_name: order-service-container
     ports:
-      - "8000:8000"        
+      - "8000:8000"
     depends_on:
       - mongo
       - discovery-service
-    entrypoint: ["/bin/sh"]  
+    entrypoint: ["/bin/sh"]
     command: ["-c", "/app/wait-for.sh mongo-container:27017 && /app/wait-for.sh discovery-service-container:8761 && java -jar -Dspring.profiles.active=development /app/order-service.jar"]
-    networks: 
+    networks:
       - cloud-service-net
       - db
 

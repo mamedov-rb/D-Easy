@@ -13,10 +13,10 @@ import reactor.core.publisher.Mono;
 public class CourierService {
 
     public Mono<OrderMessage> check(final Mono<OrderMessage> orderMessage) {
-        return orderMessage.doOnNext(this::check);
+        return orderMessage.map(this::check);
     }
 
-    private void check(final OrderMessage orderMessage) {
+    private OrderMessage check(final OrderMessage orderMessage) {
         final String successDescription = "Courier is available.";
         final String failedDescription = "Courier is unavailable.";
         if (courierIsAvailable()) {
@@ -24,6 +24,7 @@ public class CourierService {
         } else {
             updateCheckStatus(orderMessage, failedDescription);
         }
+        return orderMessage;
     }
 
     private void updateCheckStatus(final OrderMessage orderMessage, final String checkDetails) {
