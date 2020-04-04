@@ -42,8 +42,11 @@ public class AddressServiceKafkaReceiver {
                 new ApplicationKafkaReceiver(receiverProperties, List.of(newOrdersTopicProps.getName()));
 
         applicationKafkaReceiver.receive()
-                .flatMap(receiverRecord -> addressService.check(Mono.just(receiverRecord.value())))
-                .doOnNext(applicationKafkaSender::send)
+                .flatMap(receiverRecord -> addressService.check(Mono.just(receiverRecord.value()))
+                        .doOnNext(orderMessage -> {
+                            applicationKafkaSender.send(orderMessage);
+                            receiverRecord.receiverOffset().acknowledge();
+                        }))
                 .subscribe();
     }
 

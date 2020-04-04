@@ -14,10 +14,10 @@ import reactor.core.publisher.Mono;
 public class AddressService {
 
     public Mono<OrderMessage> check(final Mono<OrderMessage> orderMessage) {
-        return orderMessage.doOnNext(this::check);
+        return orderMessage.map(this::check);
     }
 
-    private void check(final OrderMessage orderMessage) {
+    private OrderMessage check(final OrderMessage orderMessage) {
         final Address consumerAddress = orderMessage.getConsumerAddress();
         final Address restorauntAddress = orderMessage.getRestorauntAddress();
         final String successDescription = "Address is reachable, it might took 20min to deliver order.";
@@ -27,6 +27,7 @@ public class AddressService {
         } else {
             updateCheckStatus(orderMessage, failedDescription);
         }
+        return orderMessage;
     }
 
     private void updateCheckStatus(final OrderMessage orderMessage, final String checkDetails) {

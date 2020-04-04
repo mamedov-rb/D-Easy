@@ -4,6 +4,8 @@ import com.rmamedov.deasy.model.controller.OrderCreateRequest;
 import com.rmamedov.deasy.model.controller.OrderInfoResponse;
 import com.rmamedov.deasy.orderservice.converter.OrderCreateRequestToOrderConverter;
 import com.rmamedov.deasy.orderservice.converter.OrderToOrderInfoConverter;
+import com.rmamedov.deasy.orderservice.model.controller.OrderStatusInfo;
+import com.rmamedov.deasy.orderservice.receiver.OrderKafkaReceiver;
 import com.rmamedov.deasy.orderservice.service.OrderService;
 import com.rmamedov.deasy.orderservice.service.ProcessOrderService;
 import lombok.RequiredArgsConstructor;
@@ -18,12 +20,16 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
+
 @RestController
 @RequestMapping("/api/order")
 @RequiredArgsConstructor
 public class OrderController {
 
     private final OrderService orderService;
+
+    private final OrderKafkaReceiver orderKafkaReceiver;
 
     private final ProcessOrderService processOrderService;
 
@@ -39,6 +45,13 @@ public class OrderController {
     public Mono<String> create(@RequestBody @Validated final Mono<OrderCreateRequest> createRequest) {
         return createRequest.map(requestToOrderConverter::convert)
                 .flatMap(processOrderService::newOrder);
+    }
+
+    @GetMapping(path = "/statuses", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<OrderStatusInfo> statuses() {
+        /* Duration is for synthetically slow down response */
+        return orderKafkaReceiver.listenCheckedOrders()
+                .delayElements(Duration.ofSeconds(1));
     }
 
     @GetMapping(path = "/id/{id}")

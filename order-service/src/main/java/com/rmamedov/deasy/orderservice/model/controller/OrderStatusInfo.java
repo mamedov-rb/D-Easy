@@ -8,7 +8,9 @@ import java.util.Map;
 import java.util.Set;
 
 @Data
-public class OrderCheckStatusResultResponse {
+public class OrderStatusInfo {
+
+    private String orderId;
 
     private Set<CheckStatus> checkStatuses;
 

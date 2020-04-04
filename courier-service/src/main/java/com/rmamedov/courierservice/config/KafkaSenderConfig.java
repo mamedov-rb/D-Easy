@@ -12,7 +12,7 @@ public class KafkaSenderConfig {
 
     @Bean
     public ApplicationKafkaSender checkedCouriersSender(@Qualifier("checkedCouriersTopicProp") final TopicConfigurationProperties topicProperties,
-                                                       final KafkaSenderConfigurationProperties senderProperties) {
+                                                        final KafkaSenderConfigurationProperties senderProperties) {
 
         return new ApplicationKafkaSender(topicProperties, senderProperties);
     }
