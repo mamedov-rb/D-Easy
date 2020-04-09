@@ -51,7 +51,8 @@ public class OrderController {
     public Flux<OrderStatusInfo> statuses() {
         /* Duration is for synthetically slow down response */
         return orderKafkaReceiver.listenCheckedOrders()
-                .delayElements(Duration.ofSeconds(1));
+                .delayElements(Duration.ofSeconds(1))
+                .timeout(Duration.ofSeconds(20));
     }
 
     @GetMapping(path = "/id/{id}")

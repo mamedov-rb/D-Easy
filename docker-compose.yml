@@ -2,18 +2,31 @@ version: "3.3"
 
 services:
 
-  mongo:
+  mongo-primary:
     image: "mongo:latest"
-    container_name: mongo-container
-    environment:
-      MONGO_INITDB_DATABASE: order-db
-      MONGO_INITDB_ROOT_USERNAME: order-user
-      MONGO_INITDB_ROOT_PASSWORD: order-password
+    container_name: mongo-container-primary
+    restart: always
     volumes:
-      - ~/projects/d-easy/db:/data/db
-      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      - "./init-db.js:/docker-entrypoint-initdb.d/init-db.js:ro"
+    env_file:
+      "./mongod.env"
     ports:
       - "27017:27017"
+    command: ["mongod", "--bind_ip_all", "--replSet", "rs0"]
+    networks:
+      - db
+
+  mongo-init-replica-set:
+    image: mongo:latest
+    container_name: mongo-init-replica-set-container
+    depends_on:
+      - mongo-primary
+    restart: "no"
+    volumes:
+      - ".:/scripts"
+    env_file:
+      "./mongod.env"
+    entrypoint: [ "bash", "/scripts/init-replica-set.sh"]
     networks:
       - db
 
@@ -75,10 +88,10 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      - mongo
+      - mongo-init-replica-set
       - discovery-service
     entrypoint: ["/bin/sh"]
-    command: ["-c", "/app/wait-for.sh mongo-container:27017 && /app/wait-for.sh discovery-service-container:8761 && java -jar -Dspring.profiles.active=development /app/order-service.jar"]
+    command: ["-c", "/app/wait-for.sh mongo-primary:27017 && /app/wait-for.sh discovery-service:8761 && java -jar -Dspring.profiles.active=development /app/order-service.jar"]
     networks:
       - cloud-service-net
       - db
