@@ -1,0 +1,14 @@
+
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}
+
+dependencies {
+    implementation project(":order-model-lib")
+    implementation "org.springframework.kafka:spring-kafka:${springKafkaVersion}"
+    implementation "io.projectreactor.kafka:reactor-kafka:${reactorKafaVersion}"
+}

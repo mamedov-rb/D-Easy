@@ -67,7 +67,7 @@ services:
       - cloud-service-net
 
   zuul-service:
-    build: getway-service
+    build: gateway-service
     restart: always
     image: zuul-service-image
     container_name: zuul-service-container

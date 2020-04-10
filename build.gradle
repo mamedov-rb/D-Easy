@@ -1,29 +1,36 @@
-import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
-buildscript {
-    ext {
-        springBootVersion = "2.2.5.RELEASE"
-        springCloudVersion = "Hoxton.SR1"
-        springKafkaVersion = "2.4.3.RELEASE"
-        reactorKafaVersion = "1.2.2.RELEASE"
-        mapStructVersion = "1.2.0.Final"
-        lombokVersion = "1.18.10"
-        hibernateValidatorVersion = "6.1.0.Final"
-        sourceCompatibilityVersion = "11"
-        artifactVersion = "0.0.1-SNAPSHOT"
-    }
-    repositories {
-        mavenLocal()
-        mavenCentral()
-    }
-    dependencies {
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
-    }
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.2.5.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+}
+
+ext {
+    springBootVersion = "2.2.5.RELEASE"
+    springCloudVersion = "Hoxton.SR1"
+    springKafkaVersion = "2.4.3.RELEASE"
+    reactorKafaVersion = "1.2.2.RELEASE"
+    mapStructVersion = "1.2.0.Final"
+    lombokVersion = "1.18.10"
+    hibernateValidatorVersion = "6.1.0.Final"
+    sourceCompatibilityVersion = "11"
+    artifactVersion = "0.0.1-SNAPSHOT"
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url 'https://repo.spring.io/milestone' }
+}
+
+bootJar {
+    enabled = false
 }
 
 subprojects {
-    apply plugin: "groovy"
+    apply plugin: "java"
     apply plugin: "io.spring.dependency-management"
+    apply plugin: "org.springframework.boot"
 
     group = "com.rmamedov.deasy"
     version = "${artifactVersion}"
@@ -32,120 +39,20 @@ subprojects {
     repositories {
         mavenLocal()
         mavenCentral()
-        maven {
-            url 'https://repo.spring.io/milestone'
-        }
+        maven { url 'https://repo.spring.io/milestone' }
     }
+
     dependencyManagement {
         imports {
-            mavenBom SpringBootPlugin.BOM_COORDINATES
+            mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
             mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
         }
     }
+
     dependencies {
         implementation "org.springframework.boot:spring-boot-starter-actuator"
         implementation "org.hibernate:hibernate-validator:${hibernateValidatorVersion}"
         compileOnly "org.projectlombok:lombok:${lombokVersion}"
         annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
-    }
-    test {
-        useJUnitPlatform()
-    }
-}
-
-project("order-model-lib") {
-
-}
-
-project("kafka-starter") {
-    dependencies {
-        implementation project(":order-model-lib")
-        implementation "org.springframework.kafka:spring-kafka:${springKafkaVersion}"
-        implementation "io.projectreactor.kafka:reactor-kafka:${reactorKafaVersion}"
-    }
-}
-
-project("order-service") {
-    dependencies {
-        implementation project(":order-model-lib")
-        implementation project(":kafka-starter")
-        implementation "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client"
-        implementation "org.springframework.boot:spring-boot-starter-webflux"
-        implementation "org.springframework.boot:spring-boot-starter-data-mongodb-reactive"
-        implementation "io.projectreactor.kafka:reactor-kafka:${reactorKafaVersion}"
-        implementation "org.springframework.kafka:spring-kafka:${springKafkaVersion}"
-        annotationProcessor "org.mapstruct:mapstruct-processor:${mapStructVersion}"
-        implementation "org.mapstruct:mapstruct-jdk8:${mapStructVersion}"
-        compileOnly "org.mapstruct:mapstruct-processor:${mapStructVersion}"
-        testImplementation "org.apache.commons:commons-lang3:3.9"
-        testImplementation "io.projectreactor:reactor-test"
-        testImplementation("org.springframework.boot:spring-boot-starter-test") {
-            exclude group: "org.junit.vintage", module: "junit-vintage-engine"
-        }
-    }
-}
-
-project("address-service") {
-    dependencies {
-        implementation project(":order-model-lib")
-        implementation project(":kafka-starter")
-        implementation "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client"
-        implementation "org.springframework.boot:spring-boot-starter-webflux"
-//        implementation "org.springframework.boot:spring-boot-starter-data-mongodb-reactive"
-        implementation "io.projectreactor.kafka:reactor-kafka:${reactorKafaVersion}"
-        testImplementation "org.apache.commons:commons-lang3:3.9"
-        testImplementation "io.projectreactor:reactor-test"
-        testImplementation("org.springframework.boot:spring-boot-starter-test") {
-            exclude group: "org.junit.vintage", module: "junit-vintage-engine"
-        }
-    }
-}
-
-project("restoraunt-service") {
-    dependencies {
-        implementation project(":order-model-lib")
-        implementation project(":kafka-starter")
-        implementation "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client"
-        implementation "org.springframework.boot:spring-boot-starter-webflux"
-//        implementation "org.springframework.boot:spring-boot-starter-data-mongodb-reactive"
-        implementation "io.projectreactor.kafka:reactor-kafka:${reactorKafaVersion}"
-        testImplementation "org.apache.commons:commons-lang3:3.9"
-        testImplementation "io.projectreactor:reactor-test"
-        testImplementation("org.springframework.boot:spring-boot-starter-test") {
-            exclude group: "org.junit.vintage", module: "junit-vintage-engine"
-        }
-    }
-}
-
-project("courier-service") {
-    dependencies {
-        implementation project(":order-model-lib")
-        implementation project(":kafka-starter")
-        implementation "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client"
-        implementation "org.springframework.boot:spring-boot-starter-webflux"
-//        implementation "org.springframework.boot:spring-boot-starter-data-mongodb-reactive"
-        implementation "io.projectreactor.kafka:reactor-kafka:${reactorKafaVersion}"
-        testImplementation "org.apache.commons:commons-lang3:3.9"
-        testImplementation "io.projectreactor:reactor-test"
-        testImplementation("org.springframework.boot:spring-boot-starter-test") {
-            exclude group: "org.junit.vintage", module: "junit-vintage-engine"
-        }
-    }
-}
-
-project("payment-service") {
-
-}
-
-project("discovery-service") {
-    dependencies {
-        implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'
-    }
-}
-
-project("getway-service") {
-    dependencies {
-        implementation 'org.springframework.cloud:spring-cloud-starter-netflix-zuul'
-        implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
     }
 }

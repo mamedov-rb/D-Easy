@@ -1,0 +1,13 @@
+
+dependencies {
+    implementation project(":order-model-lib")
+    implementation project(":kafka-starter")
+//    implementation "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client"
+    implementation "org.springframework.boot:spring-boot-starter-webflux"
+    implementation "io.projectreactor.kafka:reactor-kafka:${reactorKafaVersion}"
+    testImplementation "org.apache.commons:commons-lang3:3.9"
+    testImplementation "io.projectreactor:reactor-test"
+    testImplementation("org.springframework.boot:spring-boot-starter-test") {
+        exclude group: "org.junit.vintage", module: "junit-vintage-engine"
+    }
+}
