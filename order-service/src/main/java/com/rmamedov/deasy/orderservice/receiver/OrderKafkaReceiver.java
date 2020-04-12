@@ -51,7 +51,7 @@ public class OrderKafkaReceiver {
                 .flatMap(receiverRecord -> {
                     final var order = orderMessageToOrderConverter.convert(receiverRecord.value());
                     final Mono<OrderStatusInfo> orderCheckStatusDtoMono =
-                            processOrderService.updateExistingOrder(order)
+                            processOrderService.updateAfterCheck(order)
                                     .retryBackoff(
                                             mongoProperties.getNumRetries(),
                                             ofMillis(mongoProperties.getFirstBackoff()),

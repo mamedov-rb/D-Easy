@@ -1,4 +1,4 @@
-package com.rmamedov.deasy.orderservice.config;
+package com.rmamedov.deasy.courierservice.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableMongoAuditing
 @EnableTransactionManagement
-@EnableReactiveMongoRepositories(basePackages = {"com.rmamedov.deasy.orderservice.repository"})
+@EnableReactiveMongoRepositories(basePackages = {"com.rmamedov.deasy.courierservice.repository"})
 public class MongoRepositoryConfig {
 
     @Bean
