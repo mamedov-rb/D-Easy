@@ -7,9 +7,6 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-data-mongodb-reactive"
     implementation "io.projectreactor.kafka:reactor-kafka:${reactorKafaVersion}"
     implementation "org.springframework.kafka:spring-kafka:${springKafkaVersion}"
-    annotationProcessor "org.mapstruct:mapstruct-processor:${mapStructVersion}"
-    implementation "org.mapstruct:mapstruct-jdk8:${mapStructVersion}"
-    compileOnly "org.mapstruct:mapstruct-processor:${mapStructVersion}"
     testImplementation "org.apache.commons:commons-lang3:3.9"
     testImplementation "io.projectreactor:reactor-test"
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
