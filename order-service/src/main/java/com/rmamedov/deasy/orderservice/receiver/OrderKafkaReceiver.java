@@ -4,7 +4,7 @@ import com.rmamedov.deasy.kafkastarter.properties.KafkaReceiverConfigurationProp
 import com.rmamedov.deasy.kafkastarter.properties.TopicConfigurationProperties;
 import com.rmamedov.deasy.kafkastarter.receiver.ApplicationKafkaReceiver;
 import com.rmamedov.deasy.orderservice.config.MongoConfigurationProperties;
-import com.rmamedov.deasy.orderservice.converter.OrderMessageToOrderConverter;
+import com.rmamedov.deasy.orderservice.converter.OrderDtoToOrderConverter;
 import com.rmamedov.deasy.orderservice.model.controller.OrderStatusInfo;
 import com.rmamedov.deasy.orderservice.service.ProcessOrderService;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +29,7 @@ public class OrderKafkaReceiver {
 
     private final ProcessOrderService processOrderService;
 
-    private final OrderMessageToOrderConverter orderMessageToOrderConverter;
+    private final OrderDtoToOrderConverter orderDtoToOrderConverter;
 
     private final KafkaReceiverConfigurationProperties receiverProperties;
 
@@ -49,7 +49,7 @@ public class OrderKafkaReceiver {
     public Flux<OrderStatusInfo> listenCheckedOrders() {
         return kafkaReceiver.receive()
                 .flatMap(receiverRecord -> {
-                    final var order = orderMessageToOrderConverter.convert(receiverRecord.value());
+                    final var order = orderDtoToOrderConverter.convert(receiverRecord.value());
                     final Mono<OrderStatusInfo> orderCheckStatusDtoMono =
                             processOrderService.updateAfterCheck(order)
                                     .retryBackoff(

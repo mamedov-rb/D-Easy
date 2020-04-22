@@ -43,8 +43,8 @@ public class RestorauntServiceKafkaReceiver {
 
         applicationKafkaReceiver.receive()
                 .flatMap(receiverRecord -> restorauntService.check(Mono.just(receiverRecord.value()))
-                        .doOnNext(orderMessage -> {
-                            applicationKafkaSender.send(orderMessage);
+                        .doOnNext(orderDto -> {
+                            applicationKafkaSender.send(orderDto);
                             receiverRecord.receiverOffset().acknowledge();
                         }))
                 .doOnError(err -> log.error("Exception has occurred: ", err))

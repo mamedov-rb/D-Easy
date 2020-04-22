@@ -1,4 +1,11 @@
 
-bootJar {
-    enabled = false
+dependencies {
+    implementation project(":order-model-lib")
+    implementation project(":kafka-starter")
+    implementation "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client"
+    implementation "org.springframework.boot:spring-boot-starter-webflux"
+    implementation "org.springframework.boot:spring-boot-starter-data-mongodb-reactive"
+    implementation "io.projectreactor.kafka:reactor-kafka:${reactorKafaVersion}"
+    implementation "org.springframework.kafka:spring-kafka:${springKafkaVersion}"
+    testImplementation "io.projectreactor:reactor-test"
 }
