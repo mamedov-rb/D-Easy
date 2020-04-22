@@ -1,11 +1,11 @@
 package com.rmamedov.deasy.courierservice.service;
 
-import com.rmamedov.deasy.courierservice.converter.OrderCheckDetailsToOrderMessageConverter;
-import com.rmamedov.deasy.courierservice.converter.OrderMessageToOrderCheckDetailConverter;
+import com.rmamedov.deasy.courierservice.converter.OrderCheckDetailsToOrderDtoConverter;
+import com.rmamedov.deasy.courierservice.converter.OrderDtoToOrderCheckDetailConverter;
 import com.rmamedov.deasy.courierservice.model.OrderCourierCheckDetails;
 import com.rmamedov.deasy.courierservice.repository.OrderDetailsRepository;
 import com.rmamedov.deasy.model.kafka.CheckStatus;
-import com.rmamedov.deasy.model.kafka.OrderMessage;
+import com.rmamedov.deasy.model.kafka.OrderDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,37 +19,37 @@ public class CourierService {
 
     private final OrderDetailsRepository orderDetailsRepository;
 
-    private final OrderMessageToOrderCheckDetailConverter detailConverter;
+    private final OrderDtoToOrderCheckDetailConverter detailConverter;
 
-    private final OrderCheckDetailsToOrderMessageConverter toMessageConverter;
+    private final OrderCheckDetailsToOrderDtoConverter toDtoConverter;
 
     @Transactional
-    public Mono<OrderMessage> check(final Mono<OrderMessage> orderMessage) {
-        return orderMessage.map(this::check)
+    public Mono<OrderDto> check(final Mono<OrderDto> orderDto) {
+        return orderDto.map(this::check)
                 .map(this::check)
-                .flatMap(checkedMessage -> {
-                    final OrderCourierCheckDetails checkDetails = detailConverter.convert(checkedMessage);
+                .flatMap(checkedDto -> {
+                    final OrderCourierCheckDetails checkDetails = detailConverter.convert(checkedDto);
                     return orderDetailsRepository.save(checkDetails)
                             .doOnNext(savedDetails -> log.info("Saved courier details after check: '{}'", savedDetails))
-                            .map(toMessageConverter::convert);
+                            .map(toDtoConverter::convert);
                 });
     }
 
-    private OrderMessage check(final OrderMessage orderMessage) {
+    private OrderDto check(final OrderDto orderDto) {
         final String successDescription = "Courier is available.";
         final String failedDescription = "Courier is unavailable.";
         if (courierIsAvailable()) {
-            updateCheckStatus(orderMessage, successDescription);
+            updateCheckStatus(orderDto, successDescription);
         } else {
-            updateCheckStatus(orderMessage, failedDescription);
+            updateCheckStatus(orderDto, failedDescription);
         }
-        return orderMessage;
+        return orderDto;
     }
 
-    private void updateCheckStatus(final OrderMessage orderMessage, final String checkDetails) {
+    private void updateCheckStatus(final OrderDto orderDto, final String checkDetails) {
         final CheckStatus checkStatus = CheckStatus.COURIER_CHECKED;
-        orderMessage.getCheckStatuses().add(checkStatus);
-        orderMessage.getCheckDetails().put(checkStatus.name(), checkDetails);
+        orderDto.getCheckStatuses().add(checkStatus);
+        orderDto.getCheckDetails().put(checkStatus.name(), checkDetails);
         log.info("Courier checked with result: '{}'.", checkDetails);
     }
 

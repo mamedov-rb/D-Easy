@@ -43,8 +43,8 @@ public class CourierServiceKafkaReceiver {
 
         applicationKafkaReceiver.receive()
                 .flatMap(receiverRecord -> courierService.check(Mono.just(receiverRecord.value()))
-                        .doOnNext(orderMessage -> {
-                            applicationKafkaSender.send(orderMessage);
+                        .doOnNext(orderDto -> {
+                            applicationKafkaSender.send(orderDto);
                             receiverRecord.receiverOffset().acknowledge();
                         }))
                 .doOnError(err -> log.error("Exception has occurred: ", err))

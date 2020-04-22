@@ -2,7 +2,7 @@ package com.rmamedov.deasy.orderservice.service;
 
 import com.rmamedov.deasy.kafkastarter.sender.ApplicationKafkaSender;
 import com.rmamedov.deasy.model.kafka.CheckStatus;
-import com.rmamedov.deasy.orderservice.converter.OrderToOrderMessageConverter;
+import com.rmamedov.deasy.orderservice.converter.OrderToOrderDtoConverter;
 import com.rmamedov.deasy.orderservice.converter.OrderToOrderStatusInfoConverter;
 import com.rmamedov.deasy.orderservice.model.controller.OrderStatusInfo;
 import com.rmamedov.deasy.orderservice.model.repository.Order;
@@ -29,16 +29,16 @@ public class ProcessOrderService {
 
     private final ApplicationKafkaSender applicationKafkaSender;
 
-    private final OrderToOrderMessageConverter orderToOrderMessageConverter;
+    private final OrderToOrderDtoConverter orderToOrderDtoConverter;
 
     private final OrderToOrderStatusInfoConverter orderToOrderStatusInfoConverter;
 
     @Transactional
     public Mono<String> newOrder(final Order order) {
         return orderService.save(order)
-                .map(orderToOrderMessageConverter::convert)
-                .flatMap(orderMessage -> {
-                    applicationKafkaSender.send(orderMessage);
+                .map(orderToOrderDtoConverter::convert)
+                .flatMap(orderDto -> {
+                    applicationKafkaSender.send(orderDto);
                     return Mono.just(order.getId());
                 });
     }

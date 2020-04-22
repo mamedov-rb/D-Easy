@@ -55,7 +55,7 @@ public class OrderController {
                 .timeout(Duration.ofSeconds(20));
     }
 
-    @GetMapping(path = "/id/{id}")
+    @GetMapping(path = "/find/{id}")
     public Mono<OrderInfoResponse> all(@PathVariable final String id) {
         return orderService
                 .findById(id)

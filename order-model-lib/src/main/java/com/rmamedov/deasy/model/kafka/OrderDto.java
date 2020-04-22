@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 @Data
-public class OrderMessage {
+public class OrderDto {
 
     private String id;
 

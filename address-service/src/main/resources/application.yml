@@ -15,12 +15,8 @@ kafka:
   topics:
     new-orders-topic:
       name: new-orders-topic
-      partitions: 1
-      replicas: 1
     checked-addresses-topic:
       name: checked-addresses-topic
-      partitions: 1
-      replicas: 1
 
 #eureka:
 #  instance.preferIpAddress: true

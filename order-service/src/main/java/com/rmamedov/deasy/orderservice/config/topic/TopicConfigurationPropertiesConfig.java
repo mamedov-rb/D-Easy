@@ -32,4 +32,10 @@ public class TopicConfigurationPropertiesConfig {
         return new TopicConfigurationProperties();
     }
 
+    @Bean
+    @ConfigurationProperties(prefix = "kafka.topics.success-payed-orders-topic")
+    public TopicConfigurationProperties successPayedOrdersTopicProp() {
+        return new TopicConfigurationProperties();
+    }
+
 }
