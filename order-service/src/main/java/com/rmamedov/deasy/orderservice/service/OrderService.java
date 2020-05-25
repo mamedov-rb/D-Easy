@@ -26,7 +26,7 @@ public class OrderService {
     @Transactional(readOnly = true)
     public Mono<Order> findById(final String id) {
         return orderRepository.findById(id)
-                .switchIfEmpty(Mono.error(new OrderNotFoundException("Order with id: '" + id + "' - Not Found")));
+                .switchIfEmpty(Mono.error(new OrderNotFoundException(String.format("Order with id: '%s' - Not Found", id))));
     }
 
     @Transactional(readOnly = true)
