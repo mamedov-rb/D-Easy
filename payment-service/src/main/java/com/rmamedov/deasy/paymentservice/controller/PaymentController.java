@@ -1,7 +1,7 @@
 package com.rmamedov.deasy.paymentservice.controller;
 
-import com.rmamedov.deasy.paymentservice.model.controller.PayRequest;
-import com.rmamedov.deasy.paymentservice.model.controller.PayResponse;
+import com.rmamedov.deasy.paymentservice.model.controller.PaymentRequest;
+import com.rmamedov.deasy.paymentservice.model.controller.PaymentResponse;
 import com.rmamedov.deasy.paymentservice.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
 @RestController
-@RequestMapping("/api/order")
+@RequestMapping("/api/payment")
 @RequiredArgsConstructor
 public class PaymentController {
 
@@ -24,7 +24,7 @@ public class PaymentController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public Mono<PayResponse> pay(@RequestBody @Validated final Mono<PayRequest> request) {
+    public Mono<PaymentResponse> pay(@RequestBody @Validated final Mono<PaymentRequest> request) {
         return request.flatMap(paymentService::pay);
     }
 

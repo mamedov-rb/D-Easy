@@ -18,6 +18,7 @@ import java.util.UUID;
 @Builder
 @Document(value = "payments")
 @NoArgsConstructor
+@AllArgsConstructor
 public class Payment {
 
     @Id

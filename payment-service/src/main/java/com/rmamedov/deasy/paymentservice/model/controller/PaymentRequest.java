@@ -7,7 +7,7 @@ import javax.validation.constraints.NotBlank;
 
 @Data
 @Validated
-public class PayRequest {
+public class PaymentRequest {
 
     @NotBlank
     private String orderId;
