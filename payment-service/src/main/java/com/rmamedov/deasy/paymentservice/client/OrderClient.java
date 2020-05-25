@@ -16,7 +16,7 @@ public class OrderClient {
 
     private final ClientConfigurationProperties properties;
 
-    public Mono<OrderDto> getById(final String id) {
+    public Mono<OrderDto> findById(final String id) {
         return webClient.get()
                 .uri(properties.getUri(), id)
                 .accept(MediaType.APPLICATION_JSON)

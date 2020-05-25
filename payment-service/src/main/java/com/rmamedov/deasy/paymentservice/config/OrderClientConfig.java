@@ -19,9 +19,13 @@ public class OrderClientConfig {
 
     @Bean
     @LoadBalanced
+    public WebClient.Builder webClientBuilder() {
+        return WebClient.builder();
+    }
+
+    @Bean
     public WebClient pinExistsCheckClient(final ClientConfigurationProperties properties) {
-        return WebClient.builder()
-//                .baseUrl(properties.getHost())
+        return webClientBuilder()
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .clientConnector(new ReactorClientHttpConnector(HttpClient.from(getTcpClient(properties.getConnectionTimeout(), properties.getReadTimeout()))))
                 .build();

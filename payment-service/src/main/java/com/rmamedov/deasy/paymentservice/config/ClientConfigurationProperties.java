@@ -15,9 +15,6 @@ import javax.validation.constraints.Positive;
 @ConfigurationProperties(prefix = "order-service-client")
 public class ClientConfigurationProperties {
 
-//    @NotBlank
-//    private String host;
-
     @NotBlank
     private String uri;
 
