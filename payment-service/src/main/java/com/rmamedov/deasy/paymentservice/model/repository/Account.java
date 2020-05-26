@@ -2,6 +2,7 @@ package com.rmamedov.deasy.paymentservice.model.repository;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.validation.annotation.Validated;
 
@@ -19,6 +20,7 @@ public class Account {
     private String id = UUID.randomUUID().toString();
 
     @NotBlank
+    @Indexed(unique = true)
     private String bankAccountNumber;
 
     @NotNull

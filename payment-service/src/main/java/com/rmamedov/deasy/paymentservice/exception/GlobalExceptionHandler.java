@@ -1,5 +1,6 @@
 package com.rmamedov.deasy.paymentservice.exception;
 
+import com.rmamedov.deasy.model.exceptions.ResponseModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -32,12 +33,6 @@ public class GlobalExceptionHandler {
                 });
         errors.put("timestamp", LocalDateTime.now().toString());
         return Mono.just(errors.toString());
-    }
-
-    @ExceptionHandler(PaymentFailException.class)
-    public Mono<ResponseEntity<ResponseModel>> handleCheckFailedException(final PaymentFailException ex) {
-        log.error("PaymentFailException: ", ex);
-        return buildResponse(ex.toString(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(AccountNotFoundException.class)
