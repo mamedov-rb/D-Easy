@@ -14,9 +14,9 @@ public class PaymentResponse {
 
     private BigDecimal orderSum;
 
-    private String senderBankAccount;
+    private String senderBankAccountNum;
 
-    private String receiverBankAccount;
+    private String receiverBankAccountNum;
 
     private LocalDateTime transactionTimestamp;
 

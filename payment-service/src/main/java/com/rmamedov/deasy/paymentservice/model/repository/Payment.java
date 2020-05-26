@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
-@Builder
 @Document(value = "payments")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,10 +24,10 @@ public class Payment {
     private String id = UUID.randomUUID().toString();
 
     @NotBlank
-    private String orderId;
+    private String transactionId = UUID.randomUUID().toString();
 
     @NotBlank
-    private String transactionId = UUID.randomUUID().toString();
+    private String orderId;
 
     @NotNull
     @Positive
@@ -42,5 +41,17 @@ public class Payment {
 
     @NotNull
     private LocalDateTime created = LocalDateTime.now();
+
+    @Builder
+    public Payment(String orderId,
+                   BigDecimal orderSum,
+                   String senderBankAccountNum,
+                   String receiverBankAccountNum) {
+
+        this.orderId = orderId;
+        this.orderSum = orderSum;
+        this.senderBankAccountNum = senderBankAccountNum;
+        this.receiverBankAccountNum = receiverBankAccountNum;
+    }
 
 }

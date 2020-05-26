@@ -49,4 +49,6 @@ public class Order {
 
     private PaymentStatus paymentStatus = PaymentStatus.NEW;
 
+    private String transactionId;
+
 }
