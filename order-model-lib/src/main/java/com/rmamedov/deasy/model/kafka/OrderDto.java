@@ -34,4 +34,8 @@ public class OrderDto {
 
     private Map<String, String> checkDetails;
 
+    private PaymentStatus paymentStatus;
+
+    private String transactionId;
+
 }

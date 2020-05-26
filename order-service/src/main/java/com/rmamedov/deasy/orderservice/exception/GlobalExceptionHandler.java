@@ -1,5 +1,6 @@
-package com.rmamedov.deasy.paymentservice.exception;
+package com.rmamedov.deasy.orderservice.exception;
 
+import com.rmamedov.deasy.model.exceptions.OrderNotFoundException;
 import com.rmamedov.deasy.model.exceptions.ResponseModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -35,10 +36,10 @@ public class GlobalExceptionHandler {
         return Mono.just(errors.toString());
     }
 
-    @ExceptionHandler(AccountNotFoundException.class)
-    public Mono<ResponseEntity<ResponseModel>> handleAccountNotFoundException(final AccountNotFoundException ex) {
-        log.error("AccountNotFoundException: ", ex);
-        return buildResponse(ex.toString(), HttpStatus.NOT_FOUND);
+    @ExceptionHandler(OrderNotFoundException.class)
+    public Mono<ResponseEntity<ResponseModel>> handleOrderNotFoundException(final OrderNotFoundException ex) {
+        log.error("OrderNotFoundException: ", ex);
+        return buildResponse(ex.toString(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(WebClientResponseException.class)

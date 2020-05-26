@@ -1,4 +1,4 @@
-package com.rmamedov.deasy.paymentservice.exception;
+package com.rmamedov.deasy.model.exceptions;
 
 import lombok.Builder;
 import lombok.Data;

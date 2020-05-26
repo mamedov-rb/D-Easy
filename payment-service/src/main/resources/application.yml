@@ -6,14 +6,13 @@ spring:
     uri: mongodb://d_easy_user:123qwe@localhost:27017/d_easy_db?replicaSet=rs0
 
 order-service-client:
-#  host: http://localhost:8000
-  uri: /find/{id}
+  uri: http://order-service/api/order/find/{id}/{checkStatus}/{payStatus}
   connection-timeout: 2000
   read-timeout: 10000
 
 kafka:
   sender:
-    bootstrap-servers: ${kafka.receiver.bootstrap-servers}
+    bootstrap-servers: localhost:9092
   topics:
     success-payed-orders-topic:
       name: success-payed-orders-topic

@@ -3,6 +3,7 @@ package com.rmamedov.deasy.orderservice.model.repository;
 import com.rmamedov.deasy.model.kafka.Address;
 import com.rmamedov.deasy.model.kafka.CheckStatus;
 import com.rmamedov.deasy.model.kafka.OrderPosition;
+import com.rmamedov.deasy.model.kafka.PaymentStatus;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -27,6 +28,11 @@ public class Order {
 
     private String description;
 
+    private LocalDateTime created = LocalDateTime.now();
+
+    @LastModifiedDate
+    private LocalDateTime updated;
+
     private BigDecimal discount;
 
     private BigDecimal totalPrice;
@@ -41,9 +47,8 @@ public class Order {
 
     private Map<String, String> checkDetails = new HashMap<>();
 
-    private LocalDateTime created = LocalDateTime.now();
+    private PaymentStatus paymentStatus = PaymentStatus.NEW;
 
-    @LastModifiedDate
-    private LocalDateTime updated;
+    private String transactionId;
 
 }

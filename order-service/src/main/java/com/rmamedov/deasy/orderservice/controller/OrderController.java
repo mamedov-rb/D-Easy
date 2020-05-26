@@ -49,21 +49,23 @@ public class OrderController {
 
     @GetMapping(path = "/statuses", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<OrderStatusInfo> statuses() {
-        /* Duration is for synthetically slow down response */
         return orderKafkaReceiver.listenCheckedOrders()
-                .delayElements(Duration.ofSeconds(1))
+                .delayElements(Duration.ofSeconds(1)) //Timeout's needs for synthetically slow down response
                 .timeout(Duration.ofSeconds(20));
     }
 
-    @GetMapping(path = "/find/{id}")
-    public Mono<OrderInfoResponse> all(@PathVariable final String id) {
+    @GetMapping(path = "/find/{id}/{checkStatus}/{payStatus}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Mono<OrderInfoResponse> findByIdAndCheckStatus(@PathVariable("id") final String id,
+                                                          @PathVariable("checkStatus") final String checkStatus,
+                                                          @PathVariable("payStatus") final String payStatus) {
+
         return orderService
-                .findById(id)
+                .findByIdAndCheckStatus(id, checkStatus, payStatus)
                 .map(orderToOrderInfoConverter::convert);
     }
 
     @GetMapping(path = "/all", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<OrderInfoResponse> all() {
+    public Flux<OrderInfoResponse> findAll() {
         return orderService
                 .findAll()
                 .map(orderToOrderInfoConverter::convert);

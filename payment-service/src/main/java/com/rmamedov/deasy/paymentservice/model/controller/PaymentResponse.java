@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
-public class PayResponse {
+public class PaymentResponse {
 
     private String orderId;
 
@@ -14,9 +14,9 @@ public class PayResponse {
 
     private BigDecimal orderSum;
 
-    private String senderBankAccount;
+    private String senderBankAccountNum;
 
-    private String receiverBankAccount;
+    private String receiverBankAccountNum;
 
     private LocalDateTime transactionTimestamp;
 
