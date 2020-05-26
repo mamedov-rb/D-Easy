@@ -16,9 +16,12 @@ public class OrderClient {
 
     private final ClientConfigurationProperties properties;
 
-    public Mono<OrderDto> findById(final String id) {
+    public Mono<OrderDto> findByIdAndCheckStatus(final String id,
+                                                 final String checkStatus,
+                                                 final String payStatus) {
+
         return webClient.get()
-                .uri(properties.getUri(), id)
+                .uri(properties.getUri(), id, checkStatus, payStatus)
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToMono(OrderDto.class);

@@ -25,7 +25,7 @@ public class PaymentController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public Mono<PaymentResponse> pay(@RequestBody @Validated final Mono<PaymentRequest> request) {
-        return request.flatMap(paymentService::pay);
+        return request.flatMap(paymentService::payForNewFullyCheckedOrder);
     }
 
 }
