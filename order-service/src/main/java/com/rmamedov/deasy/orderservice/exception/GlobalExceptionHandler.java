@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.support.WebExchangeBindException;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 import reactor.core.publisher.Mono;
@@ -22,9 +21,8 @@ import java.util.Map;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(WebExchangeBindException.class)
-    public Mono<String> handleBeenValidationException(final WebExchangeBindException ex) {
+    public Mono<ResponseEntity<ResponseModel>> handleBeenValidationException(final WebExchangeBindException ex) {
         final Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getAllErrors()
                 .forEach(error -> {
@@ -32,8 +30,7 @@ public class GlobalExceptionHandler {
                     final String errorMessage = error.getDefaultMessage();
                     errors.put(fieldName, errorMessage);
                 });
-        errors.put("timestamp", LocalDateTime.now().toString());
-        return Mono.just(errors.toString());
+        return buildResponse(errors.toString(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(OrderNotFoundException.class)
@@ -59,7 +56,7 @@ public class GlobalExceptionHandler {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(ResponseModel.builder()
                         .message(body)
-                        .timestamp(LocalDateTime.now().toString()).build()
+                        .timestamp(LocalDateTime.now()).build()
                 )
         );
     }
