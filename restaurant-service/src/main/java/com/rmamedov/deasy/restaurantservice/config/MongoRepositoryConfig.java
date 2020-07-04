@@ -1,4 +1,4 @@
-package com.rmamedov.deasy.restorauntservice.config;
+package com.rmamedov.deasy.restaurantservice.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableMongoAuditing
 @EnableTransactionManagement
-@EnableReactiveMongoRepositories(basePackages = {"com.rmamedov.deasy.restorauntservice.repository"})
+@EnableReactiveMongoRepositories(basePackages = {"com.rmamedov.deasy.restaurantservice.repository"})
 public class MongoRepositoryConfig {
 
     @Bean

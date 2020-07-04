@@ -1,4 +1,4 @@
-package com.rmamedov.deasy.restorauntservice.config;
+package com.rmamedov.deasy.restaurantservice.config;
 
 import com.rmamedov.deasy.kafkastarter.properties.KafkaSenderConfigurationProperties;
 import com.rmamedov.deasy.kafkastarter.properties.TopicConfigurationProperties;

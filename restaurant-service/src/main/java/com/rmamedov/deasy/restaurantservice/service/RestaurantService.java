@@ -1,11 +1,11 @@
-package com.rmamedov.deasy.restorauntservice.service;
+package com.rmamedov.deasy.restaurantservice.service;
 
 import com.rmamedov.deasy.model.kafka.CheckStatus;
 import com.rmamedov.deasy.model.kafka.OrderDto;
-import com.rmamedov.deasy.restorauntservice.converter.OrderCheckDetailsToOrderDtoConverter;
-import com.rmamedov.deasy.restorauntservice.converter.OrderDtoToOrderCheckDetailConverter;
-import com.rmamedov.deasy.restorauntservice.model.OrderRestorauntCheckDetails;
-import com.rmamedov.deasy.restorauntservice.repository.OrderDetailsRepository;
+import com.rmamedov.deasy.restaurantservice.converter.OrderCheckDetailsToOrderDtoConverter;
+import com.rmamedov.deasy.restaurantservice.converter.OrderDtoToOrderCheckDetailConverter;
+import com.rmamedov.deasy.restaurantservice.model.OrderRestaurantCheckDetails;
+import com.rmamedov.deasy.restaurantservice.repository.OrderDetailsRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ import reactor.core.publisher.Mono;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class RestorauntService {
+public class RestaurantService {
 
     private final OrderDetailsRepository orderDetailsRepository;
 
@@ -27,9 +27,9 @@ public class RestorauntService {
     public Mono<OrderDto> check(final Mono<OrderDto> orderDto) {
         return orderDto.map(this::check)
                 .flatMap(checkedDto -> {
-                    final OrderRestorauntCheckDetails checkDetails = detailConverter.convert(checkedDto);
+                    final OrderRestaurantCheckDetails checkDetails = detailConverter.convert(checkedDto);
                     return orderDetailsRepository.save(checkDetails)
-                            .doOnNext(savedDetails -> log.info("Saved restoraunt details after check: '{}'", savedDetails))
+                            .doOnNext(savedDetails -> log.info("Saved restaurant details after check: '{}'", savedDetails))
                             .map(toDtoConverter::convert);
                 });
     }

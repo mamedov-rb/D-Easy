@@ -38,7 +38,7 @@ public class AddressService {
 
     private OrderDto check(final OrderDto orderDto) {
         final Address consumerAddress = orderDto.getConsumerAddress();
-        final Address restorauntAddress = orderDto.getRestorauntAddress();
+        final Address restaurantAddress = orderDto.getRestaurantAddress();
         final String successDescription = "Address is reachable, it might took 20min to deliver order.";
         final String failedDescription = "Address is reachable, it might took 20min to deliver order.";
         if (isReachable()) {

@@ -39,7 +39,7 @@ public class Order {
 
     private Address consumerAddress;
 
-    private Address restorauntAddress;
+    private Address restaurantAddress;
 
     private Set<OrderPosition> orderPositions;
 

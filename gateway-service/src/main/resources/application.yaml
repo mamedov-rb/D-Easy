@@ -23,9 +23,9 @@ zuul:
     payment-service:
       path: /payment-service/**
       serviceId: payment-service
-    restoraunt-service:
-      path: /restoraunt-service/**
-      serviceId: restoraunt-service
+    restaurant-service:
+      path: /restaurant-service/**
+      serviceId: restaurant-service
     courier-service:
       path: /courier-service/**
       serviceId: courier-service

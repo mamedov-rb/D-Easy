@@ -23,7 +23,7 @@ public class OrderAddressCheckDetails {
 
     private Address consumerAddress;
 
-    private Address restorauntAddress;
+    private Address restaurantAddress;
 
     private Set<CheckStatus> checkStatuses;
 

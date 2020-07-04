@@ -1,4 +1,4 @@
-package com.rmamedov.deasy.restorauntservice.model;
+package com.rmamedov.deasy.restaurantservice.model;
 
 import com.rmamedov.deasy.model.kafka.CheckStatus;
 import com.rmamedov.deasy.model.kafka.OrderPosition;
@@ -15,8 +15,8 @@ import java.util.Set;
 import java.util.UUID;
 
 @Data
-@Document(collection = "order_restoraunt_check_details")
-public class OrderRestorauntCheckDetails {
+@Document(collection = "order_restaurant_check_details")
+public class OrderRestaurantCheckDetails {
 
     @Id
     private String id = UUID.randomUUID().toString();

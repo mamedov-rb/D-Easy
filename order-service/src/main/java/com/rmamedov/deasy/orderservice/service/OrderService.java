@@ -1,7 +1,6 @@
 package com.rmamedov.deasy.orderservice.service;
 
 import com.rmamedov.deasy.model.exceptions.OrderNotFoundException;
-import com.rmamedov.deasy.model.kafka.CheckStatus;
 import com.rmamedov.deasy.orderservice.model.repository.Order;
 import com.rmamedov.deasy.orderservice.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;

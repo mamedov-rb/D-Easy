@@ -1,4 +1,4 @@
-package com.rmamedov.deasy.restorauntservice.service;
+package com.rmamedov.deasy.restaurantservice.service;
 
 import com.rmamedov.deasy.kafkastarter.properties.KafkaReceiverConfigurationProperties;
 import com.rmamedov.deasy.kafkastarter.properties.TopicConfigurationProperties;
@@ -15,9 +15,9 @@ import java.util.List;
 
 @Slf4j
 @Service
-public class RestorauntServiceKafkaReceiver {
+public class RestaurantServiceKafkaReceiver {
 
-    private final RestorauntService restorauntService;
+    private final RestaurantService restaurantService;
 
     private final ApplicationKafkaSender applicationKafkaSender;
 
@@ -25,12 +25,12 @@ public class RestorauntServiceKafkaReceiver {
 
     private final TopicConfigurationProperties newOrdersTopicProps;
 
-    public RestorauntServiceKafkaReceiver(RestorauntService restorauntService,
+    public RestaurantServiceKafkaReceiver(RestaurantService restaurantService,
                                           ApplicationKafkaSender applicationKafkaSender,
                                           KafkaReceiverConfigurationProperties receiverProperties,
                                           @Qualifier("newOrdersTopicProp") TopicConfigurationProperties newOrdersTopicProps) {
 
-        this.restorauntService = restorauntService;
+        this.restaurantService = restaurantService;
         this.applicationKafkaSender = applicationKafkaSender;
         this.receiverProperties = receiverProperties;
         this.newOrdersTopicProps = newOrdersTopicProps;
@@ -42,7 +42,7 @@ public class RestorauntServiceKafkaReceiver {
                 new ApplicationKafkaReceiver(receiverProperties, List.of(newOrdersTopicProps.getName()));
 
         applicationKafkaReceiver.receive()
-                .flatMap(receiverRecord -> restorauntService.check(Mono.just(receiverRecord.value()))
+                .flatMap(receiverRecord -> restaurantService.check(Mono.just(receiverRecord.value()))
                         .doOnNext(orderDto -> {
                             applicationKafkaSender.send(orderDto);
                             receiverRecord.receiverOffset().acknowledge();

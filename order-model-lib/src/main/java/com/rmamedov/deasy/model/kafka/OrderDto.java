@@ -16,17 +16,13 @@ public class OrderDto {
 
     private String description;
 
-    private LocalDateTime created;
-
-    private LocalDateTime updated;
-
     private BigDecimal discount;
 
     private BigDecimal totalPrice;
 
     private Address consumerAddress;
 
-    private Address restorauntAddress;
+    private Address restaurantAddress;
 
     private Set<OrderPosition> orderPositions;
 
@@ -37,5 +33,9 @@ public class OrderDto {
     private PaymentStatus paymentStatus;
 
     private String transactionId;
+
+    private LocalDateTime created;
+
+    private LocalDateTime updated;
 
 }

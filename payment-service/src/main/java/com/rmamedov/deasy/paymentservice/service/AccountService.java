@@ -1,17 +1,11 @@
 package com.rmamedov.deasy.paymentservice.service;
 
 import com.rmamedov.deasy.paymentservice.model.repository.Account;
-import com.rmamedov.deasy.paymentservice.model.repository.Holder;
 import com.rmamedov.deasy.paymentservice.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
-
-import javax.annotation.PostConstruct;
-import java.math.BigDecimal;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor

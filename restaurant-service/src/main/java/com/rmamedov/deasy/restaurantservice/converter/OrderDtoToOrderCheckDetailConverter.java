@@ -1,7 +1,7 @@
-package com.rmamedov.deasy.restorauntservice.converter;
+package com.rmamedov.deasy.restaurantservice.converter;
 
 import com.rmamedov.deasy.model.kafka.OrderDto;
-import com.rmamedov.deasy.restorauntservice.model.OrderRestorauntCheckDetails;
+import com.rmamedov.deasy.restaurantservice.model.OrderRestaurantCheckDetails;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -10,6 +10,6 @@ public interface OrderDtoToOrderCheckDetailConverter {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "orderId", source = "id")
-    OrderRestorauntCheckDetails convert(OrderDto source);
+    OrderRestaurantCheckDetails convert(OrderDto source);
 
 }
