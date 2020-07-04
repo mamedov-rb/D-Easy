@@ -4,7 +4,6 @@ import com.rmamedov.deasy.addressservice.converter.OrderCheckDetailsToOrderDtoCo
 import com.rmamedov.deasy.addressservice.converter.OrderDtoToOrderCheckDetailConverter;
 import com.rmamedov.deasy.addressservice.model.OrderAddressCheckDetails;
 import com.rmamedov.deasy.addressservice.repository.OrderDetailsRepository;
-import com.rmamedov.deasy.model.kafka.Address;
 import com.rmamedov.deasy.model.kafka.CheckStatus;
 import com.rmamedov.deasy.model.kafka.OrderDto;
 import lombok.RequiredArgsConstructor;
@@ -37,8 +36,8 @@ public class AddressService {
     }
 
     private OrderDto check(final OrderDto orderDto) {
-        final Address consumerAddress = orderDto.getConsumerAddress();
-        final Address restaurantAddress = orderDto.getRestaurantAddress();
+        final String consumerAddress = orderDto.getConsumerAddress();
+        final String restaurantAddress = orderDto.getRestaurantAddress();
         final String successDescription = "Address is reachable, it might took 20min to deliver order.";
         final String failedDescription = "Address is reachable, it might took 20min to deliver order.";
         if (isReachable()) {

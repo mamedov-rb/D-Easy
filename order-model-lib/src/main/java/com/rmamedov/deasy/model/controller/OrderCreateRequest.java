@@ -1,25 +1,25 @@
 package com.rmamedov.deasy.model.controller;
 
+import com.rmamedov.deasy.model.kafka.OrderPosition;
 import lombok.Data;
-import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
-import java.math.BigDecimal;
+import javax.validation.constraints.NotEmpty;
+import java.util.Set;
 
 @Data
-@Validated
 public class OrderCreateRequest {
-
-    @NotBlank
-    private String name;
 
     @NotBlank
     private String description;
 
-    @NotNull
-    @Positive
-    private BigDecimal totalPrice;
+    @NotBlank
+    private String consumerAddress;
+
+    @NotBlank
+    private String restaurantAddress;
+
+    @NotEmpty
+    private Set<OrderPosition> orderPositions;
 
 }

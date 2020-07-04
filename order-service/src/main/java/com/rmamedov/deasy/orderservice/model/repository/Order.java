@@ -1,6 +1,5 @@
 package com.rmamedov.deasy.orderservice.model.repository;
 
-import com.rmamedov.deasy.model.kafka.Address;
 import com.rmamedov.deasy.model.kafka.CheckStatus;
 import com.rmamedov.deasy.model.kafka.OrderPosition;
 import com.rmamedov.deasy.model.kafka.PaymentStatus;
@@ -28,18 +27,17 @@ public class Order {
 
     private String description;
 
-    private LocalDateTime created = LocalDateTime.now();
-
-    @LastModifiedDate
-    private LocalDateTime updated;
-
-    private BigDecimal discount;
-
     private BigDecimal totalPrice;
 
-    private Address consumerAddress;
+    private BigDecimal totalPriceAfterDiscount;
 
-    private Address restaurantAddress;
+    private Double totalWeight;
+
+    private Double totalVolume;
+
+    private String consumerAddress;
+
+    private String restaurantAddress;
 
     private Set<OrderPosition> orderPositions;
 
@@ -50,5 +48,10 @@ public class Order {
     private PaymentStatus paymentStatus = PaymentStatus.NEW;
 
     private String transactionId;
+
+    private LocalDateTime created = LocalDateTime.now();
+
+    @LastModifiedDate
+    private LocalDateTime updated;
 
 }

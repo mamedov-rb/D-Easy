@@ -16,13 +16,17 @@ public class OrderDto {
 
     private String description;
 
-    private BigDecimal discount;
-
     private BigDecimal totalPrice;
 
-    private Address consumerAddress;
+    private BigDecimal totalPriceAfterDiscount;
 
-    private Address restaurantAddress;
+    private Double totalWeight;
+
+    private Double totalVolume;
+
+    private String consumerAddress;
+
+    private String restaurantAddress;
 
     private Set<OrderPosition> orderPositions;
 

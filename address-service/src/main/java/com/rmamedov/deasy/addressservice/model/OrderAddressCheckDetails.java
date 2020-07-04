@@ -1,6 +1,5 @@
 package com.rmamedov.deasy.addressservice.model;
 
-import com.rmamedov.deasy.model.kafka.Address;
 import com.rmamedov.deasy.model.kafka.CheckStatus;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
@@ -21,9 +20,9 @@ public class OrderAddressCheckDetails {
 
     private String orderId;
 
-    private Address consumerAddress;
+    private String consumerAddress;
 
-    private Address restaurantAddress;
+    private String restaurantAddress;
 
     private Set<CheckStatus> checkStatuses;
 

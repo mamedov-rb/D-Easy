@@ -1,6 +1,5 @@
 package com.rmamedov.deasy.model.controller;
 
-import com.rmamedov.deasy.model.kafka.Address;
 import com.rmamedov.deasy.model.kafka.CheckStatus;
 import com.rmamedov.deasy.model.kafka.OrderPosition;
 import lombok.Data;
@@ -23,13 +22,17 @@ public class OrderInfoResponse {
 
     private LocalDateTime updated;
 
-    private BigDecimal discount;
-
     private BigDecimal totalPrice;
 
-    private Address consumerAddress;
+    private BigDecimal totalPriceAfterDiscount;
 
-    private Address restaurantAddress;
+    private Double totalWeight;
+
+    private Double totalVolume;
+
+    private String consumerAddress;
+
+    private String restaurantAddress;
 
     private Set<OrderPosition> orderPositions;
 
