@@ -10,6 +10,7 @@ public interface OrderDtoToOrderCheckDetailConverter {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "orderId", source = "id")
+    @Mapping(target = "originCreated", source = "created")
     OrderAddressCheckDetails convert(OrderDto source);
 
 }

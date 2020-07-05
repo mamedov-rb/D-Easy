@@ -3,7 +3,6 @@ package com.rmamedov.deasy.addressservice.model;
 import com.rmamedov.deasy.model.kafka.CheckStatus;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
@@ -20,6 +19,8 @@ public class OrderAddressCheckDetails {
 
     private String orderId;
 
+    private String transactionId;
+
     private String consumerAddress;
 
     private String restaurantAddress;
@@ -28,9 +29,8 @@ public class OrderAddressCheckDetails {
 
     private Map<String, String> checkDetails;
 
-    private LocalDateTime created = LocalDateTime.now();
+    private LocalDateTime originCreated;
 
-    @LastModifiedDate
-    private LocalDateTime updated;
+    private LocalDateTime created = LocalDateTime.now();
 
 }

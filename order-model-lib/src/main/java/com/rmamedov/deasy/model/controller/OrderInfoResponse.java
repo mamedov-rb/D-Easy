@@ -18,10 +18,6 @@ public class OrderInfoResponse {
 
     private String description;
 
-    private LocalDateTime created;
-
-    private LocalDateTime updated;
-
     private BigDecimal totalPrice;
 
     private BigDecimal totalPriceAfterDiscount;
@@ -39,5 +35,11 @@ public class OrderInfoResponse {
     private Set<CheckStatus> checkStatuses;
 
     private Map<String, String> checkDetails;
+
+    private String transactionId;
+
+    private LocalDateTime created;
+
+    private LocalDateTime updated;
 
 }

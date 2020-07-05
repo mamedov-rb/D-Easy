@@ -8,6 +8,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
@@ -19,6 +20,7 @@ public interface OrderCreateRequestToOrderConverter {
 
     @AfterMapping
     default void convertNameToUpperCase(@MappingTarget Order order, OrderCreateRequest orderCreateRequest) {
+        order.setTransactionId("TX_" + UUID.randomUUID().toString());
         defineOrderName(order, orderCreateRequest);
         defineTotalPrice(order, orderCreateRequest);
         defineTotalPriceAfterDiscount(order, orderCreateRequest);

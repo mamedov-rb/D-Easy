@@ -4,7 +4,6 @@ import com.rmamedov.deasy.model.kafka.CheckStatus;
 import com.rmamedov.deasy.model.kafka.OrderPosition;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
@@ -23,6 +22,8 @@ public class OrderRestaurantCheckDetails {
 
     private String orderId;
 
+    private String transactionId;
+
     private String name;
 
     private String description;
@@ -33,9 +34,8 @@ public class OrderRestaurantCheckDetails {
 
     private Map<String, String> checkDetails = new HashMap<>();
 
-    private LocalDateTime created = LocalDateTime.now();
+    private LocalDateTime originCreated;
 
-    @LastModifiedDate
-    private LocalDateTime updated;
+    private LocalDateTime created = LocalDateTime.now();
 
 }

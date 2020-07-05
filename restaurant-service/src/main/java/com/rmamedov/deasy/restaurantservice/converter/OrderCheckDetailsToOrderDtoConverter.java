@@ -9,6 +9,7 @@ import org.mapstruct.Mapping;
 public interface OrderCheckDetailsToOrderDtoConverter {
 
     @Mapping(target = "id", source = "orderId")
+    @Mapping(target = "created", ignore = true)
     OrderDto convert(OrderRestaurantCheckDetails source);
 
 }
