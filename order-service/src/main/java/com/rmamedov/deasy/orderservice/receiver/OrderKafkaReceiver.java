@@ -3,6 +3,7 @@ package com.rmamedov.deasy.orderservice.receiver;
 import com.rmamedov.deasy.kafkastarter.properties.KafkaReceiverConfigurationProperties;
 import com.rmamedov.deasy.kafkastarter.properties.TopicConfigurationProperties;
 import com.rmamedov.deasy.kafkastarter.receiver.ApplicationKafkaReceiver;
+import com.rmamedov.deasy.model.kafka.OrderDto;
 import com.rmamedov.deasy.orderservice.config.MongoConfigurationProperties;
 import com.rmamedov.deasy.orderservice.converter.OrderDtoToOrderConverter;
 import com.rmamedov.deasy.orderservice.model.controller.OrderStatusInfo;
@@ -25,7 +26,7 @@ import static java.time.Duration.ofMillis;
 @RequiredArgsConstructor
 public class OrderKafkaReceiver {
 
-    private ApplicationKafkaReceiver kafkaReceiver;
+    private ApplicationKafkaReceiver<OrderDto> kafkaReceiver;
 
     private final ProcessOrderService processOrderService;
 
@@ -43,15 +44,14 @@ public class OrderKafkaReceiver {
                 .map(TopicConfigurationProperties::getName)
                 .filter(name -> !name.contains("new"))
                 .collect(Collectors.toList());
-        kafkaReceiver = new ApplicationKafkaReceiver(receiverProperties, topicNames);
+        kafkaReceiver = new ApplicationKafkaReceiver<>(receiverProperties, topicNames);
     }
 
     public Flux<OrderStatusInfo> listenCheckedOrders() {
         return kafkaReceiver.receive()
                 .flatMap(receiverRecord -> {
                     final var order = orderDtoToOrderConverter.convert(receiverRecord.value());
-                    final Mono<OrderStatusInfo> orderCheckStatusDtoMono =
-                            processOrderService.updateAfterCheck(order)
+                    final Mono<OrderStatusInfo> orderCheckStatusDtoMono = processOrderService.updateAfterCheck(order)
                                     .retryBackoff(
                                             mongoProperties.getNumRetries(),
                                             ofMillis(mongoProperties.getFirstBackoff()),

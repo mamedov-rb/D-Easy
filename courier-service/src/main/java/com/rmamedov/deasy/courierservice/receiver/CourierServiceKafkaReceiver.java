@@ -1,9 +1,11 @@
-package com.rmamedov.deasy.courierservice.service;
+package com.rmamedov.deasy.courierservice.receiver;
 
+import com.rmamedov.deasy.courierservice.service.CourierService;
 import com.rmamedov.deasy.kafkastarter.properties.KafkaReceiverConfigurationProperties;
 import com.rmamedov.deasy.kafkastarter.properties.TopicConfigurationProperties;
 import com.rmamedov.deasy.kafkastarter.receiver.ApplicationKafkaReceiver;
 import com.rmamedov.deasy.kafkastarter.sender.ApplicationKafkaSender;
+import com.rmamedov.deasy.model.kafka.OrderDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
@@ -39,7 +41,7 @@ public class CourierServiceKafkaReceiver {
     @EventListener(ApplicationStartedEvent.class)
     public void listen() {
         final var applicationKafkaReceiver =
-                new ApplicationKafkaReceiver(receiverProperties, List.of(newOrdersTopicProps.getName()));
+                new ApplicationKafkaReceiver<OrderDto>(receiverProperties, List.of(newOrdersTopicProps.getName()));
 
         applicationKafkaReceiver.receive()
                 .flatMap(receiverRecord -> courierService.check(Mono.just(receiverRecord.value()))

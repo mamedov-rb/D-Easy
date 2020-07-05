@@ -1,9 +1,11 @@
-package com.rmamedov.deasy.addressservice.service;
+package com.rmamedov.deasy.restaurantservice.receiver;
 
 import com.rmamedov.deasy.kafkastarter.properties.KafkaReceiverConfigurationProperties;
 import com.rmamedov.deasy.kafkastarter.properties.TopicConfigurationProperties;
 import com.rmamedov.deasy.kafkastarter.receiver.ApplicationKafkaReceiver;
 import com.rmamedov.deasy.kafkastarter.sender.ApplicationKafkaSender;
+import com.rmamedov.deasy.model.kafka.OrderDto;
+import com.rmamedov.deasy.restaurantservice.service.RestaurantService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
@@ -15,9 +17,9 @@ import java.util.List;
 
 @Slf4j
 @Service
-public class AddressServiceKafkaReceiver {
+public class RestaurantServiceKafkaReceiver {
 
-    private final AddressService addressService;
+    private final RestaurantService restaurantService;
 
     private final ApplicationKafkaSender applicationKafkaSender;
 
@@ -25,12 +27,12 @@ public class AddressServiceKafkaReceiver {
 
     private final TopicConfigurationProperties newOrdersTopicProps;
 
-    public AddressServiceKafkaReceiver(AddressService addressService,
-                                       ApplicationKafkaSender applicationKafkaSender,
-                                       KafkaReceiverConfigurationProperties receiverProperties,
-                                       @Qualifier("newOrdersTopicProp") TopicConfigurationProperties newOrdersTopicProps) {
+    public RestaurantServiceKafkaReceiver(RestaurantService restaurantService,
+                                          ApplicationKafkaSender applicationKafkaSender,
+                                          KafkaReceiverConfigurationProperties receiverProperties,
+                                          @Qualifier("newOrdersTopicProp") TopicConfigurationProperties newOrdersTopicProps) {
 
-        this.addressService = addressService;
+        this.restaurantService = restaurantService;
         this.applicationKafkaSender = applicationKafkaSender;
         this.receiverProperties = receiverProperties;
         this.newOrdersTopicProps = newOrdersTopicProps;
@@ -39,10 +41,10 @@ public class AddressServiceKafkaReceiver {
     @EventListener(ApplicationStartedEvent.class)
     public void listen() {
         final var applicationKafkaReceiver =
-                new ApplicationKafkaReceiver(receiverProperties, List.of(newOrdersTopicProps.getName()));
+                new ApplicationKafkaReceiver<OrderDto>(receiverProperties, List.of(newOrdersTopicProps.getName()));
 
         applicationKafkaReceiver.receive()
-                .flatMap(receiverRecord -> addressService.check(Mono.just(receiverRecord.value()))
+                .flatMap(receiverRecord -> restaurantService.check(Mono.just(receiverRecord.value()))
                         .doOnNext(orderDto -> {
                             applicationKafkaSender.send(orderDto);
                             receiverRecord.receiverOffset().acknowledge();

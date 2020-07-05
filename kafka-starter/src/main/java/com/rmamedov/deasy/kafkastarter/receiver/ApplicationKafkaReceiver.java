@@ -1,7 +1,6 @@
 package com.rmamedov.deasy.kafkastarter.receiver;
 
 import com.rmamedov.deasy.kafkastarter.properties.KafkaReceiverConfigurationProperties;
-import com.rmamedov.deasy.model.kafka.OrderDto;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -15,20 +14,20 @@ import java.util.HashMap;
 import java.util.List;
 
 @RequiredArgsConstructor
-public class ApplicationKafkaReceiver {
+public class ApplicationKafkaReceiver<T> {
 
     private final KafkaReceiverConfigurationProperties receiverProperties;
 
     private final List<String> topics;
 
-    public Flux<ReceiverRecord<String, OrderDto>> receive() {
+    public Flux<ReceiverRecord<String, T>> receive() {
         final var subscription = receiverOptions().subscription(topics);
         return KafkaReceiver.create(subscription)
                 .receive()
                 .log();
     }
 
-    private ReceiverOptions<String, OrderDto> receiverOptions() {
+    private ReceiverOptions<String, T> receiverOptions() {
         final var receiverProps = new HashMap<String, Object>();
         receiverProps.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, receiverProperties.getBootstrapServers());
         receiverProps.put(ConsumerConfig.GROUP_ID_CONFIG, receiverProperties.getGroupId());
