@@ -45,7 +45,7 @@ public class Order {
 
     private Map<String, String> checkDetails = new HashMap<>();
 
-    private PaymentStatus paymentStatus = PaymentStatus.NEW;
+    private PaymentStatus paymentStatus;
 
     private String transactionId;
 

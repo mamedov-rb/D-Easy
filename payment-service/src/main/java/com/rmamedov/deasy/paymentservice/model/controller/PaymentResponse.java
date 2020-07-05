@@ -1,5 +1,6 @@
 package com.rmamedov.deasy.paymentservice.model.controller;
 
+import com.rmamedov.deasy.model.kafka.PaymentStatus;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -11,6 +12,8 @@ public class PaymentResponse {
     private String orderId;
 
     private String transactionId;
+
+    private PaymentStatus status;
 
     private BigDecimal orderSum;
 

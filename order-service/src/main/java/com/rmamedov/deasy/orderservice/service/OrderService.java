@@ -25,13 +25,13 @@ public class OrderService {
     }
 
     @Transactional(readOnly = true)
-    public Mono<Order> findByIdAndCheckStatus(final String id,
-                                              final String checkStatus,
-                                              final String payStatus) {
+    public Mono<Order> findByCriteria(final String id,
+                                      final String checkStatus,
+                                      final String paymentStatus) {
 
-        return orderRepository.findByIdAndCheckStatusesInAndPaymentStatus(id, Set.of(checkStatus), payStatus)
+        return orderRepository.findByIdAndCheckStatusesInAndPaymentStatus(id, Set.of(checkStatus), paymentStatus)
                 .switchIfEmpty(Mono.error(new OrderNotFoundException(
-                        String.format("Order with: id '%s', checkStatus '%s', payStatus '%s' - Not Found", id, checkStatus, payStatus)
+                        String.format("Order with: id '%s', checkStatus '%s', paymentStatus '%s' - Not Found", id, checkStatus, paymentStatus)
                 )));
     }
 

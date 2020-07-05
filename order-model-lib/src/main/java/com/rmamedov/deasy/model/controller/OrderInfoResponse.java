@@ -2,6 +2,7 @@ package com.rmamedov.deasy.model.controller;
 
 import com.rmamedov.deasy.model.kafka.CheckStatus;
 import com.rmamedov.deasy.model.kafka.OrderPosition;
+import com.rmamedov.deasy.model.kafka.PaymentStatus;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -35,6 +36,8 @@ public class OrderInfoResponse {
     private Set<CheckStatus> checkStatuses;
 
     private Map<String, String> checkDetails;
+
+    private PaymentStatus paymentStatus;
 
     private String transactionId;
 

@@ -10,6 +10,6 @@ import java.util.Set;
 @Repository
 public interface OrderRepository extends ReactiveCrudRepository<Order, String> {
 
-    Mono<Order> findByIdAndCheckStatusesInAndPaymentStatus(String Id, Set<String> statuses, String payStatus);
+    Mono<Order> findByIdAndCheckStatusesInAndPaymentStatus(String Id, Set<String> statuses, String paymentStatus);
 
 }

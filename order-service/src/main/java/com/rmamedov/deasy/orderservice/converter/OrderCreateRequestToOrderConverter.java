@@ -2,13 +2,13 @@ package com.rmamedov.deasy.orderservice.converter;
 
 import com.rmamedov.deasy.model.controller.OrderCreateRequest;
 import com.rmamedov.deasy.model.kafka.OrderPosition;
+import com.rmamedov.deasy.model.kafka.PaymentStatus;
 import com.rmamedov.deasy.orderservice.model.repository.Order;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 
 import java.math.BigDecimal;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
@@ -20,7 +20,7 @@ public interface OrderCreateRequestToOrderConverter {
 
     @AfterMapping
     default void convertNameToUpperCase(@MappingTarget Order order, OrderCreateRequest orderCreateRequest) {
-        order.setTransactionId("TX_" + UUID.randomUUID().toString());
+        order.setPaymentStatus(PaymentStatus.NEW);
         defineOrderName(order, orderCreateRequest);
         defineTotalPrice(order, orderCreateRequest);
         defineTotalPriceAfterDiscount(order, orderCreateRequest);

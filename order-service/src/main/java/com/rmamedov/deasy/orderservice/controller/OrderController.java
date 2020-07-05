@@ -54,13 +54,13 @@ public class OrderController {
                 .timeout(Duration.ofSeconds(20));
     }
 
-    @GetMapping(path = "/find/{id}/{checkStatus}/{payStatus}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/find/{id}/{checkStatus}/{paymentStatus}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<OrderInfoResponse> findByIdAndCheckStatus(@PathVariable("id") final String id,
                                                           @PathVariable("checkStatus") final String checkStatus,
-                                                          @PathVariable("payStatus") final String payStatus) {
+                                                          @PathVariable("paymentStatus") final String paymentStatus) {
 
         return orderService
-                .findByIdAndCheckStatus(id, checkStatus, payStatus)
+                .findByCriteria(id, checkStatus, paymentStatus)
                 .map(orderToOrderInfoConverter::convert);
     }
 

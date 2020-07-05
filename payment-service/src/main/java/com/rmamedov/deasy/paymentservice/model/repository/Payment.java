@@ -1,5 +1,6 @@
 package com.rmamedov.deasy.paymentservice.model.repository;
 
+import com.rmamedov.deasy.model.kafka.PaymentStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -30,6 +31,9 @@ public class Payment {
     private String orderId;
 
     @NotNull
+    private PaymentStatus status;
+
+    @NotNull
     @Positive
     private BigDecimal orderSum;
 
@@ -44,11 +48,13 @@ public class Payment {
 
     @Builder
     public Payment(String orderId,
+                   PaymentStatus status,
                    BigDecimal orderSum,
                    String senderBankAccountNum,
                    String receiverBankAccountNum) {
 
         this.orderId = orderId;
+        this.status = status;
         this.orderSum = orderSum;
         this.senderBankAccountNum = senderBankAccountNum;
         this.receiverBankAccountNum = receiverBankAccountNum;

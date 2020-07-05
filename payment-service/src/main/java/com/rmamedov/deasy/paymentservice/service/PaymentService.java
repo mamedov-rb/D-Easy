@@ -19,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple2;
 
+import java.math.BigDecimal;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -41,14 +43,12 @@ public class PaymentService {
                 CheckStatus.FULLY_CHECKED.name(),
                 PaymentStatus.NEW.name()
         )
-                .flatMap(order -> findBothAccounts(request)
-                        .flatMap(zip -> paymentRepository.save(withdrawAndCreatePayment(order, zip))
-                                .doOnSuccess(saved -> {
-                                    order.setPaymentStatus(PaymentStatus.SUCCESS);
-                                    order.setTransactionId(saved.getTransactionId());
-                                })
-                                .doOnError(saved -> order.setPaymentStatus(PaymentStatus.FAILED))
-                                .doFinally(saved -> applicationKafkaSender.send(order))
+                .flatMap(orderDto -> findBothAccounts(request) //TODO 2020-07-05 rustammamedov: update accounts after payment.
+                        .flatMap(zip -> paymentRepository.save(withdrawAndCreatePayment(orderDto, zip))
+                                .doOnNext(payment -> orderDto.setTransactionId("TX_" + payment.getTransactionId()))
+                                .doOnSuccess(payment -> orderDto.setPaymentStatus(PaymentStatus.SUCCESS))
+                                .doOnError(throwable -> orderDto.setPaymentStatus(PaymentStatus.FAILED))
+                                .doFinally(payment -> applicationKafkaSender.send(orderDto)) //TODO 2020-07-05 rustammamedov: What if message not delivered?
                         )
                 )
                 .map(responseConverter::convert);
@@ -65,11 +65,13 @@ public class PaymentService {
     private Payment withdrawAndCreatePayment(final OrderDto orderDto, final Tuple2<Account, Account> zip) {
         final Account senderAccount = zip.getT1();
         final Account receiverAccount = zip.getT2();
-        senderAccount.setBalance(senderAccount.getBalance().subtract(orderDto.getTotalPrice()));
-        receiverAccount.setBalance(receiverAccount.getBalance().add(orderDto.getTotalPrice()));
+        final BigDecimal totalPriceAfterDiscount = orderDto.getTotalPriceAfterDiscount();
+        senderAccount.setBalance(senderAccount.getBalance().subtract(totalPriceAfterDiscount)); //TODO 2020-07-05 rustammamedov: check balance before withdraw.
+        receiverAccount.setBalance(receiverAccount.getBalance().add(totalPriceAfterDiscount));
         return Payment.builder()
                 .orderId(orderDto.getId())
-                .orderSum(orderDto.getTotalPrice())
+                .status(PaymentStatus.SUCCESS) //TODO 2020-07-05 rustammamedov: set status with depends of balance.
+                .orderSum(totalPriceAfterDiscount)
                 .senderBankAccountNum(senderAccount.getBankAccountNumber())
                 .receiverBankAccountNum(receiverAccount.getBankAccountNumber())
                 .build();
