@@ -2,7 +2,7 @@ package com.rmamedov.deasy.paymentservice.service;
 
 import com.rmamedov.deasy.kafkastarter.sender.ApplicationKafkaSender;
 import com.rmamedov.deasy.model.kafka.CheckStatus;
-import com.rmamedov.deasy.model.kafka.OrderDto;
+import com.rmamedov.deasy.model.kafka.OrderMessage;
 import com.rmamedov.deasy.model.kafka.PaymentStatus;
 import com.rmamedov.deasy.paymentservice.client.OrderClient;
 import com.rmamedov.deasy.paymentservice.converter.PaymentToPayResponseConverter;
@@ -43,12 +43,12 @@ public class PaymentService {
                 CheckStatus.FULLY_CHECKED.name(),
                 PaymentStatus.NEW.name()
         )
-                .flatMap(orderDto -> findBothAccounts(request) //TODO 2020-07-05 rustammamedov: update accounts after payment.
-                        .flatMap(zip -> paymentRepository.save(withdrawAndCreatePayment(orderDto, zip))
-                                .doOnNext(payment -> orderDto.setTransactionId("TX_" + payment.getTransactionId()))
-                                .doOnSuccess(payment -> orderDto.setPaymentStatus(PaymentStatus.SUCCESS))
-                                .doOnError(throwable -> orderDto.setPaymentStatus(PaymentStatus.FAILED))
-                                .doFinally(payment -> applicationKafkaSender.send(orderDto)) //TODO 2020-07-05 rustammamedov: What if message not delivered?
+                .flatMap(OrderMessage -> findBothAccounts(request) //TODO 2020-07-05 rustammamedov: update accounts after payment.
+                        .flatMap(zip -> paymentRepository.save(withdrawAndCreatePayment(OrderMessage, zip))
+                                .doOnNext(payment -> OrderMessage.setTransactionId("TX_" + payment.getTransactionId()))
+                                .doOnSuccess(payment -> OrderMessage.setPaymentStatus(PaymentStatus.SUCCESS))
+                                .doOnError(throwable -> OrderMessage.setPaymentStatus(PaymentStatus.FAILED))
+                                .doFinally(payment -> applicationKafkaSender.send(OrderMessage)) //TODO 2020-07-05 rustammamedov: What if message not delivered?
                         )
                 )
                 .map(responseConverter::convert);
@@ -62,14 +62,14 @@ public class PaymentService {
                 .switchIfEmpty(Mono.error(new AccountNotFoundException("One or both accounts that participates in payment - Not found.")));
     }
 
-    private Payment withdrawAndCreatePayment(final OrderDto orderDto, final Tuple2<Account, Account> zip) {
+    private Payment withdrawAndCreatePayment(final OrderMessage OrderMessage, final Tuple2<Account, Account> zip) {
         final Account senderAccount = zip.getT1();
         final Account receiverAccount = zip.getT2();
-        final BigDecimal totalPriceAfterDiscount = orderDto.getTotalPriceAfterDiscount();
+        final BigDecimal totalPriceAfterDiscount = OrderMessage.getTotalPriceAfterDiscount();
         senderAccount.setBalance(senderAccount.getBalance().subtract(totalPriceAfterDiscount)); //TODO 2020-07-05 rustammamedov: check balance before withdraw.
         receiverAccount.setBalance(receiverAccount.getBalance().add(totalPriceAfterDiscount));
         return Payment.builder()
-                .orderId(orderDto.getId())
+                .orderId(OrderMessage.getId())
                 .status(PaymentStatus.SUCCESS) //TODO 2020-07-05 rustammamedov: set status with depends of balance.
                 .orderSum(totalPriceAfterDiscount)
                 .senderBankAccountNum(senderAccount.getBankAccountNumber())

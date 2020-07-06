@@ -1,6 +1,6 @@
 package com.rmamedov.deasy.paymentservice.client;
 
-import com.rmamedov.deasy.model.kafka.OrderDto;
+import com.rmamedov.deasy.model.kafka.OrderMessage;
 import com.rmamedov.deasy.paymentservice.config.ClientConfigurationProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -16,7 +16,7 @@ public class OrderClient {
 
     private final ClientConfigurationProperties properties;
 
-    public Mono<OrderDto> findByIdAndCheckStatus(final String id,
+    public Mono<OrderMessage> findByIdAndCheckStatus(final String id,
                                                  final String checkStatus,
                                                  final String payStatus) {
 
@@ -24,7 +24,7 @@ public class OrderClient {
                 .uri(properties.getUri(), id, checkStatus, payStatus)
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .bodyToMono(OrderDto.class);
+                .bodyToMono(OrderMessage.class);
     }
 
 }
