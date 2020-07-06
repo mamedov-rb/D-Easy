@@ -4,7 +4,7 @@ import com.rmamedov.deasy.kafkastarter.properties.KafkaReceiverConfigurationProp
 import com.rmamedov.deasy.kafkastarter.properties.TopicConfigurationProperties;
 import com.rmamedov.deasy.kafkastarter.receiver.ApplicationKafkaReceiver;
 import com.rmamedov.deasy.kafkastarter.sender.ApplicationKafkaSender;
-import com.rmamedov.deasy.model.kafka.OrderDto;
+import com.rmamedov.deasy.model.kafka.OrderMessage;
 import com.rmamedov.deasy.restaurantetl.service.RestaurantEtlService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -41,12 +41,12 @@ public class RestaurantEtlKafkaReceiver {
     @EventListener(ApplicationStartedEvent.class)
     public void listen() {
         final var applicationKafkaReceiver =
-                new ApplicationKafkaReceiver<OrderDto>(receiverProperties, List.of(newOrdersTopicProps.getName()));
+                new ApplicationKafkaReceiver<OrderMessage>(receiverProperties, List.of(newOrdersTopicProps.getName()));
 
         applicationKafkaReceiver.receive()
                 .flatMap(receiverRecord -> restaurantEtlService.check(Mono.just(receiverRecord.value()))
-                        .doOnNext(orderDto -> {
-                            applicationKafkaSender.send(orderDto);
+                        .doOnNext(OrderMessage -> {
+                            applicationKafkaSender.send(OrderMessage);
                             receiverRecord.receiverOffset().acknowledge();
                         }))
                 .doOnError(err -> log.error("Exception has occurred: ", err))

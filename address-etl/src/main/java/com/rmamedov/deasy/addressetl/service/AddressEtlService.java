@@ -1,11 +1,11 @@
 package com.rmamedov.deasy.addressetl.service;
 
-import com.rmamedov.deasy.addressetl.converter.OrderCheckDetailsToOrderDtoConverter;
-import com.rmamedov.deasy.addressetl.converter.OrderDtoToOrderCheckDetailConverter;
+import com.rmamedov.deasy.addressetl.converter.OrderCheckDetailsToOrderMessageConverter;
+import com.rmamedov.deasy.addressetl.converter.OrderMessageToOrderCheckDetailConverter;
 import com.rmamedov.deasy.addressetl.model.OrderAddressCheckDetails;
 import com.rmamedov.deasy.addressetl.repository.OrderDetailsRepository;
 import com.rmamedov.deasy.model.kafka.CheckStatus;
-import com.rmamedov.deasy.model.kafka.OrderDto;
+import com.rmamedov.deasy.model.kafka.OrderMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,39 +19,39 @@ public class AddressEtlService {
 
     private final OrderDetailsRepository orderDetailsRepository;
 
-    private final OrderDtoToOrderCheckDetailConverter detailConverter;
+    private final OrderMessageToOrderCheckDetailConverter detailConverter;
 
-    private final OrderCheckDetailsToOrderDtoConverter toDtoConverter;
+    private final OrderCheckDetailsToOrderMessageConverter toOrderMessageConverter;
 
     @Transactional
-    public Mono<OrderDto> check(final Mono<OrderDto> orderDto) {
-        return orderDto
+    public Mono<OrderMessage> check(final Mono<OrderMessage> OrderMessage) {
+        return OrderMessage
                 .map(this::check)
-                .flatMap(checkedDto -> {
-                    final OrderAddressCheckDetails checkDetails = detailConverter.convert(checkedDto);
+                .flatMap(checkedOrderMessage -> {
+                    final OrderAddressCheckDetails checkDetails = detailConverter.convert(checkedOrderMessage);
                     return orderDetailsRepository.save(checkDetails)
                             .doOnNext(savedDetails -> log.info("Saved address details after check: '{}'", savedDetails))
-                            .map(toDtoConverter::convert);
+                            .map(toOrderMessageConverter::convert);
                 });
     }
 
-    private OrderDto check(final OrderDto orderDto) {
-        final String consumerAddress = orderDto.getConsumerAddress();
-        final String restaurantAddress = orderDto.getRestaurantAddress();
+    private OrderMessage check(final OrderMessage OrderMessage) {
+        final String consumerAddress = OrderMessage.getConsumerAddress();
+        final String restaurantAddress = OrderMessage.getRestaurantAddress();
         final String successDescription = "Address is reachable, it might took 20min to deliver order.";
         final String failedDescription = "Address is reachable, it might took 20min to deliver order.";
         if (isReachable()) {
-            updateCheckStatus(orderDto, successDescription);
+            updateCheckStatus(OrderMessage, successDescription);
         } else {
-            updateCheckStatus(orderDto, failedDescription);
+            updateCheckStatus(OrderMessage, failedDescription);
         }
-        return orderDto;
+        return OrderMessage;
     }
 
-    private void updateCheckStatus(final OrderDto orderDto, final String checkDetails) {
+    private void updateCheckStatus(final OrderMessage OrderMessage, final String checkDetails) {
         final CheckStatus checkStatus = CheckStatus.ADDRESSES_CHECKED;
-        orderDto.getCheckStatuses().add(checkStatus);
-        orderDto.getCheckDetails().put(checkStatus.name(), checkDetails);
+        OrderMessage.getCheckStatuses().add(checkStatus);
+        OrderMessage.getCheckDetails().put(checkStatus.name(), checkDetails);
         log.info("Addresses checked with result: '{}'.", checkDetails);
     }
 

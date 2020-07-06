@@ -1,9 +1,9 @@
 package com.rmamedov.deasy.restaurantetl.service;
 
 import com.rmamedov.deasy.model.kafka.CheckStatus;
-import com.rmamedov.deasy.model.kafka.OrderDto;
-import com.rmamedov.deasy.restaurantetl.converter.OrderCheckDetailsToOrderDtoConverter;
-import com.rmamedov.deasy.restaurantetl.converter.OrderDtoToOrderCheckDetailConverter;
+import com.rmamedov.deasy.model.kafka.OrderMessage;
+import com.rmamedov.deasy.restaurantetl.converter.OrderCheckDetailsToOrderMessageConverter;
+import com.rmamedov.deasy.restaurantetl.converter.OrderMessageToOrderCheckDetailConverter;
 import com.rmamedov.deasy.restaurantetl.model.OrderRestaurantCheckDetails;
 import com.rmamedov.deasy.restaurantetl.repository.OrderDetailsRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,36 +19,36 @@ public class RestaurantEtlService {
 
     private final OrderDetailsRepository orderDetailsRepository;
 
-    private final OrderDtoToOrderCheckDetailConverter detailConverter;
+    private final OrderMessageToOrderCheckDetailConverter detailConverter;
 
-    private final OrderCheckDetailsToOrderDtoConverter toDtoConverter;
+    private final OrderCheckDetailsToOrderMessageConverter toOrderMessageConverter;
 
     @Transactional
-    public Mono<OrderDto> check(final Mono<OrderDto> orderDto) {
-        return orderDto.map(this::check)
-                .flatMap(checkedDto -> {
-                    final OrderRestaurantCheckDetails checkDetails = detailConverter.convert(checkedDto);
+    public Mono<OrderMessage> check(final Mono<OrderMessage> OrderMessage) {
+        return OrderMessage.map(this::check)
+                .flatMap(checkedOrderMessage -> {
+                    final OrderRestaurantCheckDetails checkDetails = detailConverter.convert(checkedOrderMessage);
                     return orderDetailsRepository.save(checkDetails)
                             .doOnNext(savedDetails -> log.info("Saved restaurant details after check: '{}'", savedDetails))
-                            .map(toDtoConverter::convert);
+                            .map(toOrderMessageConverter::convert);
                 });
     }
 
-    private OrderDto check(final OrderDto orderDto) {
+    private OrderMessage check(final OrderMessage OrderMessage) {
         final String successDescription = "All menu can be cocked, it might took 30min.";
         final String failedDescription = "All menu can be cocked, it might took 30min.";
         if (allPositionsCanBeCooked()) {
-            updateCheckStatus(orderDto, successDescription);
+            updateCheckStatus(OrderMessage, successDescription);
         } else {
-            updateCheckStatus(orderDto, failedDescription);
+            updateCheckStatus(OrderMessage, failedDescription);
         }
-        return orderDto;
+        return OrderMessage;
     }
 
-    private void updateCheckStatus(final OrderDto orderDto, final String checkDetails) {
+    private void updateCheckStatus(final OrderMessage OrderMessage, final String checkDetails) {
         final CheckStatus checkStatus = CheckStatus.ORDER_MENU_CHECKED;
-        orderDto.getCheckStatuses().add(checkStatus);
-        orderDto.getCheckDetails().put(checkStatus.name(), checkDetails);
+        OrderMessage.getCheckStatuses().add(checkStatus);
+        OrderMessage.getCheckDetails().put(checkStatus.name(), checkDetails);
         log.info("Menu checked with result: '{}'.", checkDetails);
     }
 
