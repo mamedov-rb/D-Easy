@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Set;
 
 @Data
-public class OrderInfoResponse {
+public class OrderInfo {
 
     private String id;
 

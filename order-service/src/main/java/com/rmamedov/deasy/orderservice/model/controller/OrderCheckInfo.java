@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 @Data
-public class OrderStatusInfo {
+public class OrderCheckInfo {
 
     private String orderId;
 

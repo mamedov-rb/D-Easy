@@ -16,15 +16,19 @@ public class OrderClient {
 
     private final ClientConfigurationProperties properties;
 
-    public Mono<OrderMessage> findByIdAndCheckStatus(final String id,
-                                                 final String checkStatus,
-                                                 final String payStatus) {
+    /**
+     * Returns OrderMessage or throws WebClientResponseException if smth goes wrong.
+     */
+    public Mono<OrderMessage> findByCriteria(final String id,
+                                             final String checkStatus,
+                                             final String payStatus) {
 
         return webClient.get()
                 .uri(properties.getUri(), id, checkStatus, payStatus)
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .bodyToMono(OrderMessage.class);
+                .bodyToMono(OrderMessage.class)
+                .log();
     }
 
 }

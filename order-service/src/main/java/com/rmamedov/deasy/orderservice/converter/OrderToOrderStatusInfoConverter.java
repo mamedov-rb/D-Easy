@@ -1,6 +1,6 @@
 package com.rmamedov.deasy.orderservice.converter;
 
-import com.rmamedov.deasy.orderservice.model.controller.OrderStatusInfo;
+import com.rmamedov.deasy.orderservice.model.controller.OrderCheckInfo;
 import com.rmamedov.deasy.orderservice.model.repository.Order;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -9,6 +9,6 @@ import org.mapstruct.Mapping;
 public interface OrderToOrderStatusInfoConverter {
 
     @Mapping(target = "orderId", source = "id")
-    OrderStatusInfo convert(Order source);
+    OrderCheckInfo convert(Order source);
 
 }

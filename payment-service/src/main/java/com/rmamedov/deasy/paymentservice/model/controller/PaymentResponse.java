@@ -15,7 +15,7 @@ public class PaymentResponse {
 
     private PaymentStatus status;
 
-    private BigDecimal orderSum;
+    private BigDecimal sum;
 
     private String senderBankAccountNum;
 
