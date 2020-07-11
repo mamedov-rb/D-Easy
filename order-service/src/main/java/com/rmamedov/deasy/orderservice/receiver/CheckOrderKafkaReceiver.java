@@ -4,37 +4,31 @@ import com.rmamedov.deasy.kafkastarter.properties.KafkaReceiverConfigurationProp
 import com.rmamedov.deasy.kafkastarter.properties.TopicConfigurationProperties;
 import com.rmamedov.deasy.kafkastarter.receiver.ApplicationKafkaReceiver;
 import com.rmamedov.deasy.model.kafka.OrderMessage;
-import com.rmamedov.deasy.orderservice.config.MongoConfigurationProperties;
 import com.rmamedov.deasy.orderservice.converter.OrderMessageToOrderConverter;
-import com.rmamedov.deasy.orderservice.model.controller.OrderStatusInfo;
-import com.rmamedov.deasy.orderservice.service.ProcessOrderService;
+import com.rmamedov.deasy.orderservice.model.controller.OrderCheckInfo;
+import com.rmamedov.deasy.orderservice.service.CheckOrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static java.time.Duration.ofMillis;
-
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class OrderKafkaReceiver {
+public class CheckOrderKafkaReceiver {
 
     private ApplicationKafkaReceiver<OrderMessage> kafkaReceiver;
 
-    private final ProcessOrderService processOrderService;
+    private final CheckOrderService checkOrderService;
 
-    private final OrderMessageToOrderConverter OrderMessageToOrderConverter;
+    private final OrderMessageToOrderConverter orderMessageToOrderConverter;
 
     private final KafkaReceiverConfigurationProperties receiverProperties;
-
-    private final MongoConfigurationProperties mongoProperties;
 
     private final List<TopicConfigurationProperties> topicConfigurationList;
 
@@ -47,20 +41,14 @@ public class OrderKafkaReceiver {
         kafkaReceiver = new ApplicationKafkaReceiver<>(receiverProperties, topicNames);
     }
 
-    public Flux<OrderStatusInfo> listenCheckedOrders() {
+    public Flux<OrderCheckInfo> listenCheckedOrders() {
         return kafkaReceiver.receive()
                 .flatMap(receiverRecord -> {
-                    final var order = OrderMessageToOrderConverter.convert(receiverRecord.value());
-                    final Mono<OrderStatusInfo> orderCheckStatusOrderMessageMono = processOrderService.updateAfterCheck(order)
-                                    .retryBackoff(
-                                            mongoProperties.getNumRetries(),
-                                            ofMillis(mongoProperties.getFirstBackoff()),
-                                            ofMillis(mongoProperties.getMaxBackoff())
-                                    );
-                    receiverRecord.receiverOffset().acknowledge();
-                    return orderCheckStatusOrderMessageMono;
+                    final var order = orderMessageToOrderConverter.convert(receiverRecord.value());
+                    return checkOrderService.updateOrderAfterEtlCheck(order)
+                            .doOnSuccess(checkInfo -> receiverRecord.receiverOffset().acknowledge())
+                            .doOnError(ex -> log.error("Exception has occurred: ", ex));
                 })
-                .doOnError(ex -> log.error("Exception has occurred: ", ex))
                 .subscribeOn(Schedulers.single());
     }
 

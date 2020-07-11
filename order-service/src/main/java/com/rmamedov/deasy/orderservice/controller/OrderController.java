@@ -1,13 +1,13 @@
 package com.rmamedov.deasy.orderservice.controller;
 
 import com.rmamedov.deasy.model.controller.OrderCreateRequest;
-import com.rmamedov.deasy.model.controller.OrderInfoResponse;
+import com.rmamedov.deasy.model.controller.OrderInfo;
 import com.rmamedov.deasy.orderservice.converter.OrderCreateRequestToOrderConverter;
 import com.rmamedov.deasy.orderservice.converter.OrderToOrderInfoConverter;
-import com.rmamedov.deasy.orderservice.model.controller.OrderStatusInfo;
-import com.rmamedov.deasy.orderservice.receiver.OrderKafkaReceiver;
+import com.rmamedov.deasy.orderservice.model.controller.OrderCheckInfo;
+import com.rmamedov.deasy.orderservice.receiver.CheckOrderKafkaReceiver;
+import com.rmamedov.deasy.orderservice.service.CheckOrderService;
 import com.rmamedov.deasy.orderservice.service.OrderService;
-import com.rmamedov.deasy.orderservice.service.ProcessOrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
@@ -29,9 +29,9 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    private final OrderKafkaReceiver orderKafkaReceiver;
+    private final CheckOrderKafkaReceiver checkOrderKafkaReceiver;
 
-    private final ProcessOrderService processOrderService;
+    private final CheckOrderService checkOrderService;
 
     private final OrderToOrderInfoConverter orderToOrderInfoConverter;
 
@@ -44,20 +44,20 @@ public class OrderController {
     )
     public Mono<String> create(@RequestBody @Validated final Mono<OrderCreateRequest> createRequest) {
         return createRequest.map(requestToOrderConverter::convert)
-                .flatMap(processOrderService::newOrder);
+                .flatMap(checkOrderService::createOrder);
     }
 
     @GetMapping(path = "/statuses", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<OrderStatusInfo> statuses() {
-        return orderKafkaReceiver.listenCheckedOrders()
+    public Flux<OrderCheckInfo> statuses() {
+        return checkOrderKafkaReceiver.listenCheckedOrders()
                 .delayElements(Duration.ofSeconds(1)) //Timeout's needs for synthetically slow down response
                 .timeout(Duration.ofSeconds(20));
     }
 
     @GetMapping(path = "/find/{id}/{checkStatus}/{paymentStatus}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<OrderInfoResponse> findByIdAndCheckStatus(@PathVariable("id") final String id,
-                                                          @PathVariable("checkStatus") final String checkStatus,
-                                                          @PathVariable("paymentStatus") final String paymentStatus) {
+    public Mono<OrderInfo> findByIdAndCheckStatus(@PathVariable("id") final String id,
+                                                  @PathVariable("checkStatus") final String checkStatus,
+                                                  @PathVariable("paymentStatus") final String paymentStatus) {
 
         return orderService
                 .findByCriteria(id, checkStatus, paymentStatus)
@@ -65,7 +65,7 @@ public class OrderController {
     }
 
     @GetMapping(path = "/all", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<OrderInfoResponse> findAll() {
+    public Flux<OrderInfo> findAll() {
         return orderService
                 .findAll()
                 .map(orderToOrderInfoConverter::convert);

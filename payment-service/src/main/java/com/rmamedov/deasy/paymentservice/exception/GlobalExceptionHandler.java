@@ -38,6 +38,18 @@ public class GlobalExceptionHandler {
         return buildResponse(ex.toString(), HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(PaymentAlreadyExistException.class)
+    public Mono<ResponseEntity<ResponseModel>> handlePaymentAlreadyExistException(final PaymentAlreadyExistException ex) {
+        log.error("PaymentAlreadyExistException: ", ex);
+        return buildResponse(ex.toString(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(NotEnoughMoneyException.class)
+    public Mono<ResponseEntity<ResponseModel>> handleNotEnoughMoneyException(final NotEnoughMoneyException ex) {
+        log.error("NotEnoughMoneyException: ", ex);
+        return buildResponse(ex.toString(), HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(WebClientResponseException.class)
     public Mono<ResponseEntity<ResponseModel>> handleWebClientResponseException(final WebClientResponseException ex) {
         log.error("WebClientResponseException: Status: '{}', Body: '{}'", ex.getRawStatusCode(), ex.getResponseBodyAsString(), ex);

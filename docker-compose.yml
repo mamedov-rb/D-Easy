@@ -13,8 +13,8 @@ services:
     ports:
       - 27017:27017
     command: ["mongod", "--bind_ip_all", "--replSet", "rs0"]
-#    networks:
-#      - database
+    networks:
+      - database-net
 
   mongo-init-replica-set:
     image: mongo:latest
@@ -27,15 +27,13 @@ services:
     env_file:
       "./mongod.env"
     entrypoint: [ "bash", "/scripts/init-replica-set.sh"]
-#    networks:
-#      - database
+    networks:
+      - database-net
 
   zookeeper-server:
     image: bitnami/zookeeper:latest
     container_name: zookeeper-container
     restart: always
-    ports:
-      - 2181:2181
     env_file:
       "./zookeeper.env"
     networks:
@@ -47,12 +45,14 @@ services:
     restart: always
     ports:
       - 9092:9092
+#      - 9093:9093
     env_file:
       "./kafka.env"
     depends_on:
       - zookeeper-server
     networks:
       - zookeeper-kafka-net
+      - service-kafka-net
 
   discovery-service:
     build: ./discovery-service
@@ -61,8 +61,8 @@ services:
     container_name: discovery-service-container
     ports:
       - 8761:8761
-##    networks:
-##      - cloud-service-net
+    networks:
+      - service-net
 
 #  zuul-service:
 #    build: gateway-service
@@ -91,10 +91,12 @@ services:
 #    entrypoint: ["/bin/sh"]
 #    command: ["-c", "/app/wait-for.sh mongo-primary:27017 && /app/wait-for.sh discovery-service:8761 && java -jar -Dspring.profiles.active=development /app/order-service.jar"]
 #    networks:
-#      - cloud-service-net
-#      - database
+#      - service-net
+#      - database-net
+#      - service-kafka-net
 
 networks:
-  cloud-service-net:
+  service-net:
   zookeeper-kafka-net:
-  database:
+  service-kafka-net:
+  database-net:

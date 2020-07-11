@@ -2,9 +2,10 @@ package com.rmamedov.deasy.orderservice.service;
 
 import com.rmamedov.deasy.kafkastarter.sender.ApplicationKafkaSender;
 import com.rmamedov.deasy.model.kafka.CheckStatus;
+import com.rmamedov.deasy.orderservice.config.MongoConfigurationProperties;
 import com.rmamedov.deasy.orderservice.converter.OrderToOrderMessageConverter;
 import com.rmamedov.deasy.orderservice.converter.OrderToOrderStatusInfoConverter;
-import com.rmamedov.deasy.orderservice.model.controller.OrderStatusInfo;
+import com.rmamedov.deasy.orderservice.model.controller.OrderCheckInfo;
 import com.rmamedov.deasy.orderservice.model.repository.Order;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,10 +15,12 @@ import reactor.core.publisher.Mono;
 
 import java.util.Set;
 
+import static java.time.Duration.ofMillis;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class ProcessOrderService {
+public class CheckOrderService {
 
     public static final Set<CheckStatus> FULLY_CHECKED_SET = Set.of(
             CheckStatus.ADDRESSES_CHECKED,
@@ -29,12 +32,14 @@ public class ProcessOrderService {
 
     private final ApplicationKafkaSender applicationKafkaSender;
 
+    private final MongoConfigurationProperties mongoProperties;
+
     private final OrderToOrderMessageConverter orderToOrderMessageConverter;
 
     private final OrderToOrderStatusInfoConverter orderToOrderStatusInfoConverter;
 
     @Transactional
-    public Mono<String> newOrder(final Order order) {
+    public Mono<String> createOrder(final Order order) {
         return orderService.save(order)
                 .map(orderToOrderMessageConverter::convert)
                 .flatMap(OrderMessage -> {
@@ -44,7 +49,7 @@ public class ProcessOrderService {
     }
 
     @Transactional
-    public Mono<OrderStatusInfo> updateAfterCheck(final Order order) {
+    public Mono<OrderCheckInfo> updateOrderAfterEtlCheck(final Order order) {
         return Mono.just(order)
                 .flatMap(incomingOrder -> orderService.findById(incomingOrder.getId())
                         .doOnNext(savedOrder -> {
@@ -56,6 +61,11 @@ public class ProcessOrderService {
                         })
                         .flatMap(orderService::save)
                         .map(orderToOrderStatusInfoConverter::convert)
+                )
+                .retryBackoff(
+                        mongoProperties.getNumRetries(),
+                        ofMillis(mongoProperties.getFirstBackoff()),
+                        ofMillis(mongoProperties.getMaxBackoff())
                 );
     }
 

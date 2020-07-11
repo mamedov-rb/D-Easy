@@ -25,7 +25,7 @@ public class Payment {
     private String id = UUID.randomUUID().toString();
 
     @NotBlank
-    private String transactionId = UUID.randomUUID().toString();
+    private String transactionId = "TX_" + UUID.randomUUID().toString();
 
     @NotBlank
     private String orderId;
@@ -35,7 +35,7 @@ public class Payment {
 
     @NotNull
     @Positive
-    private BigDecimal orderSum;
+    private BigDecimal sum;
 
     @NotBlank
     private String senderBankAccountNum;
@@ -49,13 +49,13 @@ public class Payment {
     @Builder
     public Payment(String orderId,
                    PaymentStatus status,
-                   BigDecimal orderSum,
+                   BigDecimal sum,
                    String senderBankAccountNum,
                    String receiverBankAccountNum) {
 
         this.orderId = orderId;
         this.status = status;
-        this.orderSum = orderSum;
+        this.sum = sum;
         this.senderBankAccountNum = senderBankAccountNum;
         this.receiverBankAccountNum = receiverBankAccountNum;
     }
