@@ -5,7 +5,10 @@ import com.rmamedov.deasy.paymentservice.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -16,6 +19,11 @@ public class AccountService {
     @Transactional
     public Mono<Account> findByBankAccountNumber(final String accountNumber) {
         return accountRepository.findByBankAccountNumber(accountNumber).log();
+    }
+
+    @Transactional
+    public Flux<Account> saveAll(final Account... accounts) {
+        return accountRepository.saveAll(List.of(accounts));
     }
 
 //    @PostConstruct
