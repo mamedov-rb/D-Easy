@@ -5,5 +5,4 @@
 build
 /db/
 /.idea/
-/gradle/
 /address-service/.idea/
