@@ -30,8 +30,6 @@ public class CheckOrderKafkaReceiver {
 
     private final KafkaReceiverConfigurationProperties receiverProperties;
 
-    private final MongoConfigurationProperties mongoProperties;
-
     private final List<TopicConfigurationProperties> topicConfigurationList;
 
     @PostConstruct

@@ -15,6 +15,8 @@ import reactor.core.publisher.Mono;
 
 import java.util.Set;
 
+import static java.time.Duration.ofMillis;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -29,6 +31,8 @@ public class CheckOrderService {
     private final OrderService orderService;
 
     private final ApplicationKafkaSender applicationKafkaSender;
+
+    private final MongoConfigurationProperties mongoProperties;
 
     private final OrderToOrderMessageConverter orderToOrderMessageConverter;
 
@@ -57,6 +61,11 @@ public class CheckOrderService {
                         })
                         .flatMap(orderService::save)
                         .map(orderToOrderStatusInfoConverter::convert)
+                )
+                .retryBackoff(
+                        mongoProperties.getNumRetries(),
+                        ofMillis(mongoProperties.getFirstBackoff()),
+                        ofMillis(mongoProperties.getMaxBackoff())
                 );
     }
 
