@@ -38,4 +38,10 @@ public class TopicConfigurationPropertiesConfig {
         return new TopicConfigurationProperties();
     }
 
+    @Bean
+    @ConfigurationProperties(prefix = "kafka.topics.ready-to-cook-topic")
+    public TopicConfigurationProperties readyToCookTopicProp() {
+        return new TopicConfigurationProperties();
+    }
+
 }

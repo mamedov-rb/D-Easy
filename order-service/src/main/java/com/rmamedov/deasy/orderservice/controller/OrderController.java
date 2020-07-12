@@ -44,7 +44,7 @@ public class OrderController {
     )
     public Mono<String> create(@RequestBody @Validated final Mono<OrderCreateRequest> createRequest) {
         return createRequest.map(requestToOrderConverter::convert)
-                .flatMap(checkOrderService::createOrder);
+                .flatMap(checkOrderService::createAndSend);
     }
 
     @GetMapping(path = "/statuses", produces = MediaType.TEXT_EVENT_STREAM_VALUE)

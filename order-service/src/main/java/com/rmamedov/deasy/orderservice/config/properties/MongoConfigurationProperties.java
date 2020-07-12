@@ -1,4 +1,4 @@
-package com.rmamedov.deasy.orderservice.config;
+package com.rmamedov.deasy.orderservice.config.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
