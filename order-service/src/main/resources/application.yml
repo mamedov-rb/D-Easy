@@ -36,6 +36,10 @@ kafka:
       name: success-payed-orders-topic
       partitions: 1
       replicas: 1
+    ready-to-cook-topic:
+      name: ready-to-cook-topic
+      partitions: 1
+      replicas: 1
 
 eureka:
   instance.preferIpAddress: true

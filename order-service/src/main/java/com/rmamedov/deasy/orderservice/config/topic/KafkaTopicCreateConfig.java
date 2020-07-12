@@ -57,4 +57,13 @@ public class KafkaTopicCreateConfig {
                 .build();
     }
 
+    @Bean
+    public NewTopic readyToCookTopicPropConfigTopic(@Qualifier("readyToCookTopicProp") final TopicConfigurationProperties properties) {
+        return TopicBuilder.name(properties.getName())
+                .partitions(properties.getPartitions())
+                .replicas(properties.getReplicas())
+                .compact()
+                .build();
+    }
+
 }
