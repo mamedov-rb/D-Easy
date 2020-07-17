@@ -6,6 +6,7 @@ import com.rmamedov.deasy.orderservice.config.properties.MongoConfigurationPrope
 import com.rmamedov.deasy.orderservice.converter.OrderToOrderMessageConverter;
 import com.rmamedov.deasy.orderservice.converter.OrderToOrderStatusInfoConverter;
 import com.rmamedov.deasy.orderservice.model.controller.OrderCheckInfo;
+import com.rmamedov.deasy.orderservice.model.controller.OrderCreateResponse;
 import com.rmamedov.deasy.orderservice.model.repository.Order;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -51,12 +52,12 @@ public class CheckOrderService {
     }
 
     @Transactional
-    public Mono<String> createAndSend(final Order order) {
+    public Mono<OrderCreateResponse> createAndSend(final Order order) {
         return orderService.save(order)
                 .map(orderToOrderMessageConverter::convert)
                 .flatMap(OrderMessage -> {
                     applicationKafkaSender.send(OrderMessage);
-                    return Mono.just(order.getId());
+                    return Mono.just(new OrderCreateResponse(order.getId()));
                 });
     }
 

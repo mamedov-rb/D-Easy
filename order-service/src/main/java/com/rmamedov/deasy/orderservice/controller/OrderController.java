@@ -5,6 +5,7 @@ import com.rmamedov.deasy.model.controller.OrderInfo;
 import com.rmamedov.deasy.orderservice.converter.OrderCreateRequestToOrderConverter;
 import com.rmamedov.deasy.orderservice.converter.OrderToOrderInfoConverter;
 import com.rmamedov.deasy.orderservice.model.controller.OrderCheckInfo;
+import com.rmamedov.deasy.orderservice.model.controller.OrderCreateResponse;
 import com.rmamedov.deasy.orderservice.receiver.CheckOrderKafkaReceiver;
 import com.rmamedov.deasy.orderservice.service.CheckOrderService;
 import com.rmamedov.deasy.orderservice.service.OrderService;
@@ -42,7 +43,7 @@ public class OrderController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public Mono<String> create(@RequestBody @Validated final Mono<OrderCreateRequest> createRequest) {
+    public Mono<OrderCreateResponse> create(@RequestBody @Validated final Mono<OrderCreateRequest> createRequest) {
         return createRequest.map(requestToOrderConverter::convert)
                 .flatMap(checkOrderService::createAndSend);
     }
