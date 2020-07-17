@@ -7,14 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification
 
+import static com.rmamedov.orderservice.util.ModelHelper.CONSUMER_ADDRESS
+import static com.rmamedov.orderservice.util.ModelHelper.ORDER_DESCRIPTION
+import static com.rmamedov.orderservice.util.ModelHelper.ORDER_NAME
+import static com.rmamedov.orderservice.util.ModelHelper.RESTAURANT_ADDRESS
 import static com.rmamedov.orderservice.util.ModelHelper.orderCreateRequest
 import static com.rmamedov.orderservice.util.ModelHelper.position1
 import static com.rmamedov.orderservice.util.ModelHelper.position2
 import static com.rmamedov.orderservice.util.ModelHelper.position3
-import static com.rmamedov.orderservice.util.ModelHelper.ORDER_NAME
-import static com.rmamedov.orderservice.util.ModelHelper.ORDER_DESCRIPTION
-import static com.rmamedov.orderservice.util.ModelHelper.CONSUMER_ADDRESS
-import static com.rmamedov.orderservice.util.ModelHelper.RESTAURANT_ADDRESS
 
 @SpringBootTest(classes = OrderCreateRequestToOrderConverterImpl.class)
 class OrderCreateRequestToOrderConverterTest extends Specification {

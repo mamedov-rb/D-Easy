@@ -1,7 +1,11 @@
 package com.rmamedov.orderservice.util
 
 import com.rmamedov.deasy.model.controller.OrderCreateRequest
+import com.rmamedov.deasy.model.kafka.CheckStatus
 import com.rmamedov.deasy.model.kafka.OrderPosition
+import com.rmamedov.deasy.orderservice.model.controller.OrderCheckInfo
+
+import java.time.LocalDateTime
 
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic
 
@@ -64,6 +68,16 @@ class ModelHelper {
         position3.length = 11.00
         position3.additionalInfo = randomAlphabetic(10)
         position3
+    }
+
+    static OrderCheckInfo orderCheckInfo(final CheckStatus checkStatus) {
+        def orderCheckInfo = new OrderCheckInfo()
+        orderCheckInfo.orderId = "123QWE"
+        orderCheckInfo.checkStatuses = Set.of(checkStatus)
+        orderCheckInfo.checkDetails = Map.of(checkStatus.name(), checkStatus.name())
+        orderCheckInfo.created = LocalDateTime.now()
+        orderCheckInfo.updated = LocalDateTime.now()
+        return orderCheckInfo
     }
 
 }
