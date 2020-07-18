@@ -70,9 +70,9 @@ class ModelHelper {
         position3
     }
 
-    static OrderCheckInfo orderCheckInfo(final CheckStatus checkStatus) {
+    static OrderCheckInfo orderCheckInfo(final String orderId, final CheckStatus checkStatus) {
         def orderCheckInfo = new OrderCheckInfo()
-        orderCheckInfo.orderId = "123QWE"
+        orderCheckInfo.orderId = orderId
         orderCheckInfo.checkStatuses = Set.of(checkStatus)
         orderCheckInfo.checkDetails = Map.of(checkStatus.name(), checkStatus.name())
         orderCheckInfo.created = LocalDateTime.now()

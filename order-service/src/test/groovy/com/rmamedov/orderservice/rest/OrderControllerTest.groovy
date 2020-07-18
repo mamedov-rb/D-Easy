@@ -40,7 +40,7 @@ import static org.mockito.Mockito.when
         OrderCreateRequestToOrderConverterImpl.class,
         OrderToOrderInfoConverterImpl.class
 ])
-class OrderIntegrationTest extends Specification {
+class OrderControllerTest extends Specification {
 
     private static final String CREATE_ORDER_URL = "/api/order/create"
     private static final String CHECK_ORDER_STATUSES_URL = "/api/order/statuses"
@@ -85,11 +85,12 @@ class OrderIntegrationTest extends Specification {
     def "When ask all order statuses then success"() {
         given:
         final List<OrderCheckInfo> list = new ArrayList<>()
+        def orderId = "123QWE"
         Stream.of(CheckStatus.values())
                 .filter({ c -> c != CheckStatus.FULLY_CHECKED })
                 .limit(2)
-                .forEach({ c -> list.add(orderCheckInfo(c)) })
-        list.add(orderCheckInfo(CheckStatus.FULLY_CHECKED))
+                .forEach({ c -> list.add(orderCheckInfo(orderId, c)) })
+        list.add(orderCheckInfo(orderId, CheckStatus.FULLY_CHECKED))
         when(checkOrderKafkaReceiver.listenCheckedOrders()).thenReturn(Flux.fromIterable(list))
 
         when:
