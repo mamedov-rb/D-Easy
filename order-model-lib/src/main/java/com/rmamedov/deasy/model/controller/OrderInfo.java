@@ -4,6 +4,7 @@ import com.rmamedov.deasy.model.kafka.CheckStatus;
 import com.rmamedov.deasy.model.kafka.OrderPosition;
 import com.rmamedov.deasy.model.kafka.PaymentStatus;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -11,6 +12,9 @@ import java.util.Map;
 import java.util.Set;
 
 @Data
+@EqualsAndHashCode(of = {
+        "id", "name", "totalPrice", "totalPriceAfterDiscount"
+})
 public class OrderInfo {
 
     private String id;

@@ -1,6 +1,7 @@
 package com.rmamedov.deasy.paymentservice.model.repository;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -14,6 +15,9 @@ import java.util.UUID;
 @Data
 @Document(value = "accounts")
 @Validated
+@EqualsAndHashCode(of = {
+        "id", "bankAccountNumber"
+})
 public class Account {
 
     @Id

@@ -1,6 +1,7 @@
 package com.rmamedov.deasy.model.kafka;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -8,6 +9,9 @@ import java.util.Map;
 import java.util.Set;
 
 @Data
+@EqualsAndHashCode(of = {
+        "id", "name", "totalPrice", "totalPriceAfterDiscount"
+})
 public class OrderMessage {
 
     private String id;

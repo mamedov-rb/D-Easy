@@ -4,6 +4,7 @@ import com.rmamedov.deasy.model.kafka.PaymentStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -19,6 +20,9 @@ import java.util.UUID;
 @Document(value = "payments")
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(of = {
+        "id", "orderId", "status", "sum"
+})
 public class Payment {
 
     @Id
