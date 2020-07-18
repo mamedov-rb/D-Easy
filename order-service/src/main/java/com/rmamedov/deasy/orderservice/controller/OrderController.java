@@ -2,71 +2,19 @@ package com.rmamedov.deasy.orderservice.controller;
 
 import com.rmamedov.deasy.model.controller.OrderCreateRequest;
 import com.rmamedov.deasy.model.controller.OrderInfo;
-import com.rmamedov.deasy.orderservice.converter.OrderCreateRequestToOrderConverter;
-import com.rmamedov.deasy.orderservice.converter.OrderToOrderInfoConverter;
 import com.rmamedov.deasy.orderservice.model.controller.OrderCheckInfo;
 import com.rmamedov.deasy.orderservice.model.controller.OrderCreateResponse;
-import com.rmamedov.deasy.orderservice.receiver.CheckOrderKafkaReceiver;
-import com.rmamedov.deasy.orderservice.service.CheckOrderService;
-import com.rmamedov.deasy.orderservice.service.OrderService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.MediaType;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-@RestController
-@RequestMapping("/api/order")
-@RequiredArgsConstructor
-public class OrderController {
+public interface OrderController {
 
-    private final OrderService orderService;
+    Mono<OrderCreateResponse> create(Mono<OrderCreateRequest> createRequest);
 
-    private final CheckOrderKafkaReceiver checkOrderKafkaReceiver;
+    Flux<OrderCheckInfo> statuses();
 
-    private final CheckOrderService checkOrderService;
+    Mono<OrderInfo> findByIdAndCheckStatus(String id, String checkStatus, String paymentStatus);
 
-    private final OrderToOrderInfoConverter orderToOrderInfoConverter;
-
-    private final OrderCreateRequestToOrderConverter requestToOrderConverter;
-
-    @PostMapping(
-            path = "/create",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    public Mono<OrderCreateResponse> create(@RequestBody @Validated final Mono<OrderCreateRequest> createRequest) {
-        return createRequest
-                .map(requestToOrderConverter::convert)
-                .flatMap(checkOrderService::createAndSend);
-    }
-
-    @GetMapping(path = "/statuses", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<OrderCheckInfo> statuses() {
-        return checkOrderKafkaReceiver.listenCheckedOrders();
-    }
-
-    @GetMapping(path = "/find/{id}/{checkStatus}/{paymentStatus}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<OrderInfo> findByIdAndCheckStatus(@PathVariable("id") final String id,
-                                                  @PathVariable("checkStatus") final String checkStatus,
-                                                  @PathVariable("paymentStatus") final String paymentStatus) {
-
-        return orderService
-                .findByCriteria(id, checkStatus, paymentStatus)
-                .map(orderToOrderInfoConverter::convert);
-    }
-
-    @GetMapping(path = "/all", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<OrderInfo> findAll() {
-        return orderService
-                .findAll()
-                .map(orderToOrderInfoConverter::convert);
-    }
+    Flux<OrderInfo> findAll();
 
 }
