@@ -9,6 +9,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 
 import java.math.BigDecimal;
+import java.util.Comparator;
 import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
@@ -32,6 +33,7 @@ public interface OrderCreateRequestToOrderConverter {
         final String positionsNames = orderCreateRequest
                 .getOrderPositions()
                 .stream()
+                .sorted(Comparator.comparing(OrderPosition::getName))
                 .map(OrderPosition::getName)
                 .collect(Collectors.joining(", "));
         order.setName(positionsNames);

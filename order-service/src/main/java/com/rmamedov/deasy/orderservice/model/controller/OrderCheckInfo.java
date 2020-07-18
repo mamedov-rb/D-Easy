@@ -2,12 +2,16 @@ package com.rmamedov.deasy.orderservice.model.controller;
 
 import com.rmamedov.deasy.model.kafka.CheckStatus;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Set;
 
 @Data
+@EqualsAndHashCode(of = {
+        "created", "updated"
+})
 public class OrderCheckInfo {
 
     private String orderId;

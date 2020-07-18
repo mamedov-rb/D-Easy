@@ -5,6 +5,7 @@ import com.rmamedov.deasy.model.controller.OrderInfo;
 import com.rmamedov.deasy.orderservice.converter.OrderCreateRequestToOrderConverter;
 import com.rmamedov.deasy.orderservice.converter.OrderToOrderInfoConverter;
 import com.rmamedov.deasy.orderservice.model.controller.OrderCheckInfo;
+import com.rmamedov.deasy.orderservice.model.controller.OrderCreateResponse;
 import com.rmamedov.deasy.orderservice.receiver.CheckOrderKafkaReceiver;
 import com.rmamedov.deasy.orderservice.service.CheckOrderService;
 import com.rmamedov.deasy.orderservice.service.OrderService;
@@ -19,8 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.time.Duration;
 
 @RestController
 @RequestMapping("/api/order")
@@ -42,16 +41,15 @@ public class OrderController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public Mono<String> create(@RequestBody @Validated final Mono<OrderCreateRequest> createRequest) {
-        return createRequest.map(requestToOrderConverter::convert)
+    public Mono<OrderCreateResponse> create(@RequestBody @Validated final Mono<OrderCreateRequest> createRequest) {
+        return createRequest
+                .map(requestToOrderConverter::convert)
                 .flatMap(checkOrderService::createAndSend);
     }
 
     @GetMapping(path = "/statuses", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<OrderCheckInfo> statuses() {
-        return checkOrderKafkaReceiver.listenCheckedOrders()
-                .delayElements(Duration.ofSeconds(1)) //Timeout's needs for synthetically slow down response
-                .timeout(Duration.ofSeconds(20));
+        return checkOrderKafkaReceiver.listenCheckedOrders();
     }
 
     @GetMapping(path = "/find/{id}/{checkStatus}/{paymentStatus}", produces = MediaType.APPLICATION_JSON_VALUE)

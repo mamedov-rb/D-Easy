@@ -9,7 +9,9 @@ import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 
 @Data
-@EqualsAndHashCode(of = {"name", "price", "quantity"})
+@EqualsAndHashCode(of = {
+        "name", "price", "quantity", "discount"
+})
 public class OrderPosition {
 
     @NotBlank

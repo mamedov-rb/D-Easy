@@ -10,3 +10,5 @@ build
 /order-service/gradle/
 /order-model-lib/gradle/
 /address-etl/gradle/
+/kafka-starter/out/
+/order-model-lib/out/
