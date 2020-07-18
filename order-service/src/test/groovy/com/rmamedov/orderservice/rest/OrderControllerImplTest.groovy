@@ -3,7 +3,7 @@ package com.rmamedov.orderservice.rest
 import com.rmamedov.deasy.model.controller.OrderInfo
 import com.rmamedov.deasy.model.kafka.CheckStatus
 import com.rmamedov.deasy.model.kafka.PaymentStatus
-import com.rmamedov.deasy.orderservice.controller.OrderController
+import com.rmamedov.deasy.orderservice.controller.OrderControllerImpl
 import com.rmamedov.deasy.orderservice.converter.OrderCreateRequestToOrderConverter
 import com.rmamedov.deasy.orderservice.converter.OrderCreateRequestToOrderConverterImpl
 import com.rmamedov.deasy.orderservice.converter.OrderToOrderInfoConverter
@@ -11,9 +11,9 @@ import com.rmamedov.deasy.orderservice.converter.OrderToOrderInfoConverterImpl
 import com.rmamedov.deasy.orderservice.model.controller.OrderCheckInfo
 import com.rmamedov.deasy.orderservice.model.controller.OrderCreateResponse
 import com.rmamedov.deasy.orderservice.model.repository.Order
-import com.rmamedov.deasy.orderservice.receiver.CheckOrderKafkaReceiver
-import com.rmamedov.deasy.orderservice.service.CheckOrderService
-import com.rmamedov.deasy.orderservice.service.OrderService
+import com.rmamedov.deasy.orderservice.receiver.CheckOrderKafkaReceiverImpl
+import com.rmamedov.deasy.orderservice.service.CheckOrderServiceImpl
+import com.rmamedov.deasy.orderservice.service.OrderServiceImpl
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
 import org.springframework.boot.test.mock.mockito.MockBean
@@ -34,13 +34,13 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic
 import static org.mockito.ArgumentMatchers.any
 import static org.mockito.Mockito.when
 
-@WebFluxTest(OrderController.class)
+@WebFluxTest(OrderControllerImpl.class)
 @ContextConfiguration(classes = [
-        OrderController.class,
+        OrderControllerImpl.class,
         OrderCreateRequestToOrderConverterImpl.class,
         OrderToOrderInfoConverterImpl.class
 ])
-class OrderControllerTest extends Specification {
+class OrderControllerImplTest extends Specification {
 
     private static final String CREATE_ORDER_URL = "/api/order/create"
     private static final String CHECK_ORDER_STATUSES_URL = "/api/order/statuses"
@@ -51,13 +51,13 @@ class OrderControllerTest extends Specification {
     private WebTestClient webTestClient
 
     @MockBean
-    private OrderService orderService
+    private OrderServiceImpl orderService
 
     @MockBean
-    private CheckOrderKafkaReceiver checkOrderKafkaReceiver
+    private CheckOrderKafkaReceiverImpl checkOrderKafkaReceiver
 
     @MockBean
-    private CheckOrderService checkOrderService
+    private CheckOrderServiceImpl checkOrderService
 
     @Autowired
     private OrderCreateRequestToOrderConverter requestToOrderConverter
