@@ -54,11 +54,13 @@ subprojects {
     dependencies {
         implementation "org.springframework.boot:spring-boot-starter-actuator"
         implementation "org.hibernate:hibernate-validator:${hibernateValidatorVersion}"
+
         compileOnly "org.projectlombok:lombok:${lombokVersion}"
         annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
         annotationProcessor "org.mapstruct:mapstruct-processor:${mapStructVersion}"
         implementation "org.mapstruct:mapstruct-jdk8:${mapStructVersion}"
         compileOnly "org.mapstruct:mapstruct-processor:${mapStructVersion}"
+
         testImplementation "org.apache.commons:commons-lang3:${commonsLang3Version}"
         testImplementation("org.springframework.boot:spring-boot-starter-test") {
             exclude group: "org.junit.vintage", module: "junit-vintage-engine"
