@@ -14,8 +14,9 @@ import com.rmamedov.deasy.orderservice.converter.OrderToOrderStatusInfoConverter
 import com.rmamedov.deasy.orderservice.converter.OrderToOrderStatusInfoConverterImpl
 import com.rmamedov.deasy.orderservice.model.controller.OrderCreateResponse
 import com.rmamedov.deasy.orderservice.model.repository.Order
+import com.rmamedov.deasy.orderservice.service.CheckOrderService
 import com.rmamedov.deasy.orderservice.service.CheckOrderServiceImpl
-import com.rmamedov.deasy.orderservice.service.OrderServiceImpl
+import com.rmamedov.deasy.orderservice.service.OrderService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.boot.test.mock.mockito.MockBean
@@ -41,10 +42,10 @@ import static org.mockito.Mockito.when
 class CheckOrderServiceImplImplTest extends Specification {
 
     @MockBean
-    private OrderServiceImpl orderService
+    private OrderService orderService
 
     @Autowired
-    private CheckOrderServiceImpl checkOrderService
+    private CheckOrderService checkOrderService
 
     @Autowired
     private OrderCreateRequestToOrderConverter requestToOrderConverter

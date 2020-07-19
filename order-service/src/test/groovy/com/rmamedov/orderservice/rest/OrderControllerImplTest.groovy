@@ -11,8 +11,11 @@ import com.rmamedov.deasy.orderservice.converter.OrderToOrderInfoConverterImpl
 import com.rmamedov.deasy.orderservice.model.controller.OrderCheckInfo
 import com.rmamedov.deasy.orderservice.model.controller.OrderCreateResponse
 import com.rmamedov.deasy.orderservice.model.repository.Order
+import com.rmamedov.deasy.orderservice.receiver.CheckOrderKafkaReceiver
 import com.rmamedov.deasy.orderservice.receiver.CheckOrderKafkaReceiverImpl
+import com.rmamedov.deasy.orderservice.service.CheckOrderService
 import com.rmamedov.deasy.orderservice.service.CheckOrderServiceImpl
+import com.rmamedov.deasy.orderservice.service.OrderService
 import com.rmamedov.deasy.orderservice.service.OrderServiceImpl
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
@@ -51,13 +54,13 @@ class OrderControllerImplTest extends Specification {
     private WebTestClient webTestClient
 
     @MockBean
-    private OrderServiceImpl orderService
+    private OrderService orderService
 
     @MockBean
-    private CheckOrderKafkaReceiverImpl checkOrderKafkaReceiver
+    private CheckOrderKafkaReceiver checkOrderKafkaReceiver
 
     @MockBean
-    private CheckOrderServiceImpl checkOrderService
+    private CheckOrderService checkOrderService
 
     @Autowired
     private OrderCreateRequestToOrderConverter requestToOrderConverter
