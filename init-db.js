@@ -8,9 +8,6 @@ db.createUser({
     ]
 });
 db.createCollection("orders");
-db.createCollection("order_address_check_details");
-db.createCollection("order_restaurant_check_details");
-db.createCollection("order_courier_check_details");
 db.createCollection("payments");
 db.createCollection("accounts");
 

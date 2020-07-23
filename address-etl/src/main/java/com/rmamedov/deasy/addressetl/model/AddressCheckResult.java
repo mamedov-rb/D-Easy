@@ -2,8 +2,7 @@ package com.rmamedov.deasy.addressetl.model;
 
 import com.rmamedov.deasy.model.kafka.CheckStatus;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -11,15 +10,16 @@ import java.util.Set;
 import java.util.UUID;
 
 @Data
-@Document(collection = "order_address_check_details")
-public class OrderAddressCheckDetails {
+@EqualsAndHashCode(of = {"orderId"})
+public class AddressCheckResult {
 
-    @Id
     private String id = UUID.randomUUID().toString();
 
     private String orderId;
 
     private String transactionId;
+
+    private String orderName;
 
     private String consumerAddress;
 

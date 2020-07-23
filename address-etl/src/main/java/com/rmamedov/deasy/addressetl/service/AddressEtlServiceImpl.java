@@ -1,15 +1,13 @@
 package com.rmamedov.deasy.addressetl.service;
 
-import com.rmamedov.deasy.addressetl.converter.OrderCheckDetailsToOrderMessageConverter;
-import com.rmamedov.deasy.addressetl.converter.OrderMessageToOrderCheckDetailConverter;
-import com.rmamedov.deasy.addressetl.model.OrderAddressCheckDetails;
-import com.rmamedov.deasy.addressetl.repository.OrderDetailsRepository;
+import com.hazelcast.map.IMap;
+import com.rmamedov.deasy.addressetl.converter.OrderMessageToAddressCheckResultConverter;
+import com.rmamedov.deasy.addressetl.model.AddressCheckResult;
 import com.rmamedov.deasy.model.kafka.CheckStatus;
 import com.rmamedov.deasy.model.kafka.OrderMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
 
 @Slf4j
@@ -17,23 +15,24 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class AddressEtlServiceImpl implements AddressEtlService {
 
-    private final OrderDetailsRepository orderDetailsRepository;
+    private final IMap<String, AddressCheckResult> map;
 
-    private final OrderMessageToOrderCheckDetailConverter detailConverter;
-
-    private final OrderCheckDetailsToOrderMessageConverter toOrderMessageConverter;
+    private final OrderMessageToAddressCheckResultConverter toAddressCheckResultConverter;
 
     @Override
-    @Transactional
-    public Mono<OrderMessage> check(final Mono<OrderMessage> OrderMessage) {
-        return OrderMessage
-                .map(this::check)
-                .flatMap(checkedOrderMessage -> {
-                    final OrderAddressCheckDetails checkDetails = detailConverter.convert(checkedOrderMessage);
-                    return orderDetailsRepository.save(checkDetails)
-                            .doOnNext(savedDetails -> log.info("Saved address details after check: '{}'", savedDetails))
-                            .map(toOrderMessageConverter::convert);
-                });
+    public Mono<AddressCheckResult> findByOrderId(final String orderId) {
+        return Mono.fromCallable(() -> map.get(orderId));
+    }
+
+    @Override
+    public Mono<AddressCheckResult> checkAndSave(final OrderMessage orderMessage) {
+        return Mono.fromCallable(() -> {
+                    final OrderMessage checkedMessage = check(orderMessage);
+                    final AddressCheckResult checkResult = toAddressCheckResultConverter.convert(checkedMessage);
+                    map.putIfAbsent(orderMessage.getId(), checkResult);
+                    return checkResult;
+                }
+        );
     }
 
     private OrderMessage check(final OrderMessage OrderMessage) {

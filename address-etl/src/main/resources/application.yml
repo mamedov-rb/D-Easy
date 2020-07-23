@@ -18,6 +18,11 @@ kafka:
     checked-addresses-topic:
       name: checked-addresses-topic
 
+management:
+  health:
+    hazelcast:
+      enabled: false
+
 #eureka:
 #  instance.preferIpAddress: true
 #  client:
