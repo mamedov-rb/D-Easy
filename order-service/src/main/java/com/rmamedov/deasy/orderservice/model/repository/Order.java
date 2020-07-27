@@ -4,6 +4,7 @@ import com.rmamedov.deasy.model.kafka.CheckStatus;
 import com.rmamedov.deasy.model.kafka.OrderPosition;
 import com.rmamedov.deasy.model.kafka.PaymentStatus;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -18,6 +19,7 @@ import java.util.UUID;
 
 @Data
 @Document(collection = "orders")
+@EqualsAndHashCode(of = {"id", "name", "description"})
 public class Order {
 
     @Id

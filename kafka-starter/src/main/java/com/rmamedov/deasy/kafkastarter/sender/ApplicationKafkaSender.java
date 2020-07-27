@@ -1,6 +1,6 @@
 package com.rmamedov.deasy.kafkastarter.sender;
 
-import com.rmamedov.deasy.kafkastarter.properties.KafkaSenderConfigurationProperties;
+import com.rmamedov.deasy.kafkastarter.properties.KafkaSenderProperties;
 import com.rmamedov.deasy.kafkastarter.properties.TopicConfigurationProperties;
 import com.rmamedov.deasy.model.kafka.OrderMessage;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ public class ApplicationKafkaSender {
 
     private final TopicConfigurationProperties topicConfig;
 
-    private final KafkaSenderConfigurationProperties senderConfig;
+    private final KafkaSenderProperties senderConfig;
 
     public void send(final OrderMessage OrderMessage) {
         final var senderRecord = SenderRecord.create(

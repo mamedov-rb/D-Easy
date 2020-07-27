@@ -1,9 +1,9 @@
 package com.rmamedov.orderservice.service
 
-import com.rmamedov.deasy.kafkastarter.properties.KafkaSenderConfigurationProperties
+import com.rmamedov.deasy.kafkastarter.properties.KafkaSenderProperties
 import com.rmamedov.deasy.kafkastarter.sender.ApplicationKafkaSender
 import com.rmamedov.deasy.model.kafka.CheckStatus
-import com.rmamedov.deasy.orderservice.config.KafkaSenderConfig
+import com.rmamedov.deasy.orderservice.config.kafka.KafkaSenderConfig
 import com.rmamedov.deasy.orderservice.config.properties.MongoConfigurationProperties
 import com.rmamedov.deasy.orderservice.config.topic.TopicConfigurationPropertiesConfig
 import com.rmamedov.deasy.orderservice.converter.OrderCreateRequestToOrderConverter
@@ -33,7 +33,7 @@ import static org.mockito.Mockito.when
 @ContextConfiguration(classes = [
         CheckOrderServiceImpl.class,
         KafkaSenderConfig.class,
-        KafkaSenderConfigurationProperties.class,
+        KafkaSenderProperties.class,
         TopicConfigurationPropertiesConfig.class,
         OrderToOrderMessageConverterImpl.class,
         OrderToOrderStatusInfoConverterImpl.class,
@@ -58,7 +58,7 @@ class CheckOrderServiceImplImplTest extends Specification {
     private ApplicationKafkaSender applicationKafkaSender
 
     @MockBean
-    private KafkaSenderConfigurationProperties kafkaSenderConfigurationProperties
+    private KafkaSenderProperties kafkaSenderConfigurationProperties
 
     @Autowired
     private OrderToOrderMessageConverter orderToOrderMessageConverter

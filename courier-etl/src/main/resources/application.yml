@@ -2,8 +2,6 @@ server.port: 8080
 
 spring:
   application.name: courier-service
-  data.mongodb:
-    uri: mongodb://d_easy_user:123qwe@localhost:27017/d_easy_db?replicaSet=rs0
 
 kafka:
   receiver:
@@ -14,6 +12,7 @@ kafka:
     bootstrap-servers: ${kafka.receiver.bootstrap-servers}
   topics:
     new-orders-topic:
+      enabled: true
       name: new-orders-topic
       partitions: 1
       replicas: 1
@@ -21,6 +20,18 @@ kafka:
       name: checked-couriers-topic
       partitions: 1
       replicas: 1
+
+hazelcast:
+  cache:
+    etl-cache-name: courier-check-result-cache
+    map-name: courier-check-result-map
+    time-to-live: 360
+    max-idle-seconds: 180
+
+management:
+  health:
+    hazelcast:
+      enabled: false
 
 #eureka:
 #  instance.preferIpAddress: true

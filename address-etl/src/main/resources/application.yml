@@ -2,8 +2,6 @@ server.port: 8020
 
 spring:
   application.name: address-service
-  data.mongodb:
-    uri: mongodb://d_easy_user:123qwe@localhost:27017/d_easy_db?replicaSet=rs0
 
 kafka:
   receiver:
@@ -14,9 +12,21 @@ kafka:
     bootstrap-servers: ${kafka.receiver.bootstrap-servers}
   topics:
     new-orders-topic:
+      enabled: true
       name: new-orders-topic
+      partitions: 1
+      replicas: 1
     checked-addresses-topic:
       name: checked-addresses-topic
+      partitions: 1
+      replicas: 1
+
+hazelcast:
+  cache:
+    etl-cache-name: address-check-result-cache
+    map-name: address-check-result-map
+    time-to-live: 360
+    max-idle-seconds: 180
 
 management:
   health:

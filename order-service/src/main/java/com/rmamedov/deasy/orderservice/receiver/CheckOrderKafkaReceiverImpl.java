@@ -10,8 +10,8 @@ import com.rmamedov.deasy.orderservice.service.CheckOrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
-import reactor.core.scheduler.Schedulers;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -36,12 +36,13 @@ public class CheckOrderKafkaReceiverImpl implements CheckOrderKafkaReceiver {
     public void init() {
         final List<String> topicNames = topicConfigurationList.stream()
                 .map(TopicConfigurationProperties::getName)
-                .filter(name -> !name.contains("new"))
+                .filter(name -> name.startsWith("checked"))
                 .collect(Collectors.toList());
         kafkaReceiver = new ApplicationKafkaReceiver<>(receiverProperties, topicNames);
     }
 
     @Override
+    @Transactional
     public Flux<OrderCheckInfo> listenCheckedOrders() {
         return kafkaReceiver.receive()
                 .flatMap(receiverRecord -> {
@@ -49,8 +50,6 @@ public class CheckOrderKafkaReceiverImpl implements CheckOrderKafkaReceiver {
                     return checkOrderService.updateOrderAfterEtlCheck(order)
                             .doOnSuccess(checkInfo -> receiverRecord.receiverOffset().acknowledge())
                             .doOnError(ex -> log.error("Exception has occurred: ", ex));
-                })
-                .subscribeOn(Schedulers.single());
+                });
     }
-
 }

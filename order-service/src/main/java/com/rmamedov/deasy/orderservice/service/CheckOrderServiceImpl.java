@@ -2,7 +2,7 @@ package com.rmamedov.deasy.orderservice.service;
 
 import com.rmamedov.deasy.kafkastarter.sender.ApplicationKafkaSender;
 import com.rmamedov.deasy.model.kafka.CheckStatus;
-import com.rmamedov.deasy.orderservice.config.properties.MongoConfigurationProperties;
+import com.rmamedov.deasy.orderservice.config.mongo.MongoConfigurationProperties;
 import com.rmamedov.deasy.orderservice.converter.OrderToOrderMessageConverter;
 import com.rmamedov.deasy.orderservice.converter.OrderToOrderStatusInfoConverter;
 import com.rmamedov.deasy.orderservice.model.controller.OrderCheckInfo;
@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.util.Set;
 
@@ -72,16 +73,18 @@ public class CheckOrderServiceImpl implements CheckOrderService {
                             savedOrder.getCheckDetails().putAll(incomingOrder.getCheckDetails());
                             if (savedOrder.getCheckStatuses().containsAll(FULLY_CHECKED_SET)) {
                                 savedOrder.setCheckStatuses(Set.of(CheckStatus.FULLY_CHECKED));
+                                log.info(String.format("Order with id: '%s' is FULLY_CHECKED", savedOrder.getId()));
                             }
                         })
                         .flatMap(orderService::save)
                         .map(orderToOrderStatusInfoConverter::convert)
-                )
-                .retryBackoff(
-                        mongoProperties.getNumRetries(),
-                        ofMillis(mongoProperties.getFirstBackoff()),
-                        ofMillis(mongoProperties.getMaxBackoff())
                 );
+//                .retryBackoff(
+//                        mongoProperties.getNumRetries(),
+//                        ofMillis(mongoProperties.getFirstBackoff()),
+//                        ofMillis(mongoProperties.getMaxBackoff()),
+//                        Schedulers.elastic()
+//                );
     }
 
 }

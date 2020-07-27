@@ -52,6 +52,8 @@ public class OrderControllerImpl implements OrderController {
     @GetMapping(path = "/statuses", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<OrderCheckInfo> statuses() {
         return checkOrderKafkaReceiver.listenCheckedOrders();
+//                .delayElements(Duration.ofSeconds(1)) //Timeout's needs for synthetically slow down response
+//                .timeout(Duration.ofSeconds(20));
     }
 
     @Override

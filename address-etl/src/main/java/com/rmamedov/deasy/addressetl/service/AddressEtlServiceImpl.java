@@ -1,8 +1,6 @@
 package com.rmamedov.deasy.addressetl.service;
 
-import com.hazelcast.map.IMap;
-import com.rmamedov.deasy.addressetl.converter.OrderMessageToAddressCheckResultConverter;
-import com.rmamedov.deasy.addressetl.model.AddressCheckResult;
+import com.rmamedov.deasy.etlstarter.service.OrderEtlService;
 import com.rmamedov.deasy.model.kafka.CheckStatus;
 import com.rmamedov.deasy.model.kafka.OrderMessage;
 import lombok.RequiredArgsConstructor;
@@ -13,46 +11,22 @@ import reactor.core.publisher.Mono;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class AddressEtlServiceImpl implements AddressEtlService {
-
-    private final IMap<String, AddressCheckResult> map;
-
-    private final OrderMessageToAddressCheckResultConverter toAddressCheckResultConverter;
+public class AddressEtlServiceImpl implements OrderEtlService {
 
     @Override
-    public Mono<AddressCheckResult> findByOrderId(final String orderId) {
-        return Mono.fromCallable(() -> map.get(orderId));
-    }
-
-    @Override
-    public Mono<AddressCheckResult> checkAndSave(final OrderMessage orderMessage) {
-        return Mono.fromCallable(() -> {
-                    final OrderMessage checkedMessage = check(orderMessage);
-                    final AddressCheckResult checkResult = toAddressCheckResultConverter.convert(checkedMessage);
-                    map.putIfAbsent(orderMessage.getId(), checkResult);
-                    return checkResult;
-                }
-        );
-    }
-
-    private OrderMessage check(final OrderMessage OrderMessage) {
-        final String consumerAddress = OrderMessage.getConsumerAddress();
-        final String restaurantAddress = OrderMessage.getRestaurantAddress();
+    public Mono<OrderMessage> check(final Mono<OrderMessage> orderMessageMono) {
         final String successDescription = "Address is reachable, it might took 20min to deliver order.";
         final String failedDescription = "Address is reachable, it might took 20min to deliver order.";
-        if (isReachable()) {
-            updateCheckStatus(OrderMessage, successDescription);
-        } else {
-            updateCheckStatus(OrderMessage, failedDescription);
-        }
-        return OrderMessage;
+        return orderMessageMono
+                .map(orderMessage -> updateStatus(orderMessage, successDescription));
     }
 
-    private void updateCheckStatus(final OrderMessage OrderMessage, final String checkDetails) {
+    private OrderMessage updateStatus(final OrderMessage orderMessage, final String checkDetails) {
         final CheckStatus checkStatus = CheckStatus.ADDRESSES_CHECKED;
-        OrderMessage.getCheckStatuses().add(checkStatus);
-        OrderMessage.getCheckDetails().put(checkStatus.name(), checkDetails);
+        orderMessage.getCheckStatuses().add(checkStatus);
+        orderMessage.getCheckDetails().put(checkStatus.name(), checkDetails);
         log.info("Addresses checked with result: '{}'.", checkDetails);
+        return orderMessage;
     }
 
     private boolean isReachable() {
