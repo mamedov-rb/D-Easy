@@ -1,17 +1,20 @@
 server.port: 8000
 
 spring:
+  output.ansi.enabled: detect
   application.name: order-service
   data.mongodb:
-    uri: mongodb://d_easy_user:123qwe@localhost:27017/d_easy_db?replicaSet=rs0
-#    uri: mongodb://d_easy_user:123qwe@mongo-container-primary:27017/d_easy_db?replicaSet=rs0
-    num-retries: 5
+    uri: mongodb://d_easy_user:123qwe@192.168.31.157:27017/d_easy_db?replicaSet=rs0
+    #    uri: mongodb://d_easy_user:123qwe@localhost:27017/d_easy_db?replicaSet=rs0
+    #    uri: mongodb://d_easy_user:123qwe@mongo-container-primary:27017/d_easy_db?replicaSet=rs0
+    num-retries: 10
     first-backoff: 10
     max-backoff: 1000
 
 kafka:
   receiver:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: http://192.168.31.157:9092
+    #    bootstrap-servers: localhost:9092
     group-id: checked-orders-order-service-group
   sender:
     bootstrap-servers: ${kafka.receiver.bootstrap-servers}
@@ -47,5 +50,11 @@ eureka:
     registerWithEureka: true
     fetchRegistry: true
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: http://192.168.31.157:8761/eureka
+#      defaultZone: http://localhost:8761/eureka
 #      defaultZone: http://discovery-service-container:8761/eureka
+
+logging.level:
+  root: WARN
+  org.springframework:
+    web: DEBUG
