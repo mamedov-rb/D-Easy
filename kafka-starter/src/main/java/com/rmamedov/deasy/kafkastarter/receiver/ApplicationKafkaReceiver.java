@@ -36,6 +36,7 @@ public class ApplicationKafkaReceiver<T> {
         receiverProps.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         receiverProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
         receiverProps.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
+        receiverProps.put(JsonDeserializer.VALUE_DEFAULT_TYPE, "com.rmamedov.deasy.model.kafka.OrderMessage");
         return ReceiverOptions.create(receiverProps);
     }
 
