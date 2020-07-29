@@ -23,7 +23,7 @@ public class OrderEtlPersistenceServiceImpl implements OrderEtlPersistenceServic
     @Override
     public Mono<OrderMessage> checkAndSave(final Mono<OrderMessage> orderMessageMono) {
         return orderEtlService.check(orderMessageMono)
-                    .doOnNext(checked -> cache.putIfAbsent(checked.getId(), checked));
+                .doOnNext(checked -> cache.putIfAbsent(checked.getId(), checked));
     }
 
 }

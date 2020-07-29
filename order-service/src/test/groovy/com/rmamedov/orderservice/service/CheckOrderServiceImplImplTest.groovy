@@ -4,8 +4,8 @@ import com.rmamedov.deasy.kafkastarter.properties.KafkaSenderProperties
 import com.rmamedov.deasy.kafkastarter.sender.ApplicationKafkaSender
 import com.rmamedov.deasy.model.kafka.CheckStatus
 import com.rmamedov.deasy.orderservice.config.kafka.KafkaSenderConfig
-import com.rmamedov.deasy.orderservice.config.properties.MongoConfigurationProperties
-import com.rmamedov.deasy.orderservice.config.topic.TopicConfigurationPropertiesConfig
+import com.rmamedov.deasy.orderservice.config.kafka.TopicConfigurationPropertiesConfig
+import com.rmamedov.deasy.orderservice.config.mongo.MongoConfigurationProperties
 import com.rmamedov.deasy.orderservice.converter.OrderCreateRequestToOrderConverter
 import com.rmamedov.deasy.orderservice.converter.OrderCreateRequestToOrderConverterImpl
 import com.rmamedov.deasy.orderservice.converter.OrderToOrderMessageConverter
@@ -47,9 +47,6 @@ class CheckOrderServiceImplImplTest extends Specification {
     @Autowired
     private CheckOrderService checkOrderService
 
-    @Autowired
-    private OrderCreateRequestToOrderConverter requestToOrderConverter
-
     @MockBean
     private MongoConfigurationProperties mongoProperties
 
@@ -62,6 +59,9 @@ class CheckOrderServiceImplImplTest extends Specification {
 
     @Autowired
     private OrderToOrderMessageConverter orderToOrderMessageConverter
+
+    @Autowired
+    private OrderCreateRequestToOrderConverter requestToOrderConverter
 
     @Autowired
     private OrderToOrderStatusInfoConverter orderToOrderStatusInfoConverter

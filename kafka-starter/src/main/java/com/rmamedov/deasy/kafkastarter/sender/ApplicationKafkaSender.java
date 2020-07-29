@@ -24,16 +24,16 @@ public class ApplicationKafkaSender {
 
     private final KafkaSenderProperties senderConfig;
 
-    public void send(final OrderMessage OrderMessage) {
+    public void send(final OrderMessage orderMessage) {
         final var senderRecord = SenderRecord.create(
-                new ProducerRecord<>(topicConfig.getName(), OrderMessage.getId(), OrderMessage),
-                OrderMessage.getId()
+                new ProducerRecord<>(topicConfig.getName(), orderMessage.getId(), orderMessage),
+                orderMessage.getId()
         );
         kafkaSender()
                 .send(Flux.just(senderRecord))
                 .doOnError(err -> log.error("Exception has occurred: ", err))
                 .doOnNext(result -> log.info("Sent -> topic: '{}', OrderMessage: '{}', correlationId: '{}'",
-                        topicConfig.getName(), OrderMessage, result.correlationMetadata()))
+                        topicConfig.getName(), orderMessage, result.correlationMetadata()))
                 .subscribe();
     }
 
