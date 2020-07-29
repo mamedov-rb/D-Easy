@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.domain.Persistable;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
@@ -20,7 +22,7 @@ import java.util.UUID;
 @Data
 @Document(collection = "orders")
 @EqualsAndHashCode(of = {"id", "name", "description"})
-public class Order {
+public class Order implements Persistable<String> {
 
     @Id
     private String id = UUID.randomUUID().toString();
@@ -55,5 +57,19 @@ public class Order {
 
     @LastModifiedDate
     private LocalDateTime updated;
+
+    @Transient
+    private boolean isNew;
+
+    @Override
+    @Transient
+    public boolean isNew() {
+        return this.isNew;
+    }
+
+    public Order setAsNew() {
+        this.isNew = true;
+        return this;
+    }
 
 }

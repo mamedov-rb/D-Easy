@@ -55,7 +55,7 @@ public class CheckOrderServiceImpl implements CheckOrderService {
     @Override
     @Transactional
     public Mono<OrderCreateResponse> createAndSend(final Order order) {
-        return orderService.save(order)
+        return orderService.save(order.setAsNew())
                 .map(orderToOrderMessageConverter::convert)
                 .flatMap(OrderMessage -> {
                     applicationKafkaSender.send(OrderMessage);
