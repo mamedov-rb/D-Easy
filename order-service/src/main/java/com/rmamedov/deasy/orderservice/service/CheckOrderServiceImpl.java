@@ -13,11 +13,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 import java.util.Set;
-
-import static java.time.Duration.ofMillis;
 
 @Slf4j
 @Service
@@ -33,21 +30,17 @@ public class CheckOrderServiceImpl implements CheckOrderService {
 
     private final OrderService orderService;
 
-    private final MongoConfigurationProperties mongoProperties;
-
     private final OrderToOrderMessageConverter orderToOrderMessageConverter;
 
     private final OrderToOrderStatusInfoConverter orderToOrderStatusInfoConverter;
 
     public CheckOrderServiceImpl(@Qualifier("newOrdersSender") ApplicationKafkaSender applicationKafkaSender,
                                  OrderService orderService,
-                                 MongoConfigurationProperties mongoProperties,
                                  OrderToOrderMessageConverter orderToOrderMessageConverter,
                                  OrderToOrderStatusInfoConverter orderToOrderStatusInfoConverter) {
 
         this.applicationKafkaSender = applicationKafkaSender;
         this.orderService = orderService;
-        this.mongoProperties = mongoProperties;
         this.orderToOrderMessageConverter = orderToOrderMessageConverter;
         this.orderToOrderStatusInfoConverter = orderToOrderStatusInfoConverter;
     }
@@ -57,34 +50,26 @@ public class CheckOrderServiceImpl implements CheckOrderService {
     public Mono<OrderCreateResponse> createAndSend(final Order order) {
         return orderService.save(order.setAsNew())
                 .map(orderToOrderMessageConverter::convert)
-                .flatMap(OrderMessage -> {
-                    applicationKafkaSender.send(OrderMessage);
-                    return Mono.just(new OrderCreateResponse(order.getId()));
-                });
+                .doOnNext(applicationKafkaSender::send)
+                .map(orderMessage -> new OrderCreateResponse(orderMessage.getId()));
     }
 
     @Override
     @Transactional
     public Mono<OrderCheckInfo> updateOrderAfterEtlCheck(final Order order) {
         return Mono.just(order)
-                .flatMap(incomingOrder -> orderService.findById(incomingOrder.getId())
-                        .doOnNext(savedOrder -> {
-                            savedOrder.getCheckStatuses().addAll(incomingOrder.getCheckStatuses());
-                            savedOrder.getCheckDetails().putAll(incomingOrder.getCheckDetails());
-                            if (savedOrder.getCheckStatuses().containsAll(FULLY_CHECKED_SET)) {
-                                savedOrder.setCheckStatuses(Set.of(CheckStatus.FULLY_CHECKED));
-                                log.info(String.format("Order with id: '%s' is FULLY_CHECKED", savedOrder.getId()));
+                .flatMap(checkedOrder -> orderService.findById(checkedOrder.getId())
+                        .doOnSuccess(foundOrder -> {
+                            foundOrder.getCheckStatuses().addAll(checkedOrder.getCheckStatuses());
+                            foundOrder.getCheckDetails().putAll(checkedOrder.getCheckDetails());
+                            if (foundOrder.getCheckStatuses().containsAll(FULLY_CHECKED_SET)) {
+                                foundOrder.setCheckStatuses(Set.of(CheckStatus.FULLY_CHECKED));
+                                log.info(String.format("Order with id: '%s' is FULLY_CHECKED", foundOrder.getId()));
                             }
                         })
                         .flatMap(orderService::save)
                         .map(orderToOrderStatusInfoConverter::convert)
                 );
-//                .retryBackoff(
-//                        mongoProperties.getNumRetries(),
-//                        ofMillis(mongoProperties.getFirstBackoff()),
-//                        ofMillis(mongoProperties.getMaxBackoff()),
-//                        Schedulers.elastic()
-//                );
     }
 
 }

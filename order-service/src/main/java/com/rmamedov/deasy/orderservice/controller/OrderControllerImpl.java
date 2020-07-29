@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
+
 @RestController
 @RequestMapping("/api/order")
 @RequiredArgsConstructor
@@ -40,7 +42,7 @@ public class OrderControllerImpl implements OrderController {
     @PostMapping(
             path = "/create",
             consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE
+            produces = MediaType.TEXT_EVENT_STREAM_VALUE
     )
     public Mono<OrderCreateResponse> create(@RequestBody @Validated final Mono<OrderCreateRequest> createRequest) {
         return createRequest
@@ -51,13 +53,13 @@ public class OrderControllerImpl implements OrderController {
     @Override
     @GetMapping(path = "/statuses", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<OrderCheckInfo> statuses() {
-        return checkOrderKafkaReceiver.listenCheckedOrders();
-//                .delayElements(Duration.ofSeconds(1)) //Timeout's needs for synthetically slow down response
-//                .timeout(Duration.ofSeconds(20));
+        return checkOrderKafkaReceiver.listenCheckedOrders()
+                .timeout(Duration.ofSeconds(20))
+                .delayElements(Duration.ofSeconds(2));
     }
 
     @Override
-    @GetMapping(path = "/find/{id}/{checkStatus}/{paymentStatus}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/find/{id}/{checkStatus}/{paymentStatus}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Mono<OrderInfo> findByIdAndCheckStatus(@PathVariable("id") final String id,
                                                   @PathVariable("checkStatus") final String checkStatus,
                                                   @PathVariable("paymentStatus") final String paymentStatus) {
