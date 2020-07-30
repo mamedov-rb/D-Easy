@@ -8,9 +8,6 @@ db.createUser({
     ]
 });
 db.createCollection("orders");
-db.createCollection("order_address_check_details");
-db.createCollection("order_restaurant_check_details");
-db.createCollection("order_courier_check_details");
 db.createCollection("payments");
 db.createCollection("accounts");
 
@@ -60,14 +57,8 @@ var testOrder = {
             "additionalInfo": "Some wishes"
         }
     ],
-    "checkStatuses": [
-        "FULLY_CHECKED"
-    ],
-    "checkDetails": {
-        "ORDER_MENU_CHECKED": "All menu can be cocked, it might took 30min.",
-        "COURIER_CHECKED": "Courier is available.",
-        "ADDRESSES_CHECKED": "Address is reachable, it might took 20min to deliver order."
-    },
+    "checkStatuses": [],
+    "checkDetails": {},
     "paymentStatus": "NEW",
     "transactionId": null,
     "created": "2020-07-05T17:24:18.232",
@@ -109,3 +100,4 @@ db.runCommand(
         documents: [account1, account2]
     }
 );
+
