@@ -7,6 +7,7 @@ include(
         ":payment-service",
         ":discovery-service",
         ":gateway-service",
-        ":order-model-lib",
-        ":kafka-starter"
+        ":order-model-starter",
+        ":kafka-starter",
+        ":etl-starter"
 )

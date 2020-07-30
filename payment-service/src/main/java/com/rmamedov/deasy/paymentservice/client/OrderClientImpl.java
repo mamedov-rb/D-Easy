@@ -16,9 +16,6 @@ public class OrderClientImpl implements OrderClient {
 
     private final ClientConfigurationProperties properties;
 
-    /**
-     * Returns OrderMessage or throws WebClientResponseException if smth goes wrong.
-     */
     @Override
     public Mono<OrderMessage> findByCriteria(final String id,
                                              final String checkStatus,

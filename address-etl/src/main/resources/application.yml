@@ -2,21 +2,36 @@ server.port: 8020
 
 spring:
   application.name: address-service
-  data.mongodb:
-    uri: mongodb://d_easy_user:123qwe@localhost:27017/d_easy_db?replicaSet=rs0
 
 kafka:
   receiver:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: 192.168.31.157:9092
     group-id: new-orders-address-service-group
     auto-offset-reset: earliest
   sender:
     bootstrap-servers: ${kafka.receiver.bootstrap-servers}
   topics:
     new-orders-topic:
+      enabled: true
       name: new-orders-topic
+      partitions: 1
+      replicas: 1
     checked-addresses-topic:
       name: checked-addresses-topic
+      partitions: 1
+      replicas: 1
+
+hazelcast:
+  cache:
+    etl-cache-name: address-check-result-cache
+    map-name: address-check-result-map
+    time-to-live: 360
+    max-idle-seconds: 180
+
+management:
+  health:
+    hazelcast:
+      enabled: false
 
 #eureka:
 #  instance.preferIpAddress: true
@@ -25,3 +40,6 @@ kafka:
 #    fetchRegistry: true
 #    serviceUrl:
 #      defaultZone: http://discovery-service:8761/eureka
+
+logging.level:
+  root: WARN

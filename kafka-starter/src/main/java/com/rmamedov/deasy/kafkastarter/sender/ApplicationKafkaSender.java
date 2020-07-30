@@ -1,6 +1,6 @@
 package com.rmamedov.deasy.kafkastarter.sender;
 
-import com.rmamedov.deasy.kafkastarter.properties.KafkaSenderConfigurationProperties;
+import com.rmamedov.deasy.kafkastarter.properties.KafkaSenderProperties;
 import com.rmamedov.deasy.kafkastarter.properties.TopicConfigurationProperties;
 import com.rmamedov.deasy.model.kafka.OrderMessage;
 import lombok.RequiredArgsConstructor;
@@ -22,18 +22,18 @@ public class ApplicationKafkaSender {
 
     private final TopicConfigurationProperties topicConfig;
 
-    private final KafkaSenderConfigurationProperties senderConfig;
+    private final KafkaSenderProperties senderConfig;
 
-    public void send(final OrderMessage OrderMessage) {
+    public void send(final OrderMessage orderMessage) {
         final var senderRecord = SenderRecord.create(
-                new ProducerRecord<>(topicConfig.getName(), OrderMessage.getId(), OrderMessage),
-                OrderMessage.getId()
+                new ProducerRecord<>(topicConfig.getName(), orderMessage.getId(), orderMessage),
+                orderMessage.getId()
         );
         kafkaSender()
                 .send(Flux.just(senderRecord))
                 .doOnError(err -> log.error("Exception has occurred: ", err))
                 .doOnNext(result -> log.info("Sent -> topic: '{}', OrderMessage: '{}', correlationId: '{}'",
-                        topicConfig.getName(), OrderMessage, result.correlationMetadata()))
+                        topicConfig.getName(), orderMessage, result.correlationMetadata()))
                 .subscribe();
     }
 
