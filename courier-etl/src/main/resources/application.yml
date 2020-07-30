@@ -5,7 +5,7 @@ spring:
 
 kafka:
   receiver:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: 192.168.31.157:9092
     group-id: new-orders-courier-service-group
     auto-offset-reset: earliest
   sender:
@@ -40,3 +40,6 @@ management:
 #    fetchRegistry: true
 #    serviceUrl:
 #      defaultZone: http://discovery-service:8761/eureka
+
+logging.level:
+  root: WARN

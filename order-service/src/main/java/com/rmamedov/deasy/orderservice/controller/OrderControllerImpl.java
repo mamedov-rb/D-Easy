@@ -59,7 +59,7 @@ public class OrderControllerImpl implements OrderController {
     }
 
     @Override
-    @GetMapping(path = "/find/{id}/{checkStatus}/{paymentStatus}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @GetMapping(path = "/find/{id}/{checkStatus}/{paymentStatus}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<OrderInfo> findByIdAndCheckStatus(@PathVariable("id") final String id,
                                                   @PathVariable("checkStatus") final String checkStatus,
                                                   @PathVariable("paymentStatus") final String paymentStatus) {

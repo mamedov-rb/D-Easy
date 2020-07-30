@@ -3,7 +3,7 @@ server.port: 8100
 spring:
   application.name: payment-service
   data.mongodb:
-    uri: mongodb://d_easy_user:123qwe@localhost:27017/d_easy_db?replicaSet=rs0
+    uri: mongodb://d_easy_user:123qwe@192.168.31.157:27017/d_easy_db?replicaSet=rs0
 
 order-service-client:
   uri: http://order-service/api/order/find/{id}/{checkStatus}/{payStatus}
@@ -12,7 +12,7 @@ order-service-client:
 
 kafka:
   sender:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: 192.168.31.157:9092
   topics:
     success-payed-orders-topic:
       name: success-payed-orders-topic
@@ -23,4 +23,7 @@ eureka:
     registerWithEureka: true
     fetchRegistry: true
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: http://192.168.31.157:8761/eureka
+
+logging.level:
+  root: WARN
