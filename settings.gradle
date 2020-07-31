@@ -2,7 +2,7 @@ rootProject.name = 'd-easy'
 include(
         ":order-service",
         ":address-etl",
-        ":restaurant-etl",
+        ":restaurant-service",
         ":courier-etl",
         ":payment-service",
         ":discovery-service",

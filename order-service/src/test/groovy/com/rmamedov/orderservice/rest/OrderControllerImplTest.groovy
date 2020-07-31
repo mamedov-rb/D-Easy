@@ -1,8 +1,8 @@
 package com.rmamedov.orderservice.rest
 
-import com.rmamedov.deasy.model.controller.OrderInfo
-import com.rmamedov.deasy.model.kafka.CheckStatus
-import com.rmamedov.deasy.model.kafka.PaymentStatus
+import com.rmamedov.deasy.orderservice.model.controller.OrderInfo
+import com.rmamedov.deasy.model.CheckStatus
+import com.rmamedov.deasy.model.PaymentStatus
 import com.rmamedov.deasy.orderservice.config.kafka.TopicPropertiesConfig
 import com.rmamedov.deasy.orderservice.controller.OrderControllerImpl
 import com.rmamedov.deasy.orderservice.converter.OrderCreateRequestToOrderConverter

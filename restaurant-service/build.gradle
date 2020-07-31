@@ -1,0 +1,7 @@
+
+dependencies {
+    implementation project(":etl-starter")
+    implementation project(":order-model-starter")
+    implementation "com.hazelcast:hazelcast:4.0.2"
+    implementation "org.springframework.boot:spring-boot-starter-data-mongodb-reactive"
+}

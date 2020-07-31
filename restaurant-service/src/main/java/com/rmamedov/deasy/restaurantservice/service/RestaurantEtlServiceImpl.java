@@ -1,4 +1,4 @@
-package com.rmamedov.deasy.courieretl.service;
+package com.rmamedov.deasy.restaurantservice.service;
 
 import com.rmamedov.deasy.etlstarter.service.OrderEtlService;
 import com.rmamedov.deasy.model.CheckStatus;
@@ -11,26 +11,26 @@ import reactor.core.publisher.Mono;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class CourierEtlServiceImpl implements OrderEtlService {
+public class RestaurantEtlServiceImpl implements OrderEtlService {
 
     @Override
     public Mono<OrderMessage> check(final Mono<OrderMessage> orderMessageMono) {
-        final String successDescription = "Courier is available.";
-        final String failedDescription = "Courier is unavailable.";
+        final String successDescription = "All menu can be cocked, it might took 30min.";
+        final String failedDescription = "All menu can be cocked, it might took 30min.";
         return orderMessageMono
                 .map(orderMessage -> updateStatus(orderMessage, successDescription));
     }
 
     private OrderMessage updateStatus(final OrderMessage orderMessage, final String checkDetails) {
-        final CheckStatus checkStatus = CheckStatus.COURIER_CHECKED;
+        final CheckStatus checkStatus = CheckStatus.ORDER_MENU_CHECKED;
         orderMessage.getCheckStatuses().add(checkStatus);
         orderMessage.getCheckDetails().put(checkStatus.name(), checkDetails);
-        log.info("Courier checked with result: '{}'.", checkDetails);
+        log.info("Menu checked with result: '{}'.", checkDetails);
         return orderMessage;
     }
 
-    private boolean courierIsAvailable() {
-        return true; // TODO 2020-03-22 rustammamedov: Do real check using google library;
+    private boolean allPositionsCanBeCooked() {
+        return true;  // TODO 2020-03-24 rustammamedov: Do real check by each position.
     }
 
 }

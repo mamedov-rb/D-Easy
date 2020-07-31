@@ -1,8 +1,8 @@
 package com.rmamedov.orderservice.util
 
-import com.rmamedov.deasy.model.controller.OrderCreateRequest
-import com.rmamedov.deasy.model.kafka.CheckStatus
-import com.rmamedov.deasy.model.kafka.OrderPosition
+import com.rmamedov.deasy.orderservice.model.controller.OrderCreateRequest
+import com.rmamedov.deasy.model.CheckStatus
+import com.rmamedov.deasy.model.OrderPosition
 import com.rmamedov.deasy.orderservice.model.controller.OrderCheckInfo
 
 import java.time.LocalDateTime

@@ -1,4 +1,4 @@
-package com.rmamedov.deasy.model.kafka;
+package com.rmamedov.deasy.orderservice.model.controller;
 
 import com.rmamedov.deasy.model.CheckStatus;
 import com.rmamedov.deasy.model.OrderPosition;
@@ -13,9 +13,9 @@ import java.util.Set;
 
 @Data
 @EqualsAndHashCode(of = {
-        "id", "name", "totalPrice", "totalPriceAfterDiscount"
+        "id", "name", "description"
 })
-public class OrderMessage {
+public class OrderInfo {
 
     private String id;
 

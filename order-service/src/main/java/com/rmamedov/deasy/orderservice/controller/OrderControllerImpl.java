@@ -1,8 +1,8 @@
 package com.rmamedov.deasy.orderservice.controller;
 
 import com.rmamedov.deasy.kafkastarter.properties.TopicProperties;
-import com.rmamedov.deasy.model.controller.OrderCreateRequest;
-import com.rmamedov.deasy.model.controller.OrderInfo;
+import com.rmamedov.deasy.orderservice.model.controller.OrderCreateRequest;
+import com.rmamedov.deasy.orderservice.model.controller.OrderInfo;
 import com.rmamedov.deasy.orderservice.converter.OrderCreateRequestToOrderConverter;
 import com.rmamedov.deasy.orderservice.converter.OrderToOrderInfoConverter;
 import com.rmamedov.deasy.orderservice.model.controller.OrderCheckInfo;

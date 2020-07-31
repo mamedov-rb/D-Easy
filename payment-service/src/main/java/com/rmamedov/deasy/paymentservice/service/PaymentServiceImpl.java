@@ -1,9 +1,9 @@
 package com.rmamedov.deasy.paymentservice.service;
 
 import com.rmamedov.deasy.kafkastarter.sender.ApplicationKafkaSender;
-import com.rmamedov.deasy.model.kafka.CheckStatus;
+import com.rmamedov.deasy.model.CheckStatus;
 import com.rmamedov.deasy.model.kafka.OrderMessage;
-import com.rmamedov.deasy.model.kafka.PaymentStatus;
+import com.rmamedov.deasy.model.PaymentStatus;
 import com.rmamedov.deasy.paymentservice.client.OrderClient;
 import com.rmamedov.deasy.paymentservice.converter.PaymentToPayResponseConverter;
 import com.rmamedov.deasy.paymentservice.exception.AccountNotFoundException;

@@ -1,7 +1,7 @@
 package com.rmamedov.deasy.addressetl.service;
 
 import com.rmamedov.deasy.etlstarter.service.OrderEtlService;
-import com.rmamedov.deasy.model.kafka.CheckStatus;
+import com.rmamedov.deasy.model.CheckStatus;
 import com.rmamedov.deasy.model.kafka.OrderMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

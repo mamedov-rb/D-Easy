@@ -1,6 +1,6 @@
 package com.rmamedov.deasy.paymentservice.model.repository;
 
-import com.rmamedov.deasy.model.kafka.PaymentStatus;
+import com.rmamedov.deasy.model.PaymentStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

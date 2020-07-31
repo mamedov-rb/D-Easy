@@ -2,10 +2,10 @@ package com.rmamedov.orderservice.service
 
 import com.rmamedov.deasy.kafkastarter.properties.KafkaSenderProperties
 import com.rmamedov.deasy.kafkastarter.sender.ApplicationKafkaSender
-import com.rmamedov.deasy.model.kafka.CheckStatus
+import com.rmamedov.deasy.model.CheckStatus
 import com.rmamedov.deasy.orderservice.config.kafka.KafkaSenderConfig
 import com.rmamedov.deasy.orderservice.config.kafka.TopicPropertiesConfig
-import com.rmamedov.deasy.orderservice.config.mongo.MongoConfigurationProperties
+import com.rmamedov.deasy.orderservice.config.mongo.MongoProperties
 import com.rmamedov.deasy.orderservice.converter.OrderCreateRequestToOrderConverter
 import com.rmamedov.deasy.orderservice.converter.OrderCreateRequestToOrderConverterImpl
 import com.rmamedov.deasy.orderservice.converter.OrderToOrderMessageConverter
@@ -48,7 +48,7 @@ class CheckOrderServiceImplImplTest extends Specification {
     private CheckOrderService checkOrderService
 
     @MockBean
-    private MongoConfigurationProperties mongoProperties
+    private MongoProperties mongoProperties
 
     @MockBean
     @Qualifier("newOrdersSender")

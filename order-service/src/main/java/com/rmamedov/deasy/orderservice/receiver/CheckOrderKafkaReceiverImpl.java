@@ -4,7 +4,7 @@ import com.rmamedov.deasy.kafkastarter.properties.KafkaReceiverProperties;
 import com.rmamedov.deasy.kafkastarter.properties.TopicProperties;
 import com.rmamedov.deasy.kafkastarter.receiver.ApplicationKafkaReceiver;
 import com.rmamedov.deasy.model.kafka.OrderMessage;
-import com.rmamedov.deasy.orderservice.config.mongo.MongoConfigurationProperties;
+import com.rmamedov.deasy.orderservice.config.mongo.MongoProperties;
 import com.rmamedov.deasy.orderservice.converter.OrderMessageToOrderConverter;
 import com.rmamedov.deasy.orderservice.model.controller.OrderCheckInfo;
 import com.rmamedov.deasy.orderservice.service.CheckOrderService;
@@ -31,7 +31,7 @@ public class CheckOrderKafkaReceiverImpl implements CheckOrderKafkaReceiver {
 
     private final OrderMessageToOrderConverter orderMessageToOrderConverter;
 
-    private final MongoConfigurationProperties mongoProperties;
+    private final MongoProperties mongoProperties;
 
     private final KafkaReceiverProperties receiverProperties;
 
