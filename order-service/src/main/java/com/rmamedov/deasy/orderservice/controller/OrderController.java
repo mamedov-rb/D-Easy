@@ -4,17 +4,18 @@ import com.rmamedov.deasy.model.controller.OrderCreateRequest;
 import com.rmamedov.deasy.model.controller.OrderInfo;
 import com.rmamedov.deasy.orderservice.model.controller.OrderCheckInfo;
 import com.rmamedov.deasy.orderservice.model.controller.OrderCreateResponse;
+import org.springframework.http.ResponseEntity;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public interface OrderController {
 
-    Mono<OrderCreateResponse> create(Mono<OrderCreateRequest> createRequest);
+    ResponseEntity<Mono<OrderCreateResponse>> create(Mono<OrderCreateRequest> createRequest);
 
-    Flux<OrderCheckInfo> statuses();
+    ResponseEntity<Flux<OrderCheckInfo>> statuses();
 
-    Mono<OrderInfo> findByIdAndCheckStatus(String id, String checkStatus, String paymentStatus);
+    ResponseEntity<Mono<OrderInfo>> findByIdAndCheckStatus(String id, String checkStatus, String paymentStatus);
 
-    Flux<OrderInfo> findAll();
+    ResponseEntity<Flux<OrderInfo>> findAll();
 
 }

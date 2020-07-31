@@ -60,7 +60,10 @@ public class PaymentServiceImpl implements PaymentService {
                         )
                         .switchIfEmpty(Mono.error(new PaymentAlreadyExistException(String.format("Payment with orderId '%s' - Already exists.", orderId))))
                 )
-                .map(responseConverter::convert);
+                .map(payment -> {
+                    log.info("Order successfully payed: {}", payment);
+                    return responseConverter.convert(payment);
+                });
     }
 
     private Mono<Tuple2<Account, Account>> findBothAccounts(PaymentRequest request) {

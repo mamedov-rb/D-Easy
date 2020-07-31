@@ -43,3 +43,4 @@ management:
 
 logging.level:
   root: WARN
+  com.rmamedov.deasy.courieretl: INFO
