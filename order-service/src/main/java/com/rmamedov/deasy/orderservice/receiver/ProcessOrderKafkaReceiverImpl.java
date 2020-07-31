@@ -1,7 +1,7 @@
 package com.rmamedov.deasy.orderservice.receiver;
 
-import com.rmamedov.deasy.kafkastarter.properties.KafkaReceiverConfigurationProperties;
-import com.rmamedov.deasy.kafkastarter.properties.TopicConfigurationProperties;
+import com.rmamedov.deasy.kafkastarter.properties.KafkaReceiverProperties;
+import com.rmamedov.deasy.kafkastarter.properties.TopicProperties;
 import com.rmamedov.deasy.kafkastarter.receiver.ApplicationKafkaReceiver;
 import com.rmamedov.deasy.model.kafka.OrderMessage;
 import com.rmamedov.deasy.orderservice.converter.OrderMessageToOrderConverter;
@@ -22,14 +22,14 @@ public class ProcessOrderKafkaReceiverImpl implements ProcessOrderKafkaReceiver 
 
     private final OrderMessageToOrderConverter orderMessageToOrderConverter;
 
-    private final KafkaReceiverConfigurationProperties receiverProperties;
+    private final KafkaReceiverProperties receiverProperties;
 
-    private final TopicConfigurationProperties topicConfiguration;
+    private final TopicProperties topicConfiguration;
 
     public ProcessOrderKafkaReceiverImpl(ProcessOrderService processOrderService,
                                          OrderMessageToOrderConverter orderMessageToOrderConverter,
-                                         KafkaReceiverConfigurationProperties receiverProperties,
-                                         @Qualifier("successPayedOrdersTopicProp") final TopicConfigurationProperties properties) {
+                                         KafkaReceiverProperties receiverProperties,
+                                         @Qualifier("successPayedOrdersTopicProp") final TopicProperties properties) {
 
         this.processOrderService = processOrderService;
         this.orderMessageToOrderConverter = orderMessageToOrderConverter;

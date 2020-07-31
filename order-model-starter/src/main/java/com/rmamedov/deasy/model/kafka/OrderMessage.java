@@ -1,5 +1,8 @@
 package com.rmamedov.deasy.model.kafka;
 
+import com.rmamedov.deasy.model.CheckStatus;
+import com.rmamedov.deasy.model.OrderPosition;
+import com.rmamedov.deasy.model.PaymentStatus;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

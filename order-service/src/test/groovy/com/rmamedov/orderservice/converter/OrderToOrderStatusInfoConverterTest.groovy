@@ -1,6 +1,6 @@
 package com.rmamedov.orderservice.converter
 
-import com.rmamedov.deasy.model.kafka.CheckStatus
+import com.rmamedov.deasy.model.CheckStatus
 import com.rmamedov.deasy.orderservice.converter.OrderCreateRequestToOrderConverter
 import com.rmamedov.deasy.orderservice.converter.OrderCreateRequestToOrderConverterImpl
 import com.rmamedov.deasy.orderservice.converter.OrderToOrderStatusInfoConverter

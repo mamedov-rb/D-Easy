@@ -1,6 +1,6 @@
 package com.rmamedov.orderservice.converter
 
-import com.rmamedov.deasy.model.kafka.PaymentStatus
+import com.rmamedov.deasy.model.PaymentStatus
 import com.rmamedov.deasy.orderservice.converter.OrderCreateRequestToOrderConverter
 import com.rmamedov.deasy.orderservice.converter.OrderCreateRequestToOrderConverterImpl
 import org.springframework.beans.factory.annotation.Autowired

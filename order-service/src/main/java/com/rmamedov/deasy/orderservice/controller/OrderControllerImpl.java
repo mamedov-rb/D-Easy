@@ -1,8 +1,8 @@
 package com.rmamedov.deasy.orderservice.controller;
 
-import com.rmamedov.deasy.kafkastarter.properties.TopicConfigurationProperties;
-import com.rmamedov.deasy.model.controller.OrderCreateRequest;
-import com.rmamedov.deasy.model.controller.OrderInfo;
+import com.rmamedov.deasy.kafkastarter.properties.TopicProperties;
+import com.rmamedov.deasy.orderservice.model.controller.OrderCreateRequest;
+import com.rmamedov.deasy.orderservice.model.controller.OrderInfo;
 import com.rmamedov.deasy.orderservice.converter.OrderCreateRequestToOrderConverter;
 import com.rmamedov.deasy.orderservice.converter.OrderToOrderInfoConverter;
 import com.rmamedov.deasy.orderservice.model.controller.OrderCheckInfo;
@@ -45,14 +45,14 @@ public class OrderControllerImpl implements OrderController {
 
     private final OrderCreateRequestToOrderConverter requestToOrderConverter;
 
-    private final List<TopicConfigurationProperties> topicConfigurationList;
+    private final List<TopicProperties> topicConfigurationList;
 
     private long etlCount;
 
     @PostConstruct
     public void init() {
         etlCount = topicConfigurationList.stream()
-                .map(TopicConfigurationProperties::getName)
+                .map(TopicProperties::getName)
                 .filter(name -> name.startsWith("checked"))
                 .count();
     }

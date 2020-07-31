@@ -1,8 +1,8 @@
 package com.rmamedov.deasy.orderservice.model.repository;
 
-import com.rmamedov.deasy.model.kafka.CheckStatus;
-import com.rmamedov.deasy.model.kafka.OrderPosition;
-import com.rmamedov.deasy.model.kafka.PaymentStatus;
+import com.rmamedov.deasy.model.CheckStatus;
+import com.rmamedov.deasy.model.OrderPosition;
+import com.rmamedov.deasy.model.PaymentStatus;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.annotation.Id;

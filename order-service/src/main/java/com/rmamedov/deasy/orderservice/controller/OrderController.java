@@ -1,7 +1,7 @@
 package com.rmamedov.deasy.orderservice.controller;
 
-import com.rmamedov.deasy.model.controller.OrderCreateRequest;
-import com.rmamedov.deasy.model.controller.OrderInfo;
+import com.rmamedov.deasy.orderservice.model.controller.OrderCreateRequest;
+import com.rmamedov.deasy.orderservice.model.controller.OrderInfo;
 import com.rmamedov.deasy.orderservice.model.controller.OrderCheckInfo;
 import com.rmamedov.deasy.orderservice.model.controller.OrderCreateResponse;
 import org.springframework.http.ResponseEntity;

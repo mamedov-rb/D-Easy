@@ -1,6 +1,6 @@
 package com.rmamedov.deasy.orderservice.model.controller;
 
-import com.rmamedov.deasy.model.kafka.CheckStatus;
+import com.rmamedov.deasy.model.CheckStatus;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
