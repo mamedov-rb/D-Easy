@@ -1,7 +1,7 @@
 package com.rmamedov.deasy.kafkastarter.sender;
 
 import com.rmamedov.deasy.kafkastarter.properties.KafkaSenderProperties;
-import com.rmamedov.deasy.kafkastarter.properties.TopicConfigurationProperties;
+import com.rmamedov.deasy.kafkastarter.properties.TopicProperties;
 import com.rmamedov.deasy.model.kafka.OrderMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +20,7 @@ import java.util.HashMap;
 @RequiredArgsConstructor
 public class ApplicationKafkaSender {
 
-    private final TopicConfigurationProperties topicConfig;
+    private final TopicProperties topicConfig;
 
     private final KafkaSenderProperties senderConfig;
 

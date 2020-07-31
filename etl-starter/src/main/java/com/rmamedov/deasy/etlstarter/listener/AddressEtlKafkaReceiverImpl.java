@@ -1,8 +1,8 @@
 package com.rmamedov.deasy.etlstarter.listener;
 
 import com.rmamedov.deasy.etlstarter.persistence.OrderEtlPersistenceService;
-import com.rmamedov.deasy.kafkastarter.properties.KafkaReceiverConfigurationProperties;
-import com.rmamedov.deasy.kafkastarter.properties.TopicConfigurationProperties;
+import com.rmamedov.deasy.kafkastarter.properties.KafkaReceiverProperties;
+import com.rmamedov.deasy.kafkastarter.properties.TopicProperties;
 import com.rmamedov.deasy.kafkastarter.receiver.ApplicationKafkaReceiver;
 import com.rmamedov.deasy.kafkastarter.sender.ApplicationKafkaSender;
 import com.rmamedov.deasy.model.kafka.OrderMessage;
@@ -23,14 +23,14 @@ public class AddressEtlKafkaReceiverImpl implements AddressEtlKafkaReceiver {
 
     private final ApplicationKafkaSender applicationKafkaSender;
 
-    private final KafkaReceiverConfigurationProperties receiverProperties;
+    private final KafkaReceiverProperties receiverProperties;
 
-    private final TopicConfigurationProperties newOrdersTopicProps;
+    private final TopicProperties newOrdersTopicProps;
 
     public AddressEtlKafkaReceiverImpl(OrderEtlPersistenceService persistenceService,
                                        ApplicationKafkaSender applicationKafkaSender,
-                                       KafkaReceiverConfigurationProperties receiverProperties,
-                                       @Qualifier("newOrdersTopicProp") TopicConfigurationProperties newOrdersTopicProps) {
+                                       KafkaReceiverProperties receiverProperties,
+                                       @Qualifier("newOrdersTopicProp") TopicProperties newOrdersTopicProps) {
 
         this.persistenceService = persistenceService;
         this.applicationKafkaSender = applicationKafkaSender;

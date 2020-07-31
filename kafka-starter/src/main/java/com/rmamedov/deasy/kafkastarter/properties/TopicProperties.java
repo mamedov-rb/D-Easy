@@ -7,7 +7,7 @@ import javax.validation.constraints.NotBlank;
 
 @Data
 @Validated
-public class TopicConfigurationProperties {
+public class TopicProperties {
 
     @NotBlank
     private String name;

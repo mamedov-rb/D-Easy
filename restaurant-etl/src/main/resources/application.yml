@@ -43,4 +43,4 @@ management:
 
 logging.level:
   root: WARN
-  com.rmamedov.deasy.restaurantetl: INFO
+  com.rmamedov.deasy: INFO

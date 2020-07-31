@@ -13,7 +13,7 @@ import javax.validation.constraints.NotBlank;
 @Component
 @ConditionalOnProperty(prefix = "kafka.receiver", value = "bootstrap-servers")
 @ConfigurationProperties(prefix = "kafka.receiver")
-public class KafkaReceiverConfigurationProperties {
+public class KafkaReceiverProperties {
 
     @NotBlank
     private String bootstrapServers;

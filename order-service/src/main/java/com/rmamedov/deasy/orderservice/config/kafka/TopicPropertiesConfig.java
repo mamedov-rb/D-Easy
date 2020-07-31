@@ -1,6 +1,6 @@
 package com.rmamedov.deasy.orderservice.config.kafka;
 
-import com.rmamedov.deasy.kafkastarter.properties.TopicConfigurationProperties;
+import com.rmamedov.deasy.kafkastarter.properties.TopicProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,38 +10,38 @@ public class TopicPropertiesConfig {
 
     @Bean
     @ConfigurationProperties(prefix = "kafka.topics.new-orders-topic")
-    public TopicConfigurationProperties newOrdersTopicProp() {
-        return new TopicConfigurationProperties();
+    public TopicProperties newOrdersTopicProp() {
+        return new TopicProperties();
     }
 
     @Bean
     @ConfigurationProperties(prefix = "kafka.topics.checked-addresses-topic")
-    public TopicConfigurationProperties checkedAddressesTopicProp() {
-        return new TopicConfigurationProperties();
+    public TopicProperties checkedAddressesTopicProp() {
+        return new TopicProperties();
     }
 
     @Bean
     @ConfigurationProperties(prefix = "kafka.topics.checked-couriers-topic")
-    public TopicConfigurationProperties checkedCouriersTopicProp() {
-        return new TopicConfigurationProperties();
+    public TopicProperties checkedCouriersTopicProp() {
+        return new TopicProperties();
     }
 
     @Bean
     @ConfigurationProperties(prefix = "kafka.topics.checked-menu-orders-topic")
-    public TopicConfigurationProperties checkedMenuOrdersTopicProp() {
-        return new TopicConfigurationProperties();
+    public TopicProperties checkedMenuOrdersTopicProp() {
+        return new TopicProperties();
     }
 
     @Bean
     @ConfigurationProperties(prefix = "kafka.topics.success-payed-orders-topic")
-    public TopicConfigurationProperties successPayedOrdersTopicProp() {
-        return new TopicConfigurationProperties();
+    public TopicProperties successPayedOrdersTopicProp() {
+        return new TopicProperties();
     }
 
     @Bean
     @ConfigurationProperties(prefix = "kafka.topics.ready-to-cook-topic")
-    public TopicConfigurationProperties readyToCookTopicProp() {
-        return new TopicConfigurationProperties();
+    public TopicProperties readyToCookTopicProp() {
+        return new TopicProperties();
     }
 
 }

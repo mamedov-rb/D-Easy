@@ -1,6 +1,6 @@
 package com.rmamedov.deasy.kafkastarter.receiver;
 
-import com.rmamedov.deasy.kafkastarter.properties.KafkaReceiverConfigurationProperties;
+import com.rmamedov.deasy.kafkastarter.properties.KafkaReceiverProperties;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -16,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ApplicationKafkaReceiver<T> {
 
-    private final KafkaReceiverConfigurationProperties receiverProperties;
+    private final KafkaReceiverProperties receiverProperties;
 
     private final List<String> topics;
 
