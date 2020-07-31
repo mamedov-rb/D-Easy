@@ -4,7 +4,9 @@ import com.rmamedov.deasy.paymentservice.model.controller.PaymentRequest;
 import com.rmamedov.deasy.paymentservice.model.controller.PaymentResponse;
 import com.rmamedov.deasy.paymentservice.service.PaymentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,8 +27,9 @@ public class PaymentControllerImpl implements PaymentController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public Mono<PaymentResponse> pay(@RequestBody @Validated final Mono<PaymentRequest> request) {
-        return request.flatMap(paymentService::payForNewFullyCheckedOrder);
+    public ResponseEntity<Mono<PaymentResponse>> pay(@RequestBody @Validated final Mono<PaymentRequest> request) {
+        final var responseMono = request.flatMap(paymentService::payForNewFullyCheckedOrder);
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseMono);
     }
 
 }

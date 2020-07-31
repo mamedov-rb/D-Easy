@@ -53,6 +53,7 @@ subprojects {
 
     dependencies {
         implementation "org.springframework.boot:spring-boot-starter-actuator"
+        implementation "org.springframework.boot:spring-boot-starter-webflux"
         implementation "org.hibernate:hibernate-validator:${hibernateValidatorVersion}"
 
         compileOnly "org.projectlombok:lombok:${lombokVersion}"
@@ -61,11 +62,12 @@ subprojects {
         implementation "org.mapstruct:mapstruct-jdk8:${mapStructVersion}"
         compileOnly "org.mapstruct:mapstruct-processor:${mapStructVersion}"
 
-        testImplementation "de.flapdoodle.embed:de.flapdoodle.embed.mongo:2.2.0"
-        testImplementation "org.apache.commons:commons-lang3:${commonsLang3Version}"
         testImplementation("org.springframework.boot:spring-boot-starter-test") {
             exclude group: "org.junit.vintage", module: "junit-vintage-engine"
         }
+        testImplementation "io.projectreactor:reactor-test"
+        testImplementation "de.flapdoodle.embed:de.flapdoodle.embed.mongo:2.2.0"
+        testImplementation "org.apache.commons:commons-lang3:${commonsLang3Version}"
         testImplementation "org.spockframework:spock-core:${spockVersion}"
         testImplementation "org.spockframework:spock-spring:${spockVersion}"
     }

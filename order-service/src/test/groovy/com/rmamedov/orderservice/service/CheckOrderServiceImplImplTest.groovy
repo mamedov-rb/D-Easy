@@ -4,7 +4,7 @@ import com.rmamedov.deasy.kafkastarter.properties.KafkaSenderProperties
 import com.rmamedov.deasy.kafkastarter.sender.ApplicationKafkaSender
 import com.rmamedov.deasy.model.kafka.CheckStatus
 import com.rmamedov.deasy.orderservice.config.kafka.KafkaSenderConfig
-import com.rmamedov.deasy.orderservice.config.kafka.TopicConfigurationPropertiesConfig
+import com.rmamedov.deasy.orderservice.config.kafka.TopicPropertiesConfig
 import com.rmamedov.deasy.orderservice.config.mongo.MongoConfigurationProperties
 import com.rmamedov.deasy.orderservice.converter.OrderCreateRequestToOrderConverter
 import com.rmamedov.deasy.orderservice.converter.OrderCreateRequestToOrderConverterImpl
@@ -34,7 +34,7 @@ import static org.mockito.Mockito.when
         CheckOrderServiceImpl.class,
         KafkaSenderConfig.class,
         KafkaSenderProperties.class,
-        TopicConfigurationPropertiesConfig.class,
+        TopicPropertiesConfig.class,
         OrderToOrderMessageConverterImpl.class,
         OrderToOrderStatusInfoConverterImpl.class,
         OrderCreateRequestToOrderConverterImpl.class

@@ -3,6 +3,7 @@ package com.rmamedov.orderservice.rest
 import com.rmamedov.deasy.model.controller.OrderInfo
 import com.rmamedov.deasy.model.kafka.CheckStatus
 import com.rmamedov.deasy.model.kafka.PaymentStatus
+import com.rmamedov.deasy.orderservice.config.kafka.TopicPropertiesConfig
 import com.rmamedov.deasy.orderservice.controller.OrderControllerImpl
 import com.rmamedov.deasy.orderservice.converter.OrderCreateRequestToOrderConverter
 import com.rmamedov.deasy.orderservice.converter.OrderCreateRequestToOrderConverterImpl
@@ -37,6 +38,7 @@ import static org.mockito.Mockito.when
 @WebFluxTest(OrderControllerImpl.class)
 @ContextConfiguration(classes = [
         OrderControllerImpl.class,
+        TopicPropertiesConfig.class,
         OrderCreateRequestToOrderConverterImpl.class,
         OrderToOrderInfoConverterImpl.class
 ])
@@ -76,31 +78,10 @@ class OrderControllerImplTest extends Specification {
 
         then:
         exchange
-                .expectStatus().isOk()
+                .expectStatus().isCreated()
                 .expectHeader().contentType(MediaType.APPLICATION_JSON)
                 .expectBody()
                 .jsonPath('$.orderId', orderId)
-    }
-
-    def "When ask all order statuses then success"() {
-        given:
-        final List<OrderCheckInfo> list = new ArrayList<>()
-        def orderId = "123QWE"
-        Stream.of(CheckStatus.values())
-                .filter({ c -> c != CheckStatus.FULLY_CHECKED })
-                .limit(2)
-                .forEach({ c -> list.add(orderCheckInfo(orderId, c)) })
-        list.add(orderCheckInfo(orderId, CheckStatus.FULLY_CHECKED))
-        when(checkOrderKafkaReceiver.listenCheckedOrders()).thenReturn(Flux.fromIterable(list))
-
-        when:
-        def exchange = get(webTestClient, CHECK_ORDER_STATUSES_URL)
-
-        then:
-        exchange
-                .expectStatus().isOk()
-                .expectBodyList(OrderCheckInfo.class)
-                .isEqualTo(list)
     }
 
     def "When find order by criteria then success"() {
@@ -126,6 +107,27 @@ class OrderControllerImplTest extends Specification {
                 .isEqualTo(orderInfo)
     }
 
+    def "When ask all order statuses then success"() {
+        given:
+        final List<OrderCheckInfo> list = new ArrayList<>()
+        def orderId = "123QWE"
+        Stream.of(CheckStatus.values())
+                .filter({ c -> c != CheckStatus.FULLY_CHECKED })
+                .limit(2)
+                .forEach({ c -> list.add(orderCheckInfo(orderId, c)) })
+        list.add(orderCheckInfo(orderId, CheckStatus.FULLY_CHECKED))
+        when(checkOrderKafkaReceiver.listenCheckedOrders()).thenReturn(Flux.fromIterable(list))
+
+        when:
+        def exchange = get(webTestClient, CHECK_ORDER_STATUSES_URL)
+
+        then:
+        exchange
+                .expectStatus().isOk()
+                .expectBodyList(OrderCheckInfo.class)
+                .isEqualTo(list)
+    }
+
     def "When find all orders then success"() {
         given:
         def order = requestToOrderConverter.convert(orderCreateRequest())
@@ -140,7 +142,7 @@ class OrderControllerImplTest extends Specification {
         exchange
                 .expectStatus().isOk()
                 .expectBodyList(OrderInfo.class)
-                .isEqualTo(List.of(orderInfo))
+                .contains(orderInfo)
     }
 
 }

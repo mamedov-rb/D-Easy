@@ -13,7 +13,7 @@ import java.util.Set;
 
 @Data
 @EqualsAndHashCode(of = {
-        "id", "name", "totalPrice", "totalPriceAfterDiscount"
+        "id", "name", "description"
 })
 public class OrderInfo {
 

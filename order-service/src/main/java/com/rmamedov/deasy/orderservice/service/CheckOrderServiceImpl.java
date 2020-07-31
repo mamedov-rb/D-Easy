@@ -2,7 +2,6 @@ package com.rmamedov.deasy.orderservice.service;
 
 import com.rmamedov.deasy.kafkastarter.sender.ApplicationKafkaSender;
 import com.rmamedov.deasy.model.kafka.CheckStatus;
-import com.rmamedov.deasy.orderservice.config.mongo.MongoConfigurationProperties;
 import com.rmamedov.deasy.orderservice.converter.OrderToOrderMessageConverter;
 import com.rmamedov.deasy.orderservice.converter.OrderToOrderStatusInfoConverter;
 import com.rmamedov.deasy.orderservice.model.controller.OrderCheckInfo;
