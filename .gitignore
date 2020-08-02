@@ -13,3 +13,4 @@ build
 /address-etl/gradle/
 /kafka-starter/out/
 /restaurant-service/src/main/resources/data/media/
+/front-end-app/node_modules/

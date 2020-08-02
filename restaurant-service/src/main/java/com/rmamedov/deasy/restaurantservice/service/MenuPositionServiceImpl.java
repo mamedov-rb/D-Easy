@@ -64,16 +64,12 @@ public class MenuPositionServiceImpl implements MenuPositionService {
         return positionRepository.findById(positionId)
                 .flatMap(position -> {
                     createDirectoryIfNotExists();
-                    final String filePath = addImage(filePart, position);
-                    filePart.transferTo(Paths.get(filePath));
+                    final String filename = filePart.filename();
+                    final Path path = Paths.get(addImageName(filename, position));
+                    filePart.transferTo(path);
                     return positionRepository.save(position)
-                            .then(Mono.just(new UploadDetailsDTO(filePart.filename())))
-                            .doOnSuccess(success -> log.info(
-                                    IMAGES_SUCCESSFULLY_ADDED_MSG,
-                                    filePart.filename(),
-                                    position.getId(),
-                                    position.getImages())
-                            );
+                            .then(Mono.just(new UploadDetailsDTO(filename)))
+                            .doOnSuccess(success -> log.info(IMAGES_SUCCESSFULLY_ADDED_MSG, filename, position.getId(), position.getImages()));
                 })
                 .switchIfEmpty(Mono.error(new MenuPositionNotFoundException(String.format(POSITION_NOT_FOUND_MSG, positionId))));
     }
@@ -86,10 +82,9 @@ public class MenuPositionServiceImpl implements MenuPositionService {
         return new FileSystemResource(path);
     }
 
-    private String addImage(final FilePart filePart, final MenuPosition menuPosition) {
-        final String filename = dataProperties.getDirectory() + filePart.filename();
-        menuPosition.getImages().add(filename);
-        return filename;
+    private String addImageName(final String fileName, final MenuPosition menuPosition) {
+        menuPosition.getImages().add(fileName);
+        return dataProperties.getDirectory() + fileName;
     }
 
     private void createDirectoryIfNotExists() {
