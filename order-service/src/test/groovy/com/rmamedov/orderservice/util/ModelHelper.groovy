@@ -1,9 +1,9 @@
 package com.rmamedov.orderservice.util
 
-import com.rmamedov.deasy.orderservice.model.controller.OrderCreateRequest
 import com.rmamedov.deasy.model.CheckStatus
 import com.rmamedov.deasy.model.OrderPosition
 import com.rmamedov.deasy.orderservice.model.controller.OrderCheckInfo
+import com.rmamedov.deasy.orderservice.model.controller.OrderCreateRequest
 
 import java.time.LocalDateTime
 
