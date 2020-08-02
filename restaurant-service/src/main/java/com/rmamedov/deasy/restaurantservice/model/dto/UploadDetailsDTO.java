@@ -1,0 +1,15 @@
+package com.rmamedov.deasy.restaurantservice.model.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class UploadDetailsDTO {
+
+    private String fileName;
+
+}
+
