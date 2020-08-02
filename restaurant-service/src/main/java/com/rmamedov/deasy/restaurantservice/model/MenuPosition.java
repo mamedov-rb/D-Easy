@@ -11,6 +11,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -49,6 +51,8 @@ public class MenuPosition implements Persistable<String> {
     private Double height;
 
     private String additionalInfo;
+
+    private Set<String> images = new HashSet<>();
 
     @Transient
     private boolean isNew;
