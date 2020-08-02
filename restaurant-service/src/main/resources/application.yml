@@ -5,6 +5,13 @@ spring:
   application.name: restaurant-service
   data.mongodb:
     uri: mongodb://d_easy_user:123qwe@192.168.31.157:27017/d_easy_db?replicaSet=rs0
+  servlet.multipart:
+   max-file-size: 256MB
+   max-request-size: 256MB
+   enabled: true
+
+data:
+  directory: restaurant-service/src/main/resources/data/media/
 
 kafka:
   receiver:
@@ -46,4 +53,6 @@ management:
 
 logging.level:
   root: WARN
+  org.springframework:
+    web: DEBUG
   com.rmamedov.deasy: INFO
