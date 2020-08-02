@@ -12,3 +12,4 @@ build
 /order-model-starter/out/
 /address-etl/gradle/
 /kafka-starter/out/
+/restaurant-service/src/main/resources/data/media/

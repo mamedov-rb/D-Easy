@@ -3,6 +3,7 @@ package com.rmamedov.deasy.restaurantservice.model.dto;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.Set;
 
 @Data
 public class MenuPositionDTO {
@@ -24,5 +25,7 @@ public class MenuPositionDTO {
     private Double height;
 
     private String additionalInfo;
+
+    private Set<String> images;
 
 }
