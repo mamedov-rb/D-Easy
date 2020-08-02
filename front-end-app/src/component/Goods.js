@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import ndjsonStream from 'can-ndjson-stream';
+import jsonStream from 'can-ndjson-stream';
 import {toast} from "react-toastify";
 import Good from './Good';
 
@@ -24,7 +24,7 @@ class Goods extends Component {
         };
         fetch(url + '/menu-position/all', config)
             .then((response) => {
-                return ndjsonStream(response.body);
+                return jsonStream(response.body);
             })
             .then((stream) => {
                 const reader = stream.getReader();
