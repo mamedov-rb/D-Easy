@@ -1,4 +1,8 @@
 import React, {Component} from 'react'
+import {toast} from "react-toastify";
+
+const BASE_URL = 'http://localhost:8040/api/';
+const IMAGE_URL = 'menu-position/download-file/';
 
 class Good extends Component {
 
@@ -8,13 +12,12 @@ class Good extends Component {
     }
 
     componentDidMount() {
-        this.getImage(this.props.el.images[0])
-    }
-
-    getImage = (fileName) => {
-        fetch('http://localhost:8040/api/menu-position/download-file/' + fileName)
+        fetch(BASE_URL + IMAGE_URL + this.props.el.images[0])
             .then(response => response.blob())
             .then(blob => this.setState({image: URL.createObjectURL(blob)}))
+            .catch((err) => {
+                toast.error(err.message, {position: toast.POSITION.TOP_RIGHT})
+            });
     }
 
     render() {

@@ -2,27 +2,19 @@ import React, {Component} from 'react'
 import jsonStream from 'can-ndjson-stream';
 import {toast} from "react-toastify";
 import Good from './Good';
+import {connect} from "react-redux";
+
+const BASE_URL = 'http://localhost:8040/api/';
+const ALL_POSITIONS_URL = 'menu-position/all';
 
 class Goods extends Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {goods: []}
-    }
 
     componentDidMount() {
         this.fetchGoods()
     }
 
     fetchGoods = () => {
-        let url = 'http://localhost:8040/api';
-        let config = {
-            headers: {
-                'Content-Type': 'application/stream+json',
-                'Accept': 'application/stream+json'
-            }
-        };
-        fetch(url + '/menu-position/all', config)
+        fetch(BASE_URL + ALL_POSITIONS_URL)
             .then((response) => {
                 return jsonStream(response.body);
             })
@@ -33,39 +25,22 @@ class Goods extends Component {
                     if (result.done) {
                         return;
                     }
-                    this.setState({goods: [...this.state.goods, result.value]})
+                    this.props.addGood(result.value)
                     reader.read().then(read);
                 });
             })
-            .catch(err => {
-                toast.error(err.response.data, {
-                    position: toast.POSITION.TOP_RIGHT
-                })
+            .catch((err) => {
+                toast.error(err.message, {position: toast.POSITION.TOP_RIGHT})
             });
     }
-
-    // addProject = (project) => {
-    //     api.post('/manager/project/save', project)
-    //         .then(res => {
-    //             toast.success("Project created.", {
-    //                 position: toast.POSITION.TOP_RIGHT
-    //             })
-    //             this.fetchProjects()
-    //         })
-    //         .catch(err => {
-    //             toast.error(err.response.data, {
-    //                 position: toast.POSITION.TOP_RIGHT
-    //             })
-    //         })
-    // }
 
     render() {
         return (
             <div>
                 <div className="ui five doubling link cards">
-                    {this.state.goods.map((el) => {
+                    {this.props.goodsStore.map((el, index) => {
                         return (
-                            <Good el={el}/>
+                            <Good key={index} el={el}/>
                         )
                     })}
                 </div>
@@ -75,4 +50,13 @@ class Goods extends Component {
 
 }
 
-export default Goods
+export default connect(
+    state => ({
+        goodsStore: state
+    }),
+    dispatch => ({
+        addGood: (good) => {
+            dispatch({type: 'ADD_GOOD', payload: good});
+        }
+    })
+)(Goods);
