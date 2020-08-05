@@ -1,0 +1,28 @@
+server.port: 8120
+
+spring:
+  output.ansi.enabled: detect
+  application.name: good-service
+  data.mongodb:
+    uri: mongodb://d_easy_user:123qwe@192.168.31.157:27017/d_easy_db?replicaSet=rs0
+  servlet.multipart:
+   max-file-size: 256MB
+   max-request-size: 256MB
+   enabled: true
+
+data:
+  directory: good-service/src/main/resources/data/media/
+
+#eureka:
+#  instance.preferIpAddress: true
+#  client:
+#    registerWithEureka: true
+#    fetchRegistry: true
+#    serviceUrl:
+#      defaultZone: http://discovery-service:8761/eureka
+
+logging.level:
+  root: WARN
+  org.springframework:
+    web: DEBUG
+  com.rmamedov.deasy: INFO
