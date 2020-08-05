@@ -12,5 +12,5 @@ build
 /order-model-starter/out/
 /address-etl/gradle/
 /kafka-starter/out/
-/restaurant-service/src/main/resources/data/media/
+/good-service/src/main/resources/data/media/
 /front-end-app/node_modules/

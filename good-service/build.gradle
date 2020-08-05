@@ -1,0 +1,5 @@
+
+dependencies {
+    implementation project(":order-model-starter")
+    implementation "org.springframework.boot:spring-boot-starter-data-mongodb-reactive"
+}
