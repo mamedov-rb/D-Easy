@@ -4,8 +4,8 @@ import {toast} from "react-toastify";
 import Good from './Good';
 import {connect} from "react-redux";
 
-const BASE_URL = 'http://localhost:8040/api/';
-const ALL_POSITIONS_URL = 'menu-position/all';
+const BASE_URL = 'http://localhost:8120/api/';
+const ALL_POSITIONS_URL = 'good/all';
 
 class Goods extends Component {
 

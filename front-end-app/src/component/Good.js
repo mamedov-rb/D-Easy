@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
 import {toast} from "react-toastify";
 
-const BASE_URL = 'http://localhost:8040/api/';
-const IMAGE_URL = 'menu-position/download-file/';
+const BASE_URL = 'http://localhost:8120/api/';
+const IMAGE_URL = 'good/download-file/';
 
 class Good extends Component {
 
