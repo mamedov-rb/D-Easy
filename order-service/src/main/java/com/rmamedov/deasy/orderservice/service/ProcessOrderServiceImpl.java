@@ -1,6 +1,7 @@
 package com.rmamedov.deasy.orderservice.service;
 
 import com.rmamedov.deasy.kafkastarter.sender.ApplicationKafkaSender;
+import com.rmamedov.deasy.model.kafka.OrderMessage;
 import com.rmamedov.deasy.orderservice.converter.OrderToOrderMessageConverter;
 import com.rmamedov.deasy.orderservice.model.repository.Order;
 import lombok.extern.slf4j.Slf4j;
@@ -13,13 +14,13 @@ import reactor.core.publisher.Mono;
 @Service
 public class ProcessOrderServiceImpl implements ProcessOrderService {
 
-    private final ApplicationKafkaSender applicationKafkaSender;
+    private final ApplicationKafkaSender<OrderMessage> applicationKafkaSender;
 
     private final OrderService orderService;
 
     private final OrderToOrderMessageConverter orderToOrderMessageConverter;
 
-    public ProcessOrderServiceImpl(@Qualifier("readyToCookSender") ApplicationKafkaSender applicationKafkaSender,
+    public ProcessOrderServiceImpl(@Qualifier("readyToCookSender") ApplicationKafkaSender<OrderMessage> applicationKafkaSender,
                                    OrderService orderService,
                                    OrderToOrderMessageConverter orderToOrderMessageConverter) {
 
@@ -38,7 +39,10 @@ public class ProcessOrderServiceImpl implements ProcessOrderService {
                             savedOrder.setPaymentStatus(payedOrder.getPaymentStatus());
                         })
                         .flatMap(orderService::save)
-                        .doOnSuccess(r -> applicationKafkaSender.send(orderToOrderMessageConverter.convert(payedOrder)))
+                        .doOnSuccess(r -> {
+                            final OrderMessage orderMessage = orderToOrderMessageConverter.convert(payedOrder);
+                            applicationKafkaSender.send(orderMessage, orderMessage.getId());
+                        })
                 );
     }
 

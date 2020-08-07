@@ -2,6 +2,7 @@ package com.rmamedov.deasy.orderservice.service;
 
 import com.rmamedov.deasy.kafkastarter.sender.ApplicationKafkaSender;
 import com.rmamedov.deasy.model.CheckStatus;
+import com.rmamedov.deasy.model.kafka.OrderMessage;
 import com.rmamedov.deasy.orderservice.converter.OrderToOrderMessageConverter;
 import com.rmamedov.deasy.orderservice.converter.OrderToOrderStatusInfoConverter;
 import com.rmamedov.deasy.orderservice.model.controller.OrderCheckInfo;
@@ -25,7 +26,7 @@ public class CheckOrderServiceImpl implements CheckOrderService {
             CheckStatus.COURIER_CHECKED
     );
 
-    private final ApplicationKafkaSender applicationKafkaSender;
+    private final ApplicationKafkaSender<OrderMessage> applicationKafkaSender;
 
     private final OrderService orderService;
 
@@ -33,7 +34,7 @@ public class CheckOrderServiceImpl implements CheckOrderService {
 
     private final OrderToOrderStatusInfoConverter orderToOrderStatusInfoConverter;
 
-    public CheckOrderServiceImpl(@Qualifier("newOrdersSender") ApplicationKafkaSender applicationKafkaSender,
+    public CheckOrderServiceImpl(@Qualifier("newOrdersSender") ApplicationKafkaSender<OrderMessage> applicationKafkaSender,
                                  OrderService orderService,
                                  OrderToOrderMessageConverter orderToOrderMessageConverter,
                                  OrderToOrderStatusInfoConverter orderToOrderStatusInfoConverter) {
@@ -49,7 +50,7 @@ public class CheckOrderServiceImpl implements CheckOrderService {
     public Mono<OrderCreateResponse> createAndSend(final Order order) {
         return orderService.save(order.setAsNew())
                 .map(orderToOrderMessageConverter::convert)
-                .doOnNext(applicationKafkaSender::send)
+                .doOnNext(orderMeassage -> applicationKafkaSender.send(orderMeassage, orderMeassage.getId()))
                 .map(orderMessage -> new OrderCreateResponse(orderMessage.getId()));
     }
 
