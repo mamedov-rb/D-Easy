@@ -10,6 +10,8 @@ import reactor.core.publisher.Mono;
 
 public interface GoodService {
 
+    Mono<String> goodHasClicked(final String category, final String goodId, final String userAgent, final String clientIp);
+
     Mono<GoodDTO> save(Good position);
 
     Mono<GoodDTO> findById(String id);
