@@ -34,7 +34,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     private final AccountService accountService;
 
-    private final ApplicationKafkaSender applicationKafkaSender;
+    private final ApplicationKafkaSender<OrderMessage> applicationKafkaSender;
 
     private final PaymentToPayResponseConverter responseConverter;
 
@@ -55,7 +55,7 @@ public class PaymentServiceImpl implements PaymentService {
                                         .doOnNext(onNext -> orderMessage.setTransactionId(payment.getTransactionId()))
                                         .doOnSuccess(onSuccess -> orderMessage.setPaymentStatus(PaymentStatus.SUCCESS))
                                         .doOnError(throwable -> orderMessage.setPaymentStatus(PaymentStatus.FAILED))
-                                        .doFinally(finalSignal -> applicationKafkaSender.send(orderMessage))
+                                        .doFinally(finalSignal -> applicationKafkaSender.send(orderMessage, orderMessage.getId()))
                                 )
                         )
                         .switchIfEmpty(Mono.error(new PaymentAlreadyExistException(String.format("Payment with orderId '%s' - Already exists.", orderId))))

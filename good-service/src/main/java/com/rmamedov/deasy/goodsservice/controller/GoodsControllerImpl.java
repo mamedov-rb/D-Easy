@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,7 +33,22 @@ import static java.time.Duration.ofMillis;
 @RequiredArgsConstructor
 public class GoodsControllerImpl implements GoodsController {
 
+    public static final String USER_AGENT_HEADER = "User-Agent";
+    public static final String CLIENT_IP_HEADER = "X-Real-IP";
+    public static final String CLIENT_IP_DEFAILT = "X-Real-IP is not provided.";
+
     private final GoodService goodService;
+
+    @Override
+    @GetMapping(value = "/clicked/{category}/{goodId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Mono<String>> goodHasClicked(
+            @PathVariable("category") final String category,
+            @PathVariable("goodId") final String goodId,
+            @RequestHeader(USER_AGENT_HEADER) final String userAgent,
+            @RequestHeader(value = CLIENT_IP_HEADER, defaultValue = CLIENT_IP_DEFAILT) final String clientIp
+    ) {
+        return ResponseEntity.ok(goodService.goodHasClicked(category, goodId, userAgent, clientIp));
+    }
 
     @Override
     @GetMapping(value = "/id/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

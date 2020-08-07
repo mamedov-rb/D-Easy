@@ -21,14 +21,14 @@ public class AddressEtlKafkaReceiverImpl implements AddressEtlKafkaReceiver {
 
     private final OrderEtlPersistenceService persistenceService;
 
-    private final ApplicationKafkaSender applicationKafkaSender;
+    private final ApplicationKafkaSender<OrderMessage> applicationKafkaSender;
 
     private final KafkaReceiverProperties receiverProperties;
 
     private final TopicProperties newOrdersTopicProps;
 
     public AddressEtlKafkaReceiverImpl(OrderEtlPersistenceService persistenceService,
-                                       ApplicationKafkaSender applicationKafkaSender,
+                                       ApplicationKafkaSender<OrderMessage> applicationKafkaSender,
                                        KafkaReceiverProperties receiverProperties,
                                        @Qualifier("newOrdersTopicProp") TopicProperties newOrdersTopicProps) {
 
@@ -50,7 +50,7 @@ public class AddressEtlKafkaReceiverImpl implements AddressEtlKafkaReceiver {
                     return persistenceService.findByOrderId(orderMessage.getId())
                             .switchIfEmpty(persistenceService.checkAndSave(Mono.just(orderMessage))
                                     .doOnNext(checkResult -> {
-                                        applicationKafkaSender.send(checkResult);
+                                        applicationKafkaSender.send(checkResult, checkResult.getId());
                                         receiverRecord.receiverOffset().acknowledge();
                                     }));
                 })

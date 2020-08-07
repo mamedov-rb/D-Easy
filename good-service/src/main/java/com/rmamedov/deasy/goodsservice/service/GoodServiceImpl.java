@@ -4,9 +4,11 @@ import com.rmamedov.deasy.goodsservice.config.data.DataProperties;
 import com.rmamedov.deasy.goodsservice.converter.GoodToGoodDTOConverter;
 import com.rmamedov.deasy.goodsservice.exception.GoodNotFoundException;
 import com.rmamedov.deasy.goodsservice.model.Good;
+import com.rmamedov.deasy.goodsservice.model.dto.GoodClickMessage;
 import com.rmamedov.deasy.goodsservice.model.dto.GoodDTO;
 import com.rmamedov.deasy.goodsservice.model.dto.UploadDetailsDTO;
 import com.rmamedov.deasy.goodsservice.repository.GoodRepository;
+import com.rmamedov.deasy.kafkastarter.sender.ApplicationKafkaSender;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.FileSystemResource;
@@ -35,6 +37,26 @@ public class GoodServiceImpl implements GoodService {
     private final GoodRepository goodRepository;
 
     private final GoodToGoodDTOConverter goodToGoodDTOConverter;
+
+    private final ApplicationKafkaSender<GoodClickMessage> applicationKafkaSender;
+
+    @Override
+    public Mono<String> goodHasClicked(final String category,
+                                       final String goodId,
+                                       final String userAgent,
+                                       final String clientIp) {
+
+        final GoodClickMessage clickMessage = GoodClickMessage.builder()
+                .category(category)
+                .goodId(goodId)
+                .userAgent(userAgent)
+                .clientIp(clientIp)
+                .build();
+        return Mono.fromCallable(() -> {
+            applicationKafkaSender.send(clickMessage, goodId);
+            return goodId;
+        });
+    }
 
     @Override
     @Transactional

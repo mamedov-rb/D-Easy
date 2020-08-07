@@ -11,6 +11,8 @@ import reactor.core.publisher.Mono;
 
 public interface GoodsController {
 
+    ResponseEntity<Mono<String>> goodHasClicked(final String category, final String goodId, final String userAgent, final String clientIp);
+
     ResponseEntity<Mono<GoodDTO>> findById(String id);
 
     ResponseEntity<Flux<GoodDTO>> findAll();
