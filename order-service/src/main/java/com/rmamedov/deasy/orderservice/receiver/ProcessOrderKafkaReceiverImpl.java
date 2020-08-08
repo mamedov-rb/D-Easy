@@ -1,9 +1,9 @@
 package com.rmamedov.deasy.orderservice.receiver;
 
+import com.rmamedov.deasy.application.model.kafka.OrderMessage;
 import com.rmamedov.deasy.kafkastarter.properties.KafkaReceiverProperties;
 import com.rmamedov.deasy.kafkastarter.properties.TopicProperties;
 import com.rmamedov.deasy.kafkastarter.receiver.ApplicationKafkaReceiver;
-import com.rmamedov.deasy.model.kafka.OrderMessage;
 import com.rmamedov.deasy.orderservice.converter.OrderMessageToOrderConverter;
 import com.rmamedov.deasy.orderservice.service.ProcessOrderService;
 import lombok.extern.slf4j.Slf4j;

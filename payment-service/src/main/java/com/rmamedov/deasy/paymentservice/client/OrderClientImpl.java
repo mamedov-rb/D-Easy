@@ -1,6 +1,6 @@
 package com.rmamedov.deasy.paymentservice.client;
 
-import com.rmamedov.deasy.model.kafka.OrderMessage;
+import com.rmamedov.deasy.application.model.kafka.OrderMessage;
 import com.rmamedov.deasy.paymentservice.config.ClientConfigurationProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;

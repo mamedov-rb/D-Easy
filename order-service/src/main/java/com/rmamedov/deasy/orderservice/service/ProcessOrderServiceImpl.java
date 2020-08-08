@@ -1,7 +1,7 @@
 package com.rmamedov.deasy.orderservice.service;
 
+import com.rmamedov.deasy.application.model.kafka.OrderMessage;
 import com.rmamedov.deasy.kafkastarter.sender.ApplicationKafkaSender;
-import com.rmamedov.deasy.model.kafka.OrderMessage;
 import com.rmamedov.deasy.orderservice.converter.OrderToOrderMessageConverter;
 import com.rmamedov.deasy.orderservice.model.repository.Order;
 import lombok.extern.slf4j.Slf4j;

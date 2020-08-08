@@ -1,8 +1,8 @@
 package com.rmamedov.deasy.etlstarter.persistence;
 
 import com.hazelcast.map.IMap;
+import com.rmamedov.deasy.application.model.kafka.OrderMessage;
 import com.rmamedov.deasy.etlstarter.service.OrderEtlService;
-import com.rmamedov.deasy.model.kafka.OrderMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;

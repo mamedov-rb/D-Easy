@@ -1,6 +1,6 @@
 package com.rmamedov.deasy.etlstarter.persistence;
 
-import com.rmamedov.deasy.model.kafka.OrderMessage;
+import com.rmamedov.deasy.application.model.kafka.OrderMessage;
 import reactor.core.publisher.Mono;
 
 public interface OrderEtlPersistenceService {

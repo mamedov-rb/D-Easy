@@ -6,9 +6,10 @@ include(
         ":courier-etl",
         ":payment-service",
         ":good-service",
+        ":monitoring-good-etl",
         ":discovery-service",
         ":gateway-service",
-        ":order-model-starter",
+        ":application-model-starter",
         ":kafka-starter",
         ":etl-starter"
 )

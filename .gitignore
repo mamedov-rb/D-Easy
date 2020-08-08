@@ -8,8 +8,8 @@ build
 /address-service/.idea/
 /payment-service/gradle/
 /order-service/gradle/
-/order-model-starter/gradle/
-/order-model-starter/out/
+/application-model-starter/gradle/
+/application-model-starter/out/
 /address-etl/gradle/
 /kafka-starter/out/
 /good-service/src/main/resources/data/media/

@@ -1,6 +1,6 @@
 package com.rmamedov.deasy.goodsservice.config.kafka;
 
-import com.rmamedov.deasy.goodsservice.model.dto.GoodClickMessage;
+import com.rmamedov.deasy.application.model.kafka.GoodClickMessage;
 import com.rmamedov.deasy.kafkastarter.properties.KafkaSenderProperties;
 import com.rmamedov.deasy.kafkastarter.properties.TopicProperties;
 import com.rmamedov.deasy.kafkastarter.sender.ApplicationKafkaSender;

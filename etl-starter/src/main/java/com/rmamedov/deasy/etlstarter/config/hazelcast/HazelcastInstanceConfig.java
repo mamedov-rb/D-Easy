@@ -6,8 +6,8 @@ import com.hazelcast.config.SerializerConfig;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.map.IMap;
+import com.rmamedov.deasy.application.model.kafka.OrderMessage;
 import com.rmamedov.deasy.etlstarter.serializer.CheckResultSerializer;
-import com.rmamedov.deasy.model.kafka.OrderMessage;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

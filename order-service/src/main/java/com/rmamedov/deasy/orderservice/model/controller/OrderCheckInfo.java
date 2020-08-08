@@ -1,6 +1,6 @@
 package com.rmamedov.deasy.orderservice.model.controller;
 
-import com.rmamedov.deasy.model.CheckStatus;
+import com.rmamedov.deasy.application.model.CheckStatus;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

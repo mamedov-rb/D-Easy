@@ -1,7 +1,7 @@
 server.port: 8080
 
 spring:
-  application.name: courier-service
+  application.name: courier-etl
 
 kafka:
   receiver:

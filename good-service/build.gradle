@@ -1,6 +1,6 @@
 
 dependencies {
-    implementation project(":order-model-starter")
+    implementation project(":application-model-starter")
     implementation project(":kafka-starter")
     implementation "org.springframework.boot:spring-boot-starter-data-mongodb-reactive"
 }

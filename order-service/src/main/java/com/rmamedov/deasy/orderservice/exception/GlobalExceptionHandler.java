@@ -1,7 +1,7 @@
 package com.rmamedov.deasy.orderservice.exception;
 
-import com.rmamedov.deasy.model.exceptions.OrderNotFoundException;
-import com.rmamedov.deasy.model.exceptions.ResponseModel;
+import com.rmamedov.deasy.application.model.exceptions.OrderNotFoundException;
+import com.rmamedov.deasy.application.model.exceptions.ResponseModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

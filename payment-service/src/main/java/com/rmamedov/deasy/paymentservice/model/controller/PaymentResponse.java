@@ -1,6 +1,6 @@
 package com.rmamedov.deasy.paymentservice.model.controller;
 
-import com.rmamedov.deasy.model.PaymentStatus;
+import com.rmamedov.deasy.application.model.PaymentStatus;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

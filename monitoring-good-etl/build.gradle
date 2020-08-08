@@ -1,0 +1,5 @@
+
+dependencies {
+     implementation project(":application-model-starter")
+     implementation "org.springframework.cloud:spring-cloud-starter-stream-kafka"
+}

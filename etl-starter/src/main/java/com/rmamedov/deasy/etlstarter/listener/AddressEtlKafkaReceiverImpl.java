@@ -1,11 +1,11 @@
 package com.rmamedov.deasy.etlstarter.listener;
 
+import com.rmamedov.deasy.application.model.kafka.OrderMessage;
 import com.rmamedov.deasy.etlstarter.persistence.OrderEtlPersistenceService;
 import com.rmamedov.deasy.kafkastarter.properties.KafkaReceiverProperties;
 import com.rmamedov.deasy.kafkastarter.properties.TopicProperties;
 import com.rmamedov.deasy.kafkastarter.receiver.ApplicationKafkaReceiver;
 import com.rmamedov.deasy.kafkastarter.sender.ApplicationKafkaSender;
-import com.rmamedov.deasy.model.kafka.OrderMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.event.ApplicationStartedEvent;

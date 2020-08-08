@@ -1,10 +1,10 @@
 package com.rmamedov.deasy.goodsservice.service;
 
+import com.rmamedov.deasy.application.model.kafka.GoodClickMessage;
 import com.rmamedov.deasy.goodsservice.config.data.DataProperties;
 import com.rmamedov.deasy.goodsservice.converter.GoodToGoodDTOConverter;
 import com.rmamedov.deasy.goodsservice.exception.GoodNotFoundException;
 import com.rmamedov.deasy.goodsservice.model.Good;
-import com.rmamedov.deasy.goodsservice.model.dto.GoodClickMessage;
 import com.rmamedov.deasy.goodsservice.model.dto.GoodDTO;
 import com.rmamedov.deasy.goodsservice.model.dto.UploadDetailsDTO;
 import com.rmamedov.deasy.goodsservice.repository.GoodRepository;

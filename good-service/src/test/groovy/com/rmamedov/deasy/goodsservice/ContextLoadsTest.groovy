@@ -3,8 +3,10 @@ package com.rmamedov.deasy.goodsservice
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.ApplicationContext
+import org.springframework.test.context.ActiveProfiles
 import spock.lang.Specification
 
+@ActiveProfiles("TEST")
 @SpringBootTest(classes = GoodsServiceApplication.class)
 class ContextLoadsTest extends Specification {
 

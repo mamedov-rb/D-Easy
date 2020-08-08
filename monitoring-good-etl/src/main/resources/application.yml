@@ -1,0 +1,22 @@
+server.port: 8140
+
+spring:
+  output.ansi.enabled: detect
+  application.name: monitoring-good-etl
+
+spring.cloud.stream:
+  kafka.binder.brokers: http://192.168.31.157:9092
+  bindings:
+    input:
+      group: monitoring-good-clicked-etl-group
+      destination: monitoring-good-clicked-topic
+      contentType: application/json
+    output:
+      destination: monitoring-clicked-good-enriched-topic
+      contentType: application/json
+
+logging.level:
+  root: WARN
+  com.rmamedov.deasy: INFO
+  org.springframework:
+    integration: INFO

@@ -1,6 +1,6 @@
 package com.rmamedov.deasy.orderservice.model.controller;
 
-import com.rmamedov.deasy.model.OrderPosition;
+import com.rmamedov.deasy.application.model.OrderPosition;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

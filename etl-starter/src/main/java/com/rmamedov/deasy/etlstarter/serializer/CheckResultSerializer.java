@@ -2,7 +2,7 @@ package com.rmamedov.deasy.etlstarter.serializer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hazelcast.nio.serialization.ByteArraySerializer;
-import com.rmamedov.deasy.model.kafka.OrderMessage;
+import com.rmamedov.deasy.application.model.kafka.OrderMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

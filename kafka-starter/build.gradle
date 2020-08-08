@@ -8,7 +8,7 @@ jar {
 }
 
 dependencies {
-    implementation project(":order-model-starter")
+    implementation project(":application-model-starter")
     implementation "org.springframework.kafka:spring-kafka:${springKafkaVersion}"
     implementation "io.projectreactor.kafka:reactor-kafka:${reactorKafaVersion}"
     apiElements "org.springframework.kafka:spring-kafka:${springKafkaVersion}"
