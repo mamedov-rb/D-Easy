@@ -38,7 +38,7 @@ class OrderToOrderInfoConverterTest extends Specification {
         orderInfo.totalWeight == order.totalWeight
         orderInfo.totalVolume == order.totalVolume
         orderInfo.consumerAddress == order.consumerAddress
-        orderInfo.restaurantAddress == order.restaurantAddress
+        orderInfo.organisationAddress == order.organisationAddress
         orderInfo.orderPositions.sort() == order.orderPositions.sort()
         orderInfo.paymentStatus == order.paymentStatus
         orderInfo.transactionId == null

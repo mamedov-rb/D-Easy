@@ -45,7 +45,7 @@ public class GoodsControllerImpl implements GoodsController {
     @GetMapping(value = "/all", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
     public ResponseEntity<Flux<GoodDTO>> findAll() {
         final Flux<GoodDTO> dtoFlux = goodService.findAll()
-                .delayElements(ofMillis(500));
+                .delayElements(ofMillis(200));
         return ResponseEntity.ok(dtoFlux);
     }
 

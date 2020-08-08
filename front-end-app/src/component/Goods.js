@@ -38,7 +38,7 @@ class Goods extends Component {
         return (
             <div>
                 <div className="ui five doubling link cards">
-                    {this.props.goodsStore.map((el, index) => {
+                    {this.props.goods.map((el, index) => {
                         return (
                             <Good key={index} el={el}/>
                         )
@@ -52,7 +52,7 @@ class Goods extends Component {
 
 export default connect(
     state => ({
-        goodsStore: state
+        goods: state.goods
     }),
     dispatch => ({
         addGood: (good) => {

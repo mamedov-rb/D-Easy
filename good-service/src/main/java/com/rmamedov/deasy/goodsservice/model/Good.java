@@ -24,6 +24,9 @@ public class Good implements Persistable<String> {
     private String id = UUID.randomUUID().toString();
 
     @NotBlank
+    private String organisationAddress;
+
+    @NotBlank
     private String name;
 
     @NotNull

@@ -41,7 +41,7 @@ public class Order implements Persistable<String> {
 
     private String consumerAddress;
 
-    private String restaurantAddress;
+    private String organisationAddress;
 
     private Set<OrderPosition> orderPositions;
 

@@ -33,7 +33,7 @@ public class OrderInfo {
 
     private String consumerAddress;
 
-    private String restaurantAddress;
+    private String organisationAddress;
 
     private Set<OrderPosition> orderPositions;
 

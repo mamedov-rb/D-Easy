@@ -10,6 +10,8 @@ public class GoodDTO {
 
     private String id;
 
+    private String organisationAddress;
+
     private String name;
 
     private BigDecimal price;

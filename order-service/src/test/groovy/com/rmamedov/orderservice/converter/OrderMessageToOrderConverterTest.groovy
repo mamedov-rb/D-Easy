@@ -45,7 +45,7 @@ class OrderMessageToOrderConverterTest extends Specification {
         converted.totalWeight == orderMessage.totalWeight
         converted.totalVolume == orderMessage.totalVolume
         converted.consumerAddress == orderMessage.consumerAddress
-        converted.restaurantAddress == orderMessage.restaurantAddress
+        converted.organisationAddress == orderMessage.organisationAddress
         converted.orderPositions.sort() == orderMessage.orderPositions.sort()
         converted.paymentStatus == orderMessage.paymentStatus
         converted.transactionId == null

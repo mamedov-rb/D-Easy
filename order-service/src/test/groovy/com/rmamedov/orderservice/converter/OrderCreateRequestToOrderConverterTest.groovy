@@ -10,7 +10,7 @@ import spock.lang.Specification
 import static com.rmamedov.orderservice.util.ModelHelper.CONSUMER_ADDRESS
 import static com.rmamedov.orderservice.util.ModelHelper.ORDER_DESCRIPTION
 import static com.rmamedov.orderservice.util.ModelHelper.ORDER_NAME
-import static com.rmamedov.orderservice.util.ModelHelper.RESTAURANT_ADDRESS
+import static com.rmamedov.orderservice.util.ModelHelper.ORGANISATION_ADDRESS
 import static com.rmamedov.orderservice.util.ModelHelper.orderCreateRequest
 import static com.rmamedov.orderservice.util.ModelHelper.position1
 import static com.rmamedov.orderservice.util.ModelHelper.position2
@@ -35,7 +35,7 @@ class OrderCreateRequestToOrderConverterTest extends Specification {
         order.totalWeight == 6.9
         order.totalVolume == 274500.0
         order.consumerAddress == CONSUMER_ADDRESS
-        order.restaurantAddress == RESTAURANT_ADDRESS
+        order.organisationAddress == ORGANISATION_ADDRESS
         order.orderPositions.sort() == [position1(), position2(), position3()].sort()
         order.paymentStatus == PaymentStatus.NEW
         order.transactionId == null

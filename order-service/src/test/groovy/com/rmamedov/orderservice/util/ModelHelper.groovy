@@ -13,7 +13,7 @@ class ModelHelper {
 
     public static final String ORDER_DESCRIPTION = randomAlphabetic(10)
     public static final String CONSUMER_ADDRESS = randomAlphabetic(10)
-    public static final String RESTAURANT_ADDRESS = randomAlphabetic(10)
+    public static final String ORGANISATION_ADDRESS = randomAlphabetic(10)
     public static final String POSITION_1_NAME = "Abc"
     public static final String POSITION_2_NAME = "Def"
     public static final String POSITION_3_NAME = "Ghi"
@@ -23,7 +23,7 @@ class ModelHelper {
         def createRequest = new OrderCreateRequest()
         createRequest.description = ORDER_DESCRIPTION
         createRequest.consumerAddress = CONSUMER_ADDRESS
-        createRequest.restaurantAddress = RESTAURANT_ADDRESS
+        createRequest.organisationAddress = ORGANISATION_ADDRESS
         createRequest.setOrderPositions(Set.of(position1(), position2(), position3()))
         return createRequest
     }

@@ -10,7 +10,7 @@ import java.util.Set;
 
 @Data
 @EqualsAndHashCode(of = {
-        "description", "consumerAddress", "restaurantAddress"
+        "description", "consumerAddress", "organisationAddress"
 })
 public class OrderCreateRequest {
 
@@ -21,7 +21,7 @@ public class OrderCreateRequest {
     private String consumerAddress;
 
     @NotBlank
-    private String restaurantAddress;
+    private String organisationAddress;
 
     @NotEmpty
     private Set<OrderPosition> orderPositions;

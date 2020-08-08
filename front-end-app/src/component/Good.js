@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {toast} from "react-toastify";
+import {connect} from "react-redux";
 
 const BASE_URL = 'http://localhost:8120/api/';
 const IMAGE_URL = 'good/download-file/';
@@ -8,7 +9,10 @@ class Good extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {image: {}}
+        this.state = {
+            active: true,
+            image: {}
+        }
     }
 
     componentDidMount() {
@@ -18,25 +22,38 @@ class Good extends Component {
             .catch((err) => {
                 toast.error(err.message, {position: toast.POSITION.TOP_RIGHT})
             });
+        this.disableIfPresent(this.props.el);
+    }
+
+    disableIfPresent = (good) => {
+        if (this.props.cart.filter(item => item.id === good.id).length > 0) {
+            this.setState({active: false});
+        }
     }
 
     render() {
+        let good = this.props.el;
+        let goodClicked = () => {
+            this.setState({active: false});
+            good.quantity = 1;
+            this.props.addToCart(good);
+        }
         return (
-            <div className="ui centered card">
-                <div className="image">
+            <div className="ui centered card" onClick={goodClicked}>
+                <div className={this.state.active ? "ui image" : "ui disabled image"}>
                     <img src={this.state.image}/>
                 </div>
                 <div className="content">
-                    <div className="header">{this.props.el.name}</div>
+                    <div className="header">{good.name}</div>
                 </div>
                 <div className="extra content">
                     <span className="right floated">
                         <i className="percent icon"/>
-                        {this.props.el.discount}
+                        {good.discount}
                     </span>
                     <span className="left floated">
                         <i className="ruble sign icon"/>
-                        <a>{this.props.el.price}</a>
+                        <a>{good.price}</a>
                     </span>
                 </div>
             </div>
@@ -45,4 +62,13 @@ class Good extends Component {
 
 }
 
-export default Good
+export default connect(
+    state => ({
+        cart: state.cart
+    }),
+    dispatch => ({
+        addToCart: (good) => {
+            dispatch({type: 'ADD_TO_CART', payload: good});
+        }
+    })
+)(Good);
